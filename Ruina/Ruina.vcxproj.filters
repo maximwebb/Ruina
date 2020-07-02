@@ -3,4 +3,8 @@
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\Vertex.shader" />
+    <None Include="res\shaders\Fragment.shader" />
+  </ItemGroup>
 </Project>
