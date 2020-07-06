@@ -1,11 +1,15 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include <iostream>
 #include <array>
 #include <string>
 #include <sstream>
 #include <fstream>
+
 #include "Renderer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 class ColorWheel {
 private:
@@ -43,29 +47,6 @@ public:
 		count++;
 	}
 };
-
-//static const std::string GetSeverity(GLenum severity) {
-//	if (severity == GL_DEBUG_SEVERITY_HIGH_AMD) {
-//		return "HIGH";
-//	}
-//	else if (severity == GL_DEBUG_SEVERITY_MEDIUM_AMD) {
-//		return "MEDIUM";
-//	}
-//	else if (severity == GL_DEBUG_SEVERITY_LOW_AMD) {
-//		return "LOW";
-//	}
-//	
-//	return "NONE";
-//}
-//
-//static int __stdcall LogErrorInfo(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-//	const std::string severity_name = GetSeverity(severity);
-//	if (severity_name != "NONE") {
-//		std::cout << "[OpenGL Error] Severity: " << severity_name << std::endl << message << std::endl;
-//		__debugbreak();
-//	}
-//	return 0;
-//}
 
 static std::string ParseShader(const std::string& filepath) {
 	std::ifstream stream(filepath);
@@ -149,24 +130,12 @@ int main()
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback((GLDEBUGPROC)LogErrorInfo, nullptr);
 
-	/*std::array<float, 6> data = {
-		-0.5f, -0.5f,
-		 0.0f,  0.7f,
-		 0.5f, -0.5f
-	};*/
 
 	float data[] = {
 		-0.5f, -0.5f, // 0
 		 0.5f, -0.5f, // 1
 		 0.5f,  0.5f, // 2
 		-0.5f,  0.5f  // 3
-	};
-
-	float data1[] = {
-		 0.0f, -0.3f, // 0
-		 0.5f, -0.3f, // 1
-		 0.5f,  0.5f, // 2
-		 0.0f,  0.5f  // 3
 	};
 
 	unsigned int indices[] = {
@@ -176,22 +145,16 @@ int main()
 
 	unsigned int vao;
 	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+    glBindVertexArray(vao);
 
 	/* Vertex buffer setup */
-	unsigned int buffer1;
-	glGenBuffers(1, &buffer1);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer1);
-	glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data, GL_STATIC_DRAW);
+	VertexBuffer vb(data, 4 * 2 * sizeof(float));
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
 	/* Index buffer setup */
-	unsigned int ibo;
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	IndexBuffer ib(indices, 6);
 
     std::string fragmentShader = ParseShader("Ruina/res/shaders/Fragment.shader");
     std::string vertexShader = ParseShader("Ruina/res/shaders/Vertex.shader");
@@ -210,9 +173,14 @@ int main()
 	{
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
-		colorWheel.Shift();
-		glUniform4f(location, colorWheel.r, colorWheel.g, colorWheel.b, 1.0f);
 
+//        glUseProgram(shader);
+
+		ib.Bind();
+
+
+        colorWheel.Shift();
+		glUniform4f(location, colorWheel.r, colorWheel.g, colorWheel.b, 1.0f);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 		/* Swap front and back buffers */

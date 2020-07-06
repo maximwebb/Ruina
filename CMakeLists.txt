@@ -27,12 +27,12 @@ add_executable(Ruina
         Ruina/src/Renderer.h
         Ruina/src/VertexBuffer.cpp
         Ruina/src/VertexBuffer.h
+        Ruina/src/IndexBuffer.cpp
+        Ruina/src/IndexBuffer.h
         Ruina/res/shaders/Vertex.shader
         Ruina/res/shaders/Fragment.shader
         )
 
-target_link_libraries(Ruina ${GLFW_LIB})
-target_link_libraries(Ruina ${GLEW_LIB})
-target_link_libraries(Ruina ${OPENGL_LIB})
+target_link_libraries(Ruina ${GLFW_LIB} ${GLEW_LIB} ${OPENGL_LIB})
 
 add_definitions(-DGLEW_STATIC)
