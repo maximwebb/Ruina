@@ -2,9 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Vertex.shader" />
     <None Include="res\shaders\Fragment.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\VertexBuffer.h" />
   </ItemGroup>
 </Project>
