@@ -5,6 +5,7 @@
 #include <array>
 #include "Renderer.h"
 #include "Debugger.h"
+#include "Texture.h"
 
 
 class ColorWheel {
@@ -71,10 +72,10 @@ int main()
 
 
 	float data[] = {
-			-0.5f, -0.5f, // 0
-			0.5f, -0.5f, // 1
-			0.5f, 0.5f, // 2
-			-0.5f, 0.5f  // 3
+			-0.5f, -0.5f, 0.0f, 0.0f, // 0
+			0.5f, -0.5f, 1.0f, 0.0f, // 1
+			0.5f, 0.5f, 1.0f, 1.0f, // 2
+			-0.5f, 0.5f, 0.0f, 1.0f  // 3
 	};
 
 	unsigned int indices[] = {
@@ -84,9 +85,10 @@ int main()
 
 	/* Vertex array setup */
 	VertexArray va;
-	VertexBuffer vb(data, 4 * 2 * sizeof(float));
+	VertexBuffer vb(data, 4 * 4 * sizeof(float));
 	VertexBufferLayout layout;
 	layout.Push<float>(2); //Add attribute layouts here.
+	layout.Push<float>(2);
 	va.AddBuffer(vb, layout);
 
 	/* Index buffer setup */
@@ -95,7 +97,11 @@ int main()
 	/* Shader setup */
 	Shader shader("Ruina/res/shaders/Vertex.shader", "Ruina/res/shaders/Fragment.shader");
 	shader.Bind();
-	shader.SetUniform4f("u_color", 1.0f, 0.0f, 0.0f, 1.0f);
+//	shader.SetUniform4f("u_color", 1.0f, 0.0f, 0.0f, 1.0f);
+
+	Texture texture("Ruina/res/textures/texture.png");
+	texture.Bind();
+	shader.SetUniform1i("u_texture", 0);
 
 	va.Unbind();
 	vb.Unbind();
