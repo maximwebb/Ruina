@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 
 class ColorWheel {
 private:
@@ -65,6 +66,7 @@ static unsigned int CompileShader(unsigned int type, const std::string& source) 
 	const char* src = source.c_str();
 	glShaderSource(id, 1, &src, nullptr);
 	glCompileShader(id);
+
 
 	int result;
 	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
@@ -132,32 +134,31 @@ int main()
 
 
 	float data[] = {
-		-0.5f, -0.5f, // 0
-		 0.5f, -0.5f, // 1
-		 0.5f,  0.5f, // 2
-		-0.5f,  0.5f  // 3
+			-0.5f, -0.5f, // 0
+			0.5f, -0.5f, // 1
+			0.5f, 0.5f, // 2
+			-0.5f, 0.5f  // 3
 	};
 
 	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
+			0, 1, 2,
+			2, 3, 0
 	};
 
-	unsigned int vao;
-	glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-	/* Vertex buffer setup */
+	/* Vertex array setup */
+	VertexArray va;
 	VertexBuffer vb(data, 4 * 2 * sizeof(float));
+	VertexBufferLayout layout;
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+	layout.Push<float>(2); //Add attribute layouts here.
+
+	va.AddBuffer(vb, layout);
 
 	/* Index buffer setup */
 	IndexBuffer ib(indices, 6);
 
-    std::string fragmentShader = ParseShader("Ruina/res/shaders/Fragment.shader");
-    std::string vertexShader = ParseShader("Ruina/res/shaders/Vertex.shader");
+	std::string fragmentShader = ParseShader("Ruina/res/shaders/Fragment.shader");
+	std::string vertexShader = ParseShader("Ruina/res/shaders/Vertex.shader");
 
 	unsigned int shader = CreateShader(vertexShader, fragmentShader);
 	glUseProgram(shader);
@@ -166,20 +167,23 @@ int main()
 	ASSERT(location != -1);
 	glUniform4f(location, 1.0f, 0.0f, 0.0f, 1.0f);
 
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	ColorWheel colorWheel(1.0f, 0.0f, 0.0f, 0.05f);
 	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
-	{
+	while (!glfwWindowShouldClose(window)) {
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-//        glUseProgram(shader);
-
+		glUseProgram(shader);
+		va.Bind();
 		ib.Bind();
 
 
-        colorWheel.Shift();
+		colorWheel.Shift();
 		glUniform4f(location, colorWheel.r, colorWheel.g, colorWheel.b, 1.0f);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 

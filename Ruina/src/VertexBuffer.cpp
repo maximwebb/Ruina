@@ -11,7 +11,7 @@ VertexBuffer::~VertexBuffer() {
 	glDeleteBuffers(1, &m_rendererID);
 }
 
-void VertexBuffer::Bind() {
+void VertexBuffer::Bind() const {
 	glBindBuffer(GL_ARRAY_BUFFER, m_rendererID);
 }
 

@@ -31,7 +31,7 @@ add_executable(Ruina
         Ruina/src/IndexBuffer.h
         Ruina/res/shaders/Vertex.shader
         Ruina/res/shaders/Fragment.shader
-        )
+        Ruina/src/VertexArray.cpp Ruina/src/VertexArray.h Ruina/src/VertexBufferLayout.h)
 
 target_link_libraries(Ruina ${GLFW_LIB} ${GLEW_LIB} ${OPENGL_LIB})
 
