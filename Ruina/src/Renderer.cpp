@@ -1,5 +1,5 @@
-#include "Renderer.h"
 #include <iostream>
+#include "Renderer.h"
 
 const std::string GetSeverity(GLenum severity) {
 	if (severity == GL_DEBUG_SEVERITY_HIGH_AMD) {

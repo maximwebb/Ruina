@@ -10,5 +10,5 @@ public:
 
 	void Bind() const;
 
-	static void Unbind();
+	void Unbind();
 };
