@@ -1,21 +1,20 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include <iostream>
 #include <array>
 #include "Renderer.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
-#include "Shader.h"
+#include "Debugger.h"
+
 
 class ColorWheel {
 private:
 	const int deltas[18] = {
-		 0,  1,  0,
-		-1,  0,  0,
-		 0,  0,  1,
-		 0, -1,  0,
-		 1,  0,  0,
+			0, 1, 0,
+			-1, 0, 0,
+			0, 0, 1,
+			0, -1, 0,
+			1, 0, 0,
 		 0,  0, -1
 	};
 
@@ -68,9 +67,7 @@ int main()
 		std::cout << "Error initialising GLEW." << std::endl;
 	}
 
-	glEnable(GL_DEBUG_OUTPUT);
-	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback((GLDEBUGPROC)LogErrorInfo, nullptr);
+	initDebugger();
 
 
 	float data[] = {
@@ -98,7 +95,7 @@ int main()
 	/* Shader setup */
 	Shader shader("Ruina/res/shaders/Vertex.shader", "Ruina/res/shaders/Fragment.shader");
 	shader.Bind();
-	shader.SetUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 1.0f);
+	shader.SetUniform4f("u_color", 1.0f, 0.0f, 0.0f, 1.0f);
 
 	va.Unbind();
 	vb.Unbind();
@@ -106,19 +103,15 @@ int main()
 	shader.Unbind();
 
 	ColorWheel colorWheel(1.0f, 0.0f, 0.0f, 0.05f);
+	Renderer renderer;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {
 		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
+		renderer.Clear();
 
-		shader.Bind();
-		va.Bind();
-		ib.Bind();
-
-
-		colorWheel.Shift();
-		shader.SetUniform4f("u_color", colorWheel.r, colorWheel.g, colorWheel.b, 1.0f);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		renderer.Draw(va, ib, shader);
+		//colorWheel.Shift();
+		//shader.SetUniform4f("u_color", colorWheel.r, colorWheel.g, colorWheel.b, 1.0f);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

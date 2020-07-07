@@ -1,25 +1,14 @@
-#include <iostream>
 #include "Renderer.h"
 
-const std::string GetSeverity(GLenum severity) {
-	if (severity == GL_DEBUG_SEVERITY_HIGH_AMD) {
-		return "HIGH";
-	}
-	else if (severity == GL_DEBUG_SEVERITY_MEDIUM_AMD) {
-		return "MEDIUM";
-	}
-	else if (severity == GL_DEBUG_SEVERITY_LOW_AMD) {
-		return "LOW";
-	}
 
-	return "NONE";
+void Renderer::Draw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader) const {
+	shader.Bind();
+	va.Bind();
+	ib.Bind();
+
+	glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-int __stdcall LogErrorInfo(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-	const std::string severity_name = GetSeverity(severity);
-	if (severity_name != "NONE") {
-		std::cout << "[OpenGL Error] Severity: " << severity_name << std::endl << message << std::endl;
-		__debugbreak();
-	}
-	return 0;
+void Renderer::Clear() {
+	glClear(GL_COLOR_BUFFER_BIT);
 }

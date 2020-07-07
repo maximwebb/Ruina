@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include <GL/glew.h>
-#include "Renderer.h"
+#include <vector>
+#include "Debugger.h"
 
 struct VertexBufferElement {
 	unsigned int count;
