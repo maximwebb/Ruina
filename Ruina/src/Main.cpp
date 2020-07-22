@@ -6,7 +6,9 @@
 #include "Renderer.h"
 #include "Debugger.h"
 #include "Texture.h"
-
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "gui/Gui.h"
 
 class ColorWheel {
 private:
@@ -71,17 +73,21 @@ int main()
 	initDebugger();
 
 
+	// First two floats are x-y coords, next two are texture coordinates (in range [0, 1]^2).
 	float data[] = {
-			-0.5f, -0.5f, 0.0f, 0.0f, // 0
-			0.5f, -0.5f, 1.0f, 0.0f, // 1
-			0.5f, 0.5f, 1.0f, 1.0f, // 2
-			-0.5f, 0.5f, 0.0f, 1.0f  // 3
+			-1.0f, -1.0f, 0.0f, 0.0f, // 0
+			 1.0f, -1.0f, 1.0f, 0.0f, // 1
+			 1.0f,  1.0f, 1.0f, 1.0f, // 2
+			-1.0f,  1.0f, 0.0f, 1.0f  // 3
 	};
 
 	unsigned int indices[] = {
 			0, 1, 2,
 			2, 3, 0
 	};
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	/* Vertex array setup */
 	VertexArray va;
@@ -94,6 +100,12 @@ int main()
 	/* Index buffer setup */
 	IndexBuffer ib(indices, 6);
 
+	/* MVP matrix construction */
+	glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+	glm::mat4 view = glm::translate(glm::mat4 (1.0f), glm::vec3(-0.5, 0.0f, 0.0f));
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.25, 0.0f));
+	glm::mat4 mvp = proj * view * model;
+
 	/* Shader setup */
 	Shader shader("Ruina/res/shaders/Vertex.shader", "Ruina/res/shaders/Fragment.shader");
 	shader.Bind();
@@ -102,6 +114,7 @@ int main()
 	Texture texture("Ruina/res/textures/texture.png");
 	texture.Bind();
 	shader.SetUniform1i("u_texture", 0);
+	shader.SetUniformMat4("u_MVP", mvp);
 
 	va.Unbind();
 	vb.Unbind();
@@ -110,14 +123,36 @@ int main()
 
 	ColorWheel colorWheel(1.0f, 0.0f, 0.0f, 0.05f);
 	Renderer renderer;
+
+	/* ImGui setup */
+	GuiManager imgui(window);
+	GuiText text1((char*)"Foo bar");
+	int a = 0;
+	GuiButton button1((char*)"Click me", [&a]() { a++; std::cout << "Clicked!!! Value of a: " << a << std::endl;});
+	bool my_bool = false;
+	ImVec4 init_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	GuiColorPicker color_picker("Choose color: ", init_color);
+	imgui.AddGuiElement(&text1);
+	imgui.AddGuiElement(&button1);
+	imgui.AddGuiElement(&color_picker);
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {
 		/* Render here */
 		renderer.Clear();
 
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+
 		renderer.Draw(va, ib, shader);
+
+		imgui.Begin("Some GUI...");
+		imgui.Render();
 		//colorWheel.Shift();
 		//shader.SetUniform4f("u_color", colorWheel.r, colorWheel.g, colorWheel.b, 1.0f);
+
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -125,7 +160,7 @@ int main()
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
-
 	glfwTerminate();
+
 	return 0;
 }

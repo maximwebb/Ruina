@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "vendor/stb_image/stb_image.h"
+#include "stb_image/stb_image.h"
 
 Texture::Texture(const std::string &path)
 		: m_rendererID(0), m_filepath(path), m_local_buffer(nullptr), m_width(0), m_height(0), m_bpp(0) {
@@ -22,11 +22,11 @@ Texture::~Texture() {
 	glDeleteTextures(1, &m_rendererID);
 }
 
-void Texture::Bind(unsigned int slot) {
+void Texture::Bind(unsigned int slot) const {
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, m_rendererID);
 }
 
-void Texture::Unbind() {
+void Texture::Unbind() const {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
