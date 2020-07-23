@@ -56,7 +56,7 @@ int main()
 
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Triangle Renderer", NULL, NULL);
+	window = glfwCreateWindow(1280, 960, "Triangle Renderer", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -75,10 +75,10 @@ int main()
 
 	// First two floats are x-y coords, next two are texture coordinates (in range [0, 1]^2).
 	float data[] = {
-			-1.0f, -1.0f, 0.0f, 0.0f, // 0
-			 1.0f, -1.0f, 1.0f, 0.0f, // 1
-			 1.0f,  1.0f, 1.0f, 1.0f, // 2
-			-1.0f,  1.0f, 0.0f, 1.0f  // 3
+			-30.0f, -30.0f, 0.0f, 0.0f, // 0
+			 30.0f, -30.0f, 1.0f, 0.0f, // 1
+			 30.0f,  30.0f, 1.0f, 1.0f, // 2
+			-30.0f,  30.0f, 0.0f, 1.0f  // 3
 	};
 
 	unsigned int indices[] = {
@@ -101,20 +101,19 @@ int main()
 	IndexBuffer ib(indices, 6);
 
 	/* MVP matrix construction */
-	glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
-	glm::mat4 view = glm::translate(glm::mat4 (1.0f), glm::vec3(-0.5, 0.0f, 0.0f));
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.25, 0.0f));
-	glm::mat4 mvp = proj * view * model;
+	glm::mat4 proj = glm::ortho(-100.0f, 100.0f, -75.0f, 75.0f, -1.0f, 1.0f);
+	glm::mat4 view = glm::translate(glm::mat4 (1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	/* Shader setup */
 	Shader shader("Ruina/res/shaders/Vertex.shader", "Ruina/res/shaders/Fragment.shader");
 	shader.Bind();
-//	shader.SetUniform4f("u_color", 1.0f, 0.0f, 0.0f, 1.0f);
+	shader.SetUniformMat4("u_MVP", proj * view);
+	shader.SetUniform4f("u_color", 1.0f, 0.0f, 0.0f, 1.0f);
 
 	Texture texture("Ruina/res/textures/texture.png");
 	texture.Bind();
 	shader.SetUniform1i("u_texture", 0);
-	shader.SetUniformMat4("u_MVP", mvp);
+
 
 	va.Unbind();
 	vb.Unbind();
@@ -126,15 +125,16 @@ int main()
 
 	/* ImGui setup */
 	GuiManager imgui(window);
-	GuiText text1((char*)"Foo bar");
-	int a = 0;
-	GuiButton button1((char*)"Click me", [&a]() { a++; std::cout << "Clicked!!! Value of a: " << a << std::endl;});
-	bool my_bool = false;
-	ImVec4 init_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-	GuiColorPicker color_picker("Choose color: ", init_color);
-	imgui.AddGuiElement(&text1);
-	imgui.AddGuiElement(&button1);
+	ImVec4* square_color = new ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+	ImVec4* pos1 = new ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	bool is_color = true;
+	GuiColorPicker color_picker("Color", square_color);
+	GuiTripleSlider position_picker("Position", pos1);
+	GuiCheckbox color_checkbox("Color/Texture", is_color);
 	imgui.AddGuiElement(&color_picker);
+	imgui.AddGuiElement(&position_picker);
+	imgui.AddGuiElement(&color_checkbox);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {
@@ -145,14 +145,23 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		shader.Bind();
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(pos1->x, pos1->y, pos1->z));
+		glm::mat4 mvp = proj * view * model;
+		shader.SetUniformMat4("u_MVP", mvp);
+		renderer.Draw(va, ib, shader);
 
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-pos1->x, -pos1->y, pos1->z));
+		mvp = proj * view * model;
+		shader.SetUniformMat4("u_MVP", mvp);
 		renderer.Draw(va, ib, shader);
 
 		imgui.Begin("Some GUI...");
 		imgui.Render();
-		//colorWheel.Shift();
-		//shader.SetUniform4f("u_color", colorWheel.r, colorWheel.g, colorWheel.b, 1.0f);
+		colorWheel.Shift();
 
+		shader.SetUniform1i("u_is_color", is_color);
+		shader.SetUniform4f("u_color", square_color->x, square_color->y, square_color->z, square_color->w);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

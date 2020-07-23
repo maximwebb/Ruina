@@ -5,3 +5,4 @@
 #include "GuiButton.cpp"
 #include "GuiCheckbox.cpp"
 #include "GuiColorPicker.cpp"
+#include "GuiTripleSlider.cpp"
