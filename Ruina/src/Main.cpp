@@ -4,11 +4,12 @@
 #include <iostream>
 #include <array>
 #include "Renderer.h"
-#include "Debugger.h"
 #include "Texture.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "gui/Gui.h"
+#include "tests/Test.h"
+#include "tests/TestClearColor.h"
 
 class ColorWheel {
 private:
@@ -129,44 +130,41 @@ int main()
 	ImVec4* pos1 = new ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
 	bool is_color = true;
-	GuiColorPicker color_picker("Color", square_color);
-	GuiTripleSlider position_picker("Position", pos1);
-	GuiCheckbox color_checkbox("Color/Texture", is_color);
-	imgui.AddGuiElement(&color_picker);
-	imgui.AddGuiElement(&position_picker);
-	imgui.AddGuiElement(&color_checkbox);
+
+	/* Initialise starting test to the test menu */
+	test::Test* current_test;
+	test::TestMenu* test_menu = new test::TestMenu(current_test, imgui);
+	current_test = test_menu;
+
+	/* Add tests to the test menu */
+	test_menu->RegisterTest<test::TestClearColor>("Clear Color");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {
 		/* Render here */
 		renderer.Clear();
-
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
 		shader.Bind();
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(pos1->x, pos1->y, pos1->z));
-		glm::mat4 mvp = proj * view * model;
-		shader.SetUniformMat4("u_MVP", mvp);
-		renderer.Draw(va, ib, shader);
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-pos1->x, -pos1->y, pos1->z));
-		mvp = proj * view * model;
-		shader.SetUniformMat4("u_MVP", mvp);
-		renderer.Draw(va, ib, shader);
 
-		imgui.Begin("Some GUI...");
-		imgui.Render();
+		if (current_test) {
+			current_test->OnUpdate(0.0f);
+			current_test->OnRender();
+			test_menu->gui_manager.Begin("Test");
+			if (current_test != test_menu && ImGui::Button("<-")) {
+				delete current_test;
+				current_test = test_menu;
+			}
+			current_test->OnImGuiRender();
+
+			test_menu->gui_manager.Render();
+		}
+
 		colorWheel.Shift();
 
 		shader.SetUniform1i("u_is_color", is_color);
 		shader.SetUniform4f("u_color", square_color->x, square_color->y, square_color->z, square_color->w);
 
-		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
-
-		/* Poll for and process events */
 		glfwPollEvents();
 	}
 	glfwTerminate();

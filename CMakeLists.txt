@@ -11,6 +11,8 @@ include_directories(Dependencies/GLFW)
 include_directories(Dependencies/GLFW/include)
 include_directories(Dependencies/GLFW/include/GLFW)
 include_directories(Ruina/res/shaders)
+include_directories(Ruina/src/gui)
+include_directories(Ruina/src/tests)
 include_directories(Ruina/src/vendor)
 #include_directories(Ruina/src/vendor/imgui)
 #include_directories(Ruina/src/vendor/stb_image)
@@ -39,7 +41,7 @@ add_executable(Ruina
         Ruina/src/vendor/stb_image/stb_image.cpp
         ${IMGUI}
         ${SOURCE_FILES}
-        Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp Ruina/src/gui/GuiTripleSlider.cpp)
+        Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp Ruina/src/gui/GuiTripleSlider.cpp Ruina/src/tests/Test.h Ruina/src/tests/TestClearColor.cpp Ruina/src/tests/TestClearColor.h Ruina/src/tests/Test.cpp)
 
 target_link_libraries(Ruina ${GLFW_LIB} ${GLEW_LIB} ${OPENGL_LIB})
 
