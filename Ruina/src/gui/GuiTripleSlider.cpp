@@ -3,12 +3,12 @@
 class GuiTripleSlider : public IGuiElement {
 private:
 	const char* m_title;
-	ImVec4* m_values;
+	float* m_values;
 public:
-	GuiTripleSlider(const char* title, ImVec4* values)
+	GuiTripleSlider(const char* title, float* values)
 			: m_title(title), m_values(values) {};
 
 	void Draw() override {
-		ImGui::SliderFloat3(m_title, (float*)m_values, -100.0f, 100.0f);
+		ImGui::SliderFloat3(m_title, m_values, -100.0f, 100.0f);
 	}
 };

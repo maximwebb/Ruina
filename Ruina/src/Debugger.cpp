@@ -24,7 +24,8 @@ __stdcall LogErrorInfo(GLenum source, GLenum type, GLuint id, GLenum severity, G
 	const std::string severity_name = GetSeverity(severity);
 	if (severity_name != "NONE") {
 		std::cout << "[OpenGL Error] Severity: " << severity_name << std::endl << message << std::endl;
-		__debugbreak();
+		if (severity_name == "HIGH")
+			__debugbreak();
 	}
 	return 0;
 }
