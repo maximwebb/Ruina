@@ -3,6 +3,14 @@
 #include <vector>
 #include <GL/glew.h>
 #include "Gui.h"
+#include "../VertexArray.h"
+#include "../IndexBuffer.h"
+#include "../Shader.h"
+#include "../Renderer.h"
+#include "../Texture.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include <memory>
 
 namespace test {
 	class Test {

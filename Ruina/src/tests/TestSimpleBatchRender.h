@@ -2,10 +2,10 @@
 #include "Test.h"
 
 namespace test {
-	class TestTexture2D : public Test {
+	class TestSimpleBatchRender : public Test {
 	public:
-		TestTexture2D();
-		~TestTexture2D();
+		TestSimpleBatchRender();
+		~TestSimpleBatchRender();
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;

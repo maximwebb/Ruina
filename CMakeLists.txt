@@ -41,7 +41,7 @@ add_executable(Ruina
         Ruina/src/vendor/stb_image/stb_image.cpp
         ${IMGUI}
         ${SOURCE_FILES}
-        Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp Ruina/src/gui/GuiTripleSlider.cpp Ruina/src/tests/Test.h Ruina/src/tests/TestClearColor.cpp Ruina/src/tests/TestClearColor.h Ruina/src/tests/Test.cpp Ruina/src/tests/TestColorQuad.cpp Ruina/src/tests/TestColorQuad.h Ruina/src/tests/TestTexture2D.cpp Ruina/src/tests/TestTexture2D.h)
+        Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp Ruina/src/gui/GuiTripleSlider.cpp Ruina/src/tests/Test.h Ruina/src/tests/TestClearColor.cpp Ruina/src/tests/TestClearColor.h Ruina/src/tests/Test.cpp Ruina/src/tests/TestColorQuad.cpp Ruina/src/tests/TestColorQuad.h Ruina/src/tests/TestTexture2D.cpp Ruina/src/tests/TestTexture2D.h Ruina/src/tests/TestSimpleBatchRender.cpp Ruina/src/tests/TestSimpleBatchRender.h)
 
 target_link_libraries(Ruina ${GLFW_LIB} ${GLEW_LIB} ${OPENGL_LIB})
 
