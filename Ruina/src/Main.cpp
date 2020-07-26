@@ -6,6 +6,8 @@
 #include <TestColorQuad.h>
 #include <TestTexture2D.h>
 #include <TestSimpleBatchRender.h>
+#include <TestColorBatchRender.h>
+#include <TestTextureBatchRender.h>
 #include "Renderer.h"
 #include "Texture.h"
 #include "glm/glm.hpp"
@@ -56,6 +58,8 @@ int main()
 	test_menu->RegisterTest<test::TestColorQuad>("Colored Square");
 	test_menu->RegisterTest<test::TestTexture2D>("2D Textured Square");
 	test_menu->RegisterTest<test::TestSimpleBatchRender>("Simple Batch Render");
+	test_menu->RegisterTest<test::TestColorBatchRender>("Color Batch Render");
+	test_menu->RegisterTest<test::TestTextureBatchRender>("Texture Batch Render");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {

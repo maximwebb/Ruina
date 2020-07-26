@@ -35,13 +35,13 @@ public:
 
 	void SetUniformMat4(const std::string &name, const glm::mat4& matrix);
 
+	int GetUniformLocation(const std::string &name);
 private:
+
 	std::string ParseShader(const std::string &filepath);
 
 	unsigned int CompileShader(unsigned int type, const std::string &source);
 
 	unsigned int CreateShader(const std::string &vertexShader, const std::string &fragmentShader);
-
-	int GetUniformLocation(const std::string &name);
 };
 
