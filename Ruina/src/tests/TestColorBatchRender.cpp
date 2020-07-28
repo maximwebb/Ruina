@@ -36,10 +36,6 @@ namespace test {
 		/* Index buffer setup */
 		m_ib = std::make_unique<IndexBuffer>(indices, 12);
 
-		/* Texture setup */
-		m_texture = std::make_unique<Texture>("Ruina/res/textures/texture.png");
-		m_texture->Bind();
-
 		/* Shader setup */
 		m_shader = std::make_unique<Shader>("Ruina/res/shaders/BatchVertex.shader", "Ruina/res/shaders/BatchFragment.shader");
 		m_shader->Bind();
@@ -58,7 +54,6 @@ namespace test {
 
 	void TestColorBatchRender::OnRender() {
 		Renderer renderer;
-		m_shader->SetUniform1i("u_is_texture", m_is_texture);
 		renderer.Draw(*m_va, *m_ib, *m_shader);
 	}
 
