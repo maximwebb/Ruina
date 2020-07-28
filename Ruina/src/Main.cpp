@@ -8,6 +8,7 @@
 #include <TestSimpleBatchRender.h>
 #include <TestColorBatchRender.h>
 #include <TestTextureBatchRender.h>
+#include <TestColorCube.h>
 #include "Renderer.h"
 #include "Texture.h"
 #include "glm/glm.hpp"
@@ -60,6 +61,7 @@ int main()
 	test_menu->RegisterTest<test::TestSimpleBatchRender>("Simple Batch Render");
 	test_menu->RegisterTest<test::TestColorBatchRender>("Color Batch Render");
 	test_menu->RegisterTest<test::TestTextureBatchRender>("Texture Batch Render");
+	test_menu->RegisterTest<test::TestColorCube>("3D Textured Cube");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {

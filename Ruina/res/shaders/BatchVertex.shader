@@ -9,11 +9,11 @@ uniform mat4 u_MVP;
 
 out vec4 v_color;
 out vec2 v_tex_coord;
-out float v_texture;
+flat out int v_texture_id;
 
 void main() {
     gl_Position = u_MVP * position;
     v_color = a_color;
     v_tex_coord = tex_coord;
-    v_texture = texture_id;
+    v_texture_id = int(texture_id);
 }
