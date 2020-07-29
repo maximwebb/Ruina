@@ -10,6 +10,7 @@ namespace test {
 		m_vb = std::make_unique<VertexBuffer>(m_cube->vertex_data, m_cube->vertex_data_size);
 		VertexBufferLayout layout;
 		layout.Push<float>(3);
+		layout.Push<float>(3);
 		layout.Push<float>(4);
 		layout.Push<float>(2);
 		layout.Push<float>(1);
@@ -30,11 +31,13 @@ namespace test {
 									0.0f, glm::vec3(1.0f, 1.0f, -1.0f)),
 							glm::vec3(2.0f, 2.0f, 2.0f)),
 						glm::vec3(-0.5f, -0.5f, 0.0f)));
-		m_texture_1 = std::make_unique<Texture>("Ruina/res/textures/texture.png");
-		m_texture_2 = std::make_unique<Texture>("Ruina/res/textures/texture2.png");
+		m_texture_1 = std::make_unique<Texture>("Ruina/res/textures/diamond_ore.png");
+		m_texture_2 = std::make_unique<Texture>("Ruina/res/textures/diamond_ore.png");
 		m_texture_1->Bind(0);
 		m_texture_2->Bind(1);
 		m_shader->SetUniformMat4("u_MVP", (*m_proj) * (*m_view) * (*m_model));
+		m_shader->SetUniformMat4("u_model", *m_model);
+		m_shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(*m_model)));
 		auto m_loc = m_shader->GetUniformLocation("u_textures");
 		glUniform1iv(m_loc, 2, new int[2]{0, 1});
 
@@ -65,6 +68,8 @@ namespace test {
 								glm::vec3(2.0f, 2.0f, 2.0f)),
 						glm::vec3(-0.5f, -0.5f, 0.0f));
 		m_shader->SetUniformMat4("u_MVP", (*m_proj) * (*m_view) * (*m_model));
+		m_shader->SetUniformMat4("u_model", *m_model);
+		m_shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(*m_model)));
 		renderer.Draw(*m_va, *m_ib, *m_shader);
 	}
 

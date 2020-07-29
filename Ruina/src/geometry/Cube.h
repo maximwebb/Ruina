@@ -11,6 +11,6 @@ public:
 	Cube();
 	Vertex m_vertices[24];
 	const unsigned int m_indices[36];
-	float vertex_data[240];
+	float vertex_data[24 * 13];
 	const int vertex_data_size;
 };
