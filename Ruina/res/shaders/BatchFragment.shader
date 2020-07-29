@@ -12,7 +12,7 @@ uniform sampler2D u_textures[2];
 
 void main() {
     vec4 light_position = vec4(5.0f, 5.0f, 0.0f, 1.0f);
-    vec4 light_color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    vec4 light_color = vec4(0.973f, 0.765f, 0.267f, 1.0f);
     vec4 camera_position = vec4(0.0f, 0.0f, -10.0f, 1.0f);
     float k_a = 0.3f;
     float k_d = 5.0f;

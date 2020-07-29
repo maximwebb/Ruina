@@ -1,6 +1,6 @@
 #include "Cube.h"
 
-Cube::Cube() : m_indices{
+Cube::Cube(glm::ivec3 chunk_position) : m_indices{
 	0, 2, 1,
 	1, 2, 3,
 
@@ -18,7 +18,7 @@ Cube::Cube() : m_indices{
 
 	20, 22, 21,
 	21, 22, 23
-}, vertex_data_size(24 * 13 * sizeof(float)) {
+}, chunk_position(chunk_position) {
 	/* Front */
 	m_vertices[0] =  Vertex{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 2.0f};
 	m_vertices[1] =  Vertex{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 2.0f};
@@ -55,10 +55,15 @@ Cube::Cube() : m_indices{
 	m_vertices[22] = Vertex{0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f};
 	m_vertices[23] = Vertex{1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
+	GenerateVertexData();
+}
+
+/* Recalculates all of the raw vertex data */
+void Cube::GenerateVertexData() {
 	for (int i = 0; i < 24; i++) {
-		vertex_data[i * 13 + 0] = m_vertices[i].x;
-		vertex_data[i * 13 + 1] = m_vertices[i].y;
-		vertex_data[i * 13 + 2] = m_vertices[i].z;
+		vertex_data[i * 13 + 0] = m_vertices[i].x + chunk_position.x;
+		vertex_data[i * 13 + 1] = m_vertices[i].y + chunk_position.y;
+		vertex_data[i * 13 + 2] = m_vertices[i].z + chunk_position.z;
 
 		vertex_data[i * 13 + 3] = m_vertices[i].n_x;
 		vertex_data[i * 13 + 4] = m_vertices[i].n_y;
@@ -76,3 +81,9 @@ Cube::Cube() : m_indices{
 	}
 }
 
+/* Calculates indices with an offset applied */
+void Cube::GenerateIndexOffset(int offset) {
+	for (int i = 0; i < 36; i++) {
+		m_indices[i] += offset;
+	}
+}

@@ -1,16 +1,20 @@
 #pragma once
-#include "Vertex.h"
 
-struct Triangle {
-	Vertex vertices[3];
-	int indices[3];
-};
+#include <glm/glm.hpp>
+#include "Vertex.h"
 
 class Cube {
 public:
-	Cube();
+	Cube(glm::ivec3);
+	Cube() = default;
+	~Cube() = default;
+	void GenerateVertexData();
+	void GenerateIndexOffset(int offset);
+public:
 	Vertex m_vertices[24];
-	const unsigned int m_indices[36];
 	float vertex_data[24 * 13];
-	const int vertex_data_size;
+	static const int vertex_data_size = 24 * 13 * sizeof(float);
+	unsigned int m_indices[36];
+
+	glm::ivec3 chunk_position;
 };
