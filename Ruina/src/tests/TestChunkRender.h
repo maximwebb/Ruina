@@ -2,6 +2,7 @@
 #include "Test.h"
 #include "../geometry/Cube.h"
 #include "../game/Chunk.h"
+#include "../game/Camera.h"
 
 namespace test {
 	class TestChunkRender : public Test {
@@ -26,5 +27,6 @@ namespace test {
 		std::unique_ptr<Texture> m_texture_1;
 		std::unique_ptr<Texture> m_texture_2;
 		float angle;
+		Camera m_camera;
 	};
 }

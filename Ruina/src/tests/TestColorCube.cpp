@@ -44,7 +44,7 @@ namespace test {
 		glFrontFace(GL_CCW);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-		angle = 0.0f;
+		angle = 1.0f;
 	}
 
 	TestColorCube::~TestColorCube() {
@@ -59,7 +59,7 @@ namespace test {
 		Renderer renderer;
 		if (angle > 3.142f * 2)
 			angle = 0.0f;
-		angle += 0.01f;
+		//angle += 0.01f;
 		*m_model = glm::translate(
 						glm::scale(
 								glm::rotate(

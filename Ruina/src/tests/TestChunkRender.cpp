@@ -1,9 +1,10 @@
 #include "TestChunkRender.h"
+#include "../game/Camera.h"
 
 namespace test {
-	TestChunkRender::TestChunkRender() {
+	TestChunkRender::TestChunkRender()
+	    : m_camera(-1.0f, -1.0f, -10.0f, 0.0f, 45.0f) {
 
-		m_cube = std::make_unique<Cube>(glm::vec3(0, 0, 0));
 		m_chunk = std::make_unique<Chunk>(16);
 
 		m_chunk->SetCube(1, 0, 0);
@@ -27,11 +28,14 @@ namespace test {
 
 		/* Index buffer setup */
 		m_ib = std::make_unique<IndexBuffer>(m_chunk->m_index_data.data(), 36 * m_chunk->m_cubes_count);
-		std::cout << m_chunk->m_cubes_count << std::endl;
+
+		/* Shader setup */
 		m_shader = std::make_unique<Shader>("Ruina/res/shaders/BatchVertex.shader", "Ruina/res/shaders/BatchFragment.shader");
 		m_shader->Bind();
+
 		m_proj = std::make_unique<glm::mat4>(glm::perspective(1.0f, GLfloat(4.0f/3.0f), 1.0f, 150.0f));
-		m_view = std::make_unique<glm::mat4>(glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, -10.0f)));
+		//m_view = std::make_unique<glm::mat4>(glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, -10.0f)));
+		m_view = std::make_unique<glm::mat4>(m_camera.m_view_matrix);
 		m_model = std::make_unique<glm::mat4>(
 				glm::translate(
 						glm::scale(
@@ -59,7 +63,6 @@ namespace test {
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 
-
 		angle = 0.0f;
 	}
 
@@ -75,7 +78,7 @@ namespace test {
 		Renderer renderer;
 		if (angle > 3.142f * 2)
 			angle = 0.0f;
-		angle += 0.01f;
+		angle += 0.005f;
 		*m_model = glm::translate(
 				glm::scale(
 						glm::rotate(
@@ -83,6 +86,8 @@ namespace test {
 								angle, glm::vec3(1.0f, 1.0f, -1.0f)),
 						glm::vec3(2.0f, 2.0f, 2.0f)),
 				glm::vec3(-0.5f, -0.5f, 0.0f));
+		m_camera.IncrementYaw(0.001f);
+		*m_view = m_camera.m_view_matrix;
 		m_shader->SetUniformMat4("u_MVP", (*m_proj) * (*m_view) * (*m_model));
 		m_shader->SetUniformMat4("u_model", *m_model);
 		m_shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(*m_model)));
