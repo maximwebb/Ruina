@@ -1,9 +1,10 @@
+#include <Windows.h>
 #include "TestChunkRender.h"
 #include "../game/Camera.h"
 
 namespace test {
 	TestChunkRender::TestChunkRender()
-	    : m_camera(-1.0f, -1.0f, -10.0f, 0.0f, 45.0f) {
+	    : m_camera(-1.0f, -1.0f, -10.0f, 0.0f, 1.57f) {
 
 		m_chunk = std::make_unique<Chunk>(16);
 
@@ -86,7 +87,6 @@ namespace test {
 								angle, glm::vec3(1.0f, 1.0f, -1.0f)),
 						glm::vec3(2.0f, 2.0f, 2.0f)),
 				glm::vec3(-0.5f, -0.5f, 0.0f));
-		m_camera.IncrementYaw(0.001f);
 		*m_view = m_camera.m_view_matrix;
 		m_shader->SetUniformMat4("u_MVP", (*m_proj) * (*m_view) * (*m_model));
 		m_shader->SetUniformMat4("u_model", *m_model);
@@ -95,6 +95,44 @@ namespace test {
 	}
 
 	void TestChunkRender::OnImGuiRender() {
+	    GuiText direction("Direction");
+        GuiButton up("  ^  ", [this](){m_camera.IncrementPitch(0.05f);});
+        GuiButton left("<", [this](){m_camera.IncrementYaw(-0.05f);});
+        GuiButton right(">", [this](){m_camera.IncrementYaw(0.05f);});
+        GuiButton down("  v  ", [this](){m_camera.IncrementPitch(-0.05f);});
 
-	}
+        up.Draw();
+        left.Draw();
+        ImGui::SameLine();
+        right.Draw();
+        down.Draw();
+
+        float move_speed = 0.02f;
+        float look_speed = 0.003f;
+        if (GetKeyState('W') & 0x8000)
+            m_camera.IncrementPosition(0.0f, 0.0f, move_speed);
+
+        if (GetKeyState('A') & 0x8000)
+            m_camera.IncrementPosition(move_speed, 0.0f, 0.0f);
+
+        if (GetKeyState('S') & 0x8000)
+            m_camera.IncrementPosition(0.0f, 0.0f, -move_speed);
+
+        if (GetKeyState('D') & 0x8000)
+            m_camera.IncrementPosition(-move_speed, 0.0f, 0.0f);
+
+        if (GetKeyState(VK_UP) & 0x8000)
+            m_camera.IncrementPitch(look_speed);
+
+        if (GetKeyState(VK_LEFT) & 0x8000)
+            m_camera.IncrementYaw(-look_speed);
+
+        if (GetKeyState(VK_DOWN) & 0x8000)
+            m_camera.IncrementPitch(-look_speed);
+
+        if (GetKeyState(VK_RIGHT) & 0x8000)
+            m_camera.IncrementYaw(look_speed);
+
+
+    }
 }

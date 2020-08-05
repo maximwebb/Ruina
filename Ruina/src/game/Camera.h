@@ -17,6 +17,7 @@ public:
 
 private:
     void UpdateViewMatrix();
+    void IncrementAbsolutePosition(float x, float y, float z);
 
 public:
     glm::mat4 m_view_matrix;
@@ -25,5 +26,7 @@ private:
     glm::vec3 m_position;
     float m_pitch;
     float m_yaw;
+    const float m_initial_yaw;
     glm::vec3 m_camera_target;
+    glm::mat4 m_yaw_rotation_matrix;
 };
