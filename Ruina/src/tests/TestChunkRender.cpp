@@ -8,10 +8,14 @@ namespace test {
 
 		m_chunk = std::make_unique<Chunk>(16);
 
-		m_chunk->SetCube(1, 0, 0);
-		m_chunk->SetCube(0, 1, 0);
-		m_chunk->SetCube(1, 1, 0);
-		m_chunk->SetCube(0, 0, 0);
+        m_chunk->SetCube(0, 0, 0);
+        m_chunk->SetCube(1, 0, 0);
+        m_chunk->SetCube(0, 1, 0);
+        m_chunk->SetCube(1, 1, 0);
+        m_chunk->SetCube(0, 0, 1);
+        m_chunk->SetCube(1, 0, 1);
+        m_chunk->SetCube(0, 1, 1);
+        m_chunk->SetCube(1, 1, 1);
 
 
 		m_chunk->GenerateRenderingData();
@@ -35,7 +39,7 @@ namespace test {
 		m_shader->Bind();
 
 		m_proj = std::make_unique<glm::mat4>(glm::perspective(1.0f, GLfloat(4.0f/3.0f), 1.0f, 150.0f));
-		//m_view = std::make_unique<glm::mat4>(glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, -10.0f)));
+
 		m_view = std::make_unique<glm::mat4>(m_camera.m_view_matrix);
 		m_model = std::make_unique<glm::mat4>(
 				glm::translate(
@@ -45,8 +49,8 @@ namespace test {
 										0.0f, glm::vec3(1.0f, 1.0f, -1.0f)),
 								glm::vec3(2.0f, 2.0f, 2.0f)),
 						glm::vec3(-0.5f, -0.5f, 0.0f)));
-		m_texture_1 = std::make_unique<Texture>("Ruina/res/textures/diamond_ore.png");
-		m_texture_2 = std::make_unique<Texture>("Ruina/res/textures/diamond_ore.png");
+		m_texture_1 = std::make_unique<Texture>("Ruina/res/textures/texture_palette.png");
+		m_texture_2 = std::make_unique<Texture>("Ruina/res/textures/texture_palette.png");
 		m_texture_1->Bind(0);
 		m_texture_2->Bind(1);
 		m_shader->SetUniformMat4("u_MVP", (*m_proj) * (*m_view) * (*m_model));
@@ -56,7 +60,7 @@ namespace test {
 		glUniform1iv(m_loc, 2, new int[2]{0, 1});
 
 		/* Back-face culling */
-		glFrontFace(GL_CCW);
+		glFrontFace(GL_CW);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
@@ -79,7 +83,7 @@ namespace test {
 		Renderer renderer;
 		if (angle > 3.142f * 2)
 			angle = 0.0f;
-		angle += 0.005f;
+		//angle += 0.005f;
 		*m_model = glm::translate(
 				glm::scale(
 						glm::rotate(
@@ -95,18 +99,6 @@ namespace test {
 	}
 
 	void TestChunkRender::OnImGuiRender() {
-	    GuiText direction("Direction");
-        GuiButton up("  ^  ", [this](){m_camera.IncrementPitch(0.05f);});
-        GuiButton left("<", [this](){m_camera.IncrementYaw(-0.05f);});
-        GuiButton right(">", [this](){m_camera.IncrementYaw(0.05f);});
-        GuiButton down("  v  ", [this](){m_camera.IncrementPitch(-0.05f);});
-
-        up.Draw();
-        left.Draw();
-        ImGui::SameLine();
-        right.Draw();
-        down.Draw();
-
         float move_speed = 0.02f;
         float look_speed = 0.003f;
         if (GetKeyState('W') & 0x8000)
@@ -121,6 +113,12 @@ namespace test {
         if (GetKeyState('D') & 0x8000)
             m_camera.IncrementPosition(-move_speed, 0.0f, 0.0f);
 
+        if (GetKeyState(VK_SPACE) & 0x8000)
+            m_camera.IncrementPosition(0.0f, move_speed, 0.0f);
+
+        if (GetKeyState(VK_SHIFT) & 0x8000)
+            m_camera.IncrementPosition(0.0f, -move_speed, 0.0f);
+
         if (GetKeyState(VK_UP) & 0x8000)
             m_camera.IncrementPitch(look_speed);
 
@@ -132,7 +130,5 @@ namespace test {
 
         if (GetKeyState(VK_RIGHT) & 0x8000)
             m_camera.IncrementYaw(look_speed);
-
-
     }
 }
