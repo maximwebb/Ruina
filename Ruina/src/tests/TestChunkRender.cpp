@@ -99,8 +99,8 @@ namespace test {
 	}
 
 	void TestChunkRender::OnImGuiRender() {
-        float move_speed = 0.02f;
-        float look_speed = 0.003f;
+        float move_speed = 0.15f;
+        float look_speed = 0.02f;
         if (GetKeyState('W') & 0x8000)
             m_camera.IncrementPosition(0.0f, 0.0f, move_speed);
 

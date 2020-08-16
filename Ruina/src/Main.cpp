@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 #include <iostream>
 #include <array>
 #include <TestColorQuad.h>
@@ -10,6 +9,7 @@
 #include <TestTextureBatchRender.h>
 #include <TestColorCube.h>
 #include <TestChunkRender.h>
+#include <TestECS.h>
 #include "Renderer.h"
 #include "Texture.h"
 #include "glm/glm.hpp"
@@ -18,13 +18,13 @@
 #include "tests/Test.h"
 #include "tests/TestClearColor.h"
 
+
 int main()
 {
 	GLFWwindow* window;
 	/* Initialize the library */
 	if (!glfwInit())
 		return -1;
-
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(1280, 960, "Triangle Renderer", NULL, NULL);
@@ -64,6 +64,7 @@ int main()
 	test_menu->RegisterTest<test::TestTextureBatchRender>("Texture Batch Render");
 	test_menu->RegisterTest<test::TestColorCube>("3D Textured Cube");
 	test_menu->RegisterTest<test::TestChunkRender>("Chunk render");
+	test_menu->RegisterTest<test::TestECS>("ECS");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {

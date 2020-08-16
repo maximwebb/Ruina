@@ -15,6 +15,7 @@ include_directories(Ruina/res/shaders)
 include_directories(Ruina/src/gui)
 include_directories(Ruina/src/tests)
 include_directories(Ruina/src/vendor)
+include_directories(Ruina/src/game/ecs)
 #include_directories(Ruina/src/vendor/imgui)
 #include_directories(Ruina/src/vendor/stb_image)
 
@@ -42,7 +43,7 @@ add_executable(Ruina
         Ruina/src/vendor/stb_image/stb_image.cpp
         ${IMGUI}
         ${SOURCE_FILES}
-        Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp Ruina/src/gui/GuiTripleSlider.cpp Ruina/src/tests/Test.h Ruina/src/tests/TestClearColor.cpp Ruina/src/tests/TestClearColor.h Ruina/src/tests/Test.cpp Ruina/src/tests/TestColorQuad.cpp Ruina/src/tests/TestColorQuad.h Ruina/src/tests/TestTexture2D.cpp Ruina/src/tests/TestTexture2D.h Ruina/src/tests/TestSimpleBatchRender.cpp Ruina/src/tests/TestSimpleBatchRender.h Ruina/src/tests/TestColorBatchRender.cpp Ruina/src/tests/TestColorBatchRender.h Ruina/src/tests/TestTextureBatchRender.cpp Ruina/src/tests/TestTextureBatchRender.h Ruina/src/geometry/Vertex.h Ruina/src/geometry/Cube.h Ruina/src/tests/TestColorCube.cpp Ruina/src/tests/TestColorCube.h Ruina/src/geometry/Cube.cpp Ruina/src/game/Game.cpp Ruina/src/game/Game.h Ruina/src/game/Chunk.cpp Ruina/src/game/Chunk.h Ruina/src/tests/TestChunkRender.cpp Ruina/src/tests/TestChunkRender.h Ruina/src/game/Camera.cpp Ruina/src/game/Camera.h)
+        Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp Ruina/src/gui/GuiTripleSlider.cpp Ruina/src/tests/Test.h Ruina/src/tests/TestClearColor.cpp Ruina/src/tests/TestClearColor.h Ruina/src/tests/Test.cpp Ruina/src/tests/TestColorQuad.cpp Ruina/src/tests/TestColorQuad.h Ruina/src/tests/TestTexture2D.cpp Ruina/src/tests/TestTexture2D.h Ruina/src/tests/TestSimpleBatchRender.cpp Ruina/src/tests/TestSimpleBatchRender.h Ruina/src/tests/TestColorBatchRender.cpp Ruina/src/tests/TestColorBatchRender.h Ruina/src/tests/TestTextureBatchRender.cpp Ruina/src/tests/TestTextureBatchRender.h Ruina/src/geometry/Vertex.h Ruina/src/geometry/Cube.h Ruina/src/tests/TestColorCube.cpp Ruina/src/tests/TestColorCube.h Ruina/src/geometry/Cube.cpp Ruina/src/game/Game.cpp Ruina/src/game/Game.h Ruina/src/game/Chunk.cpp Ruina/src/game/Chunk.h Ruina/src/tests/TestChunkRender.cpp Ruina/src/tests/TestChunkRender.h Ruina/src/game/Camera.cpp Ruina/src/game/Camera.h Ruina/src/game/events/EventsManager.cpp Ruina/src/game/events/EventsManager.h Ruina/src/game/events/Event.h Ruina/src/game/ecs/Component.h Ruina/src/game/ecs/System.h Ruina/src/game/ecs/Entity.h Ruina/src/game/ecs/EntityManager.cpp Ruina/src/game/ecs/EntityManager.h Ruina/src/game/ecs/Entity.cpp Ruina/src/game/ecs/ECS.h Ruina/src/tests/TestECS.cpp Ruina/src/tests/TestECS.h Ruina/src/game/ecs/ECSTypes.h Ruina/src/game/ecs/ComponentManager.cpp Ruina/src/game/ecs/ComponentManager.h Ruina/src/game/ecs/Component.cpp)
 
 target_link_libraries(Ruina ${GLFW_LIB} ${GLEW_LIB} ${OPENGL_LIB})
 
