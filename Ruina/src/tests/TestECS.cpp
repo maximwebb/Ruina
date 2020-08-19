@@ -1,11 +1,17 @@
 #include "TestECS.h"
 
 namespace test {
-	TestECS::TestECS() : m_entity_manager(EntityManager()) {
-		EntityId entity_id = m_entity_manager.CreateEntity(EntityType::Speaker);
-		m_component_manager.CreateComponent(ComponentType::Logging, entity_id, "Hello World");
+	TestECS::TestECS() {
 
-		Entity* e = m_entity_manager.GetEntity(entity_id);
+		ECSEngine::system_manager().CreateSystem<LoggingSystem>();
+		EntityId e_id1 = ECSEngine::entity_manager().CreateEntity(EntityType::Speaker);
+		EntityId e_id2 = ECSEngine::entity_manager().CreateEntity(EntityType::Speaker);
+		ECSEngine::component_manager().CreateComponent(ComponentType::Logging, e_id1, "This is the first piece of text.");
+		ECSEngine::component_manager().CreateComponent(ComponentType::Logging, e_id2, "This is the second piece of text.");
 
+		ECSEngine::event_manager().QueueEvent<EventOnLogRequest>();
+		ECSEngine::event_manager().QueueEvent<EventOnLogRequest>();
+
+		ECSEngine::event_manager().NotifyListeners();
 	}
 }

@@ -34,7 +34,6 @@ namespace test {
 
 		template <typename T>
 		void RegisterTest(const std::string& name) {
-			std::cout << "Registering test: " << name << "." << std::endl;
 			m_tests.push_back(std::make_pair(name, [](){return new T(); }));
 		}
 	public:

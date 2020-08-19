@@ -2,11 +2,11 @@
 
 ComponentManager::ComponentManager() : m_components(), m_grouped_components(), m_current_id(0), m_free_ids() {
 	for (int i = 0; i != (int)ComponentType::END; i++) {
-		m_grouped_components[(ComponentType)i] = std::vector<Component>();
+		m_grouped_components[(ComponentType)i] = std::vector<Component*>();
 	}
 }
 
-Component *ComponentManager::GetComponent(ComponentId id) {
+Component* ComponentManager::GetComponent(ComponentId id) {
 	auto result = m_components.find(id);
 	if (result == m_components.end()) {
 		throw std::exception("Error: Cannot find component");
@@ -14,7 +14,15 @@ Component *ComponentManager::GetComponent(ComponentId id) {
 	return result->second;
 }
 
-std::vector<Component> ComponentManager::GetComponentGroup(ComponentType type) {
+Component* ComponentManager::GetComponent(ComponentType type, EntityId id) {
+	auto components = GetComponentGroup(type);
+	auto result = std::find_if(components.begin(), components.end(), [id](Component* x){return x->m_entity_id == id;});
+	if (result == components.end()) {
+		throw std::exception("Error: Cannot find component type");
+	}
+}
+
+std::vector<Component*> ComponentManager::GetComponentGroup(ComponentType type) {
 	auto result = m_grouped_components.find(type);
 	if (result == m_grouped_components.end()) {
 		throw std::exception("Error: Cannot find component type");

@@ -28,20 +28,21 @@ public:
 
 		if (c != nullptr) {
 			m_components.insert({id, c});
-			m_grouped_components[component_type].push_back(*c);
+			m_grouped_components[component_type].push_back(c);
 		}
 		return id;
 	};
 
 	Component* GetComponent(ComponentId);
+	Component* GetComponent(ComponentType, EntityId);
 
-	std::vector<Component> GetComponentGroup(ComponentType);
+	std::vector<Component*> GetComponentGroup(ComponentType);
 
 	void DestroyComponent(ComponentId);
 
 private:
 	std::unordered_map<ComponentId, Component*> m_components;
-	std::unordered_map<ComponentType, std::vector<Component>> m_grouped_components;
+	std::unordered_map<ComponentType, std::vector<Component*>> m_grouped_components;
 	ComponentId m_current_id;
 	std::stack<ComponentId> m_free_ids;
 
