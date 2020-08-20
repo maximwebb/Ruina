@@ -1,6 +1,4 @@
 #pragma once
-#include "ECS.h"
-#include "ECSEngine.h"
 #include "../events/Event.h"
 #include "ECSTypes.h"
 
@@ -8,7 +6,6 @@ class System {
 public:
 	System(SystemId id) : m_id(id) {};
 	~System() {
-		std::cout << "Systems dead" << std::endl;
 	}
 
 	void SubscribeToEvent(EventType);

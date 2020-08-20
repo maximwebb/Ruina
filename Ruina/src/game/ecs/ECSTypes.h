@@ -5,7 +5,7 @@ typedef int ComponentId;
 typedef int SystemId;
 
 enum class EntityType {
-	Speaker
+	Speaker, Block
 };
 
 enum class ComponentType {

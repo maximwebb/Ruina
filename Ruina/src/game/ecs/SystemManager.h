@@ -2,6 +2,7 @@
 #include "ECSTypes.h"
 #include <unordered_map>
 class System;
+//#include "System.h"
 
 class SystemManager {
 public:

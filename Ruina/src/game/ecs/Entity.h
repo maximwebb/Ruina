@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "ECSTypes.h"
+#include "ComponentManager.h"
 
 class Entity {
 	friend class ComponentManager;
@@ -9,12 +10,16 @@ public:
 	Entity(EntityId id, EntityType type);
 	std::vector<ComponentId>& GetComponents();
 
+	template<ComponentType T, typename... ARGS>
+	void AddComponent(ComponentManager& component_manager, ARGS... args) {
+		component_manager.CreateComponent(T, m_id, args...);
+	}
 public:
 	EntityId m_id;
 	EntityType m_type;
 private:
 	std::vector<ComponentId> m_components;
-	void AddComponent(ComponentId component_id);
+	void AddComponentById(ComponentId component_id);
 
 };
 

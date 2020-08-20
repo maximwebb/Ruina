@@ -2,11 +2,10 @@
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>
-//#include "Event.h"
+#include "Event.h"
 #include "../ecs/ECSTypes.h"
 
 enum class EventType;
-class Event;
 class System;
 
 class EventManager {

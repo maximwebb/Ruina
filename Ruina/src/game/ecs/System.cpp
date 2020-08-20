@@ -1,4 +1,5 @@
 #include "System.h"
+#include "ECSEngine.h"
 
 void System::SubscribeToEvent(EventType e) {
 	ECSEngine::event_manager().RegisterListener(m_id, e);

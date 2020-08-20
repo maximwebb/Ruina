@@ -1,4 +1,5 @@
 #include "TestECS.h"
+#include "ECSEngine.h"
 
 namespace test {
 	TestECS::TestECS() {
