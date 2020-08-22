@@ -17,4 +17,29 @@ public:
 	unsigned int m_indices[36];
 
 	glm::ivec3 chunk_position;
+
+	constexpr static const float m_coordinates[72] = {0.0f, 0.0f, 0.0f,
+													  1.0f, 0.0f, 0.0f,
+													  0.0f, 1.0f, 0.0f,
+													  1.0f, 1.0f, 0.0f,
+													  1.0f, 0.0f, 0.0f,
+													  1.0f, 0.0f, 1.0f,
+													  1.0f, 1.0f, 0.0f,
+													  1.0f, 1.0f, 1.0f,
+													  1.0f, 0.0f, 1.0f,
+													  0.0f, 0.0f, 1.0f,
+													  1.0f, 1.0f, 1.0f,
+													  0.0f, 1.0f, 1.0f,
+													  0.0f, 0.0f, 1.0f,
+													  0.0f, 0.0f, 0.0f,
+													  0.0f, 1.0f, 1.0f,
+													  0.0f, 1.0f, 0.0f,
+													  0.0f, 0.0f, 1.0f,
+													  1.0f, 0.0f, 1.0f,
+													  0.0f, 0.0f, 0.0f,
+													  1.0f, 0.0f, 0.0f,
+													  0.0f, 1.0f, 0.0f,
+													  1.0f, 1.0f, 0.0f,
+													  0.0f, 1.0f, 1.0f,
+													  1.0f, 1.0f, 1.0f};
 };
