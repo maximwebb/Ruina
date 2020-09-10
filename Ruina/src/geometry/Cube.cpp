@@ -1,4 +1,8 @@
+#include <vector>
+#include <ECSEngine.h>
 #include "Cube.h"
+#include "VertexPNUV.h"
+#include "TextureData.h"
 
 Cube::Cube(glm::ivec3 chunk_position) : m_indices{
 	0, 1, 2,
@@ -87,3 +91,66 @@ void Cube::GenerateIndexOffset(int offset) {
 		m_indices[i] += offset;
 	}
 }
+
+ComponentId Cube::CreateCubeMesh(glm::ivec3) {
+	auto* vertices = new std::vector<VertexPNUV>{
+		VertexPNUV(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.333f, 0.0f),
+		VertexPNUV(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f),
+		VertexPNUV(0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.333f, 0.5f),
+		VertexPNUV(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.5f),
+
+		VertexPNUV(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.667f, 0.0f),
+		VertexPNUV(1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.333f, 0.0f),
+		VertexPNUV(1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.667f, 0.5f),
+		VertexPNUV(1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.333f, 0.5f),
+
+		VertexPNUV(1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f),
+		VertexPNUV(0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.667f, 0.0f),
+		VertexPNUV(1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.5f),
+		VertexPNUV(0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.667f, 0.5f),
+
+		VertexPNUV(0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.333f, 0.5f),
+		VertexPNUV(0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.5f),
+		VertexPNUV(0.0f, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.333f, 1.0f),
+		VertexPNUV(0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f),
+
+		VertexPNUV(0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.667f, 0.5f),
+		VertexPNUV(1.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.333f, 0.5f),
+		VertexPNUV(0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.667f, 1.0f),
+		VertexPNUV(1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.333f, 1.0f),
+
+		VertexPNUV(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.5f),
+		VertexPNUV(1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.667f, 0.5f),
+		VertexPNUV(0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f),
+		VertexPNUV(1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.667f, 1.0f)
+	};
+
+	auto* indices = new std::vector<unsigned int>{
+			0, 1, 2,
+			2, 1, 3,
+
+			4, 5, 6,
+			6, 5, 7,
+
+			8, 9, 10,
+			10, 9, 11,
+
+			12, 13, 14,
+			14, 13, 15,
+
+			16, 17, 18,
+			18, 17, 19,
+
+			20, 21, 22,
+			22, 21, 23
+	};
+
+	auto* textures = new std::vector<TextureData> {
+		TextureData(1u, std::string("test"))
+	};
+
+	ECSEngine::component_manager().CreateComponent<MeshComponent>(1, *vertices, *indices, *textures);
+
+	return 0;
+}
+

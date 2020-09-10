@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <ECSTypes.h>
 #include "Vertex.h"
 
 class Cube {
@@ -10,6 +11,7 @@ public:
 	~Cube() = default;
 	void GenerateVertexData();
 	void GenerateIndexOffset(int offset);
+	static ComponentId CreateCubeMesh(glm::ivec3);
 public:
 	Vertex m_vertices[24];
 	float vertex_data[24 * 13];
@@ -42,4 +44,29 @@ public:
 													  1.0f, 1.0f, 0.0f,
 													  0.0f, 1.0f, 1.0f,
 													  1.0f, 1.0f, 1.0f};
+
+	constexpr static const float m_normals[72] = {0.0f, 0.0f, 1.0f,
+												  0.0f, 0.0f, 1.0f,
+												  0.0f, 0.0f, 1.0f,
+												  0.0f, 0.0f, 1.0f,
+												  1.0f, 0.0f, 0.0f,
+												  1.0f, 0.0f, 0.0f,
+												  1.0f, 0.0f, 0.0f,
+												  1.0f, 0.0f, 0.0f,
+												  0.0f, 0.0f, 1.0f,
+												  0.0f, 0.0f, 1.0f,
+												  0.0f, 0.0f, 1.0f,
+												  0.0f, 0.0f, 1.0f,
+											     -1.0f, 0.0f, 0.0f,
+											     -1.0f, 0.0f, 0.0f,
+											     -1.0f, 0.0f, 0.0f,
+											     -1.0f, 0.0f, 0.0f,
+												  0.0f, -1.0f, 0.0f,
+												  0.0f, -1.0f, 0.0f,
+												  0.0f, -1.0f, 0.0f,
+												  0.0f, -1.0f, 0.0f,
+												  0.0f, 1.0f, 0.0f,
+												  0.0f, 1.0f, 0.0f,
+												  0.0f, 1.0f, 0.0f,
+												  0.0f, 1.0f, 0.0f};
 };

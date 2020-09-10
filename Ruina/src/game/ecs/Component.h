@@ -2,18 +2,23 @@
 #include "ECSTypes.h"
 
 struct Component {
-	Component(ComponentId id, ComponentType type, EntityId entity_id)
-			: m_id(id), m_type(type), m_entity_id(entity_id) {}
-	virtual ComponentId GetComponentId() = 0;
+	Component(ComponentId id, EntityId entity_id)
+			: m_id(id), m_entity_id(entity_id) {}
+	ComponentId GetComponentId() { return m_id; }
 	ComponentId m_id;
-	ComponentType m_type;
 	EntityId m_entity_id;
 };
 
 struct Logging : public Component {
-	Logging(ComponentId id, ComponentType type, EntityId entity_id, const char* message)
-			: Component(id, type, entity_id), m_message(message), m_logging(false) {}
-	ComponentId GetComponentId() override { return m_id; }
+	Logging(ComponentId id, EntityId entity_id, const char* message)
+			: Component(id, entity_id), m_message(message), m_logging(false) {}
 	const char* m_message;
 	bool m_logging;
+};
+
+struct NotAComponent {
+	NotAComponent(ComponentId id, EntityId e_id)
+		: m_id(id), m_entity_id(e_id) {}
+	EntityId m_entity_id;
+	ComponentId m_id;
 };

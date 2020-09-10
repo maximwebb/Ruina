@@ -11,6 +11,7 @@ LoggingSystem::LoggingSystem(SystemId id) : System(id) {
 }
 
 void LoggingSystem::Update(const Event& e) {
-	for (auto c : ECSEngine::component_manager().GetComponentGroup(ComponentType::Logging))
-		std::cout << dynamic_cast<Logging*>(c)->m_message << std::endl;
+	for (auto c : ECSEngine::component_manager().GetComponentGroup<Logging>())
+		//std::cout << dynamic_cast<Logging*>(c)->m_message << std::endl;
+		std::cout << ((Logging*) c)->m_message << std::endl;
 }

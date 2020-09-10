@@ -7,7 +7,3 @@ typedef int SystemId;
 enum class EntityType {
 	Speaker, Block
 };
-
-enum class ComponentType {
-	Logging, END
-};

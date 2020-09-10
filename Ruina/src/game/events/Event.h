@@ -1,7 +1,7 @@
 #pragma once
 
 enum class EventType {
-	OnLogRequest, END
+	OnLogRequest, OnRender, END
 };
 
 class Event {
@@ -13,5 +13,12 @@ class EventOnLogRequest : public Event {
 public:
 	EventType GetEventType() override {
 		return EventType::OnLogRequest;
+	}
+};
+
+class EventOnRender : public Event {
+public:
+	EventType GetEventType() override {
+		return EventType::OnRender;
 	}
 };

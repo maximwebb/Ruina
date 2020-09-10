@@ -10,9 +10,9 @@ public:
 	Entity(EntityId id, EntityType type);
 	std::vector<ComponentId>& GetComponents();
 
-	template<ComponentType T, typename... ARGS>
+	template<typename T, typename... ARGS>
 	void AddComponent(ComponentManager& component_manager, ARGS... args) {
-		component_manager.CreateComponent(T, m_id, args...);
+		component_manager.CreateComponent<T>(m_id, args...);
 	}
 public:
 	EntityId m_id;
