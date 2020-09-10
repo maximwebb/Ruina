@@ -3,5 +3,5 @@
 
 class Block : public Entity {
 public:
-	Block(EntityId id, EntityType type) : Entity(id, type) {}
+	Block(EntityId id) : Entity(id) {}
 };

@@ -3,6 +3,5 @@
 
 class ChunkEntity : public Entity {
 public:
-	ChunkEntity(EntityId id, EntityType type) : Entity(id, type) {}
-
+	ChunkEntity(EntityId id) : Entity(id) {}
 };

@@ -4,17 +4,19 @@
 #include <unordered_map>
 #include <stack>
 #include <iostream>
-
+//#include <typeinfo>
+//#include <typeindex>
+#include <type_traits>
 
 class EntityManager {
 public:
 	EntityManager();
 
+	template<typename T>
+	EntityId CreateEntity() {
+		static_assert(std::is_base_of<Entity, T>::value, "Error: invalid entity type");
 
-	EntityId CreateEntity(EntityType entity_type) {
 		EntityId id;
-		Entity* e = nullptr;
-
 		if (m_free_ids.empty()) {
 			id = ++m_current_id;
 		}
@@ -23,22 +25,16 @@ public:
 			m_free_ids.pop();
 		}
 
-		/* Translate enum value into Entity type */
-		if (entity_type == EntityType::Speaker) {
-			e = new Speaker(id, entity_type);
-		}
-
-		if (e != nullptr) {
-			m_entities.insert({id, e});
-		}
+		T e(id);
+		m_entities.insert({id, e});
 		return id;
 	}
-	Entity* GetEntity(EntityId id);
+	Entity& GetEntity(EntityId id);
 	void DestroyEntity(EntityId id);
 
 
 private:
 	EntityId m_current_id;
 	std::stack<EntityId> m_free_ids;
-	std::unordered_map<EntityId, Entity*> m_entities;
+	std::unordered_map<EntityId, Entity> m_entities;
 };

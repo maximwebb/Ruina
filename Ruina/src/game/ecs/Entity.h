@@ -7,7 +7,7 @@
 class Entity {
 	friend class ComponentManager;
 public:
-	Entity(EntityId id, EntityType type);
+	Entity(EntityId id);
 	std::vector<ComponentId>& GetComponents();
 
 	template<typename T, typename... ARGS>
@@ -16,7 +16,6 @@ public:
 	}
 public:
 	EntityId m_id;
-	EntityType m_type;
 private:
 	std::vector<ComponentId> m_components;
 	void AddComponentById(ComponentId component_id);
@@ -25,5 +24,11 @@ private:
 
 class Speaker : public Entity {
 public:
-	Speaker(EntityId id, EntityType type);
+	Speaker(EntityId id);
+};
+
+class NotAnEntity {
+public:
+	NotAnEntity(EntityId id) : m_id(id) {};
+	EntityId m_id;
 };
