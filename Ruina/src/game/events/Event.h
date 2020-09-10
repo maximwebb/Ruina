@@ -1,24 +1,7 @@
 #pragma once
 
-enum class EventType {
-	OnLogRequest, OnRender, END
-};
+class Event {};
 
-class Event {
-public:
-	virtual EventType GetEventType() = 0;
-};
+class OnLogRequestEvent : public Event {};
 
-class EventOnLogRequest : public Event {
-public:
-	EventType GetEventType() override {
-		return EventType::OnLogRequest;
-	}
-};
-
-class EventOnRender : public Event {
-public:
-	EventType GetEventType() override {
-		return EventType::OnRender;
-	}
-};
+class OnRenderEvent : public Event {};

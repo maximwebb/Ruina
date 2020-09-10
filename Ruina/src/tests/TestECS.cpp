@@ -10,8 +10,8 @@ namespace test {
 		ECSEngine::component_manager().CreateComponent<Logging>(e_id1, "This is the first piece of text.");
 		ECSEngine::component_manager().CreateComponent<Logging>(e_id2, "This is the second piece of text.");
 
-		ECSEngine::event_manager().QueueEvent<EventOnLogRequest>();
-		ECSEngine::event_manager().QueueEvent<EventOnLogRequest>();
+		ECSEngine::event_manager().QueueEvent<OnLogRequestEvent>();
+		ECSEngine::event_manager().QueueEvent<OnLogRequestEvent>();
 
 		ECSEngine::event_manager().NotifyListeners();
 	}

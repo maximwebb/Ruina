@@ -8,7 +8,11 @@ public:
 	~System() {
 	}
 
-	void SubscribeToEvent(EventType);
+	template<typename T>
+	void SubscribeToEvent() {
+		static_assert(std::is_base_of<Event, T>::value, "Error: invalid event type");
+		ECSEngine::event_manager().RegisterListener<T>(m_id);
+	}
 
 	virtual void Update(const Event& e) = 0;
 public:

@@ -3,30 +3,14 @@
 
 class SystemManager;
 
-EventManager::EventManager() {
-	for (int i = 0; i != (int)EventType::END; i++) {
-		m_listeners[(EventType)i] = std::unordered_set<SystemId>();
-	}
-}
-
-EventManager::~EventManager() {
-
-}
-
-void EventManager::RegisterListener(SystemId id, EventType type) {
-	m_listeners[type].insert(id);
-}
-
-void EventManager::UnregisterListener(SystemId id, EventType type) {
-	m_listeners[type].erase(id);
-}
-
 void EventManager::NotifyListeners() {
-	Event* e;
+	Event event;
 	while (!m_events_queue.empty()) {
-		e = m_events_queue.top();
-		for (SystemId id : m_listeners[e->GetEventType()]) {
-			ECSEngine::system_manager().GetSystem(id).Update(*e);
+		event = m_events_queue.front().first;
+		std::type_index event_type = m_events_queue.front().second;
+		auto foo = m_listeners[event_type];
+		for (SystemId id : m_listeners[event_type]) {
+			ECSEngine::system_manager().GetSystem(id).Update(event);
 		}
 		m_events_queue.pop();
 	}

@@ -4,8 +4,6 @@
 #include <unordered_map>
 #include <stack>
 #include <iostream>
-//#include <typeinfo>
-//#include <typeindex>
 #include <type_traits>
 
 class EntityManager {
