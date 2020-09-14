@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Test.h"
-#include "../VertexArray.h"
-#include "../IndexBuffer.h"
+#include "../game/renderer/VertexArray.h"
+#include "../game/renderer/IndexBuffer.h"
 #include "../Shader.h"
 #include "../Renderer.h"
 #include "glm/glm.hpp"

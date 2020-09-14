@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 #include <vector>
-#include "Debugger.h"
+#include "../../Debugger.h"
 
 struct VertexBufferElement {
 	unsigned int count;

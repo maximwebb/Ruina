@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include "TestChunkRender.h"
-#include "../game/Camera.h"
+#include "Camera.h"
 
 namespace test {
 	TestChunkRender::TestChunkRender()
@@ -26,9 +26,7 @@ namespace test {
 		VertexBufferLayout layout;
 		layout.Push<float>(3);
 		layout.Push<float>(3);
-		layout.Push<float>(4);
 		layout.Push<float>(2);
-		layout.Push<float>(1);
 		m_va->AddBuffer(*m_vb, layout);
 
 		/* Index buffer setup */
@@ -38,8 +36,7 @@ namespace test {
 		m_shader = std::make_unique<Shader>("Ruina/res/shaders/BatchVertex.shader", "Ruina/res/shaders/BatchFragment.shader");
 		m_shader->Bind();
 
-		m_proj = std::make_unique<glm::mat4>(glm::perspective(1.0f, GLfloat(4.0f/3.0f), 1.0f, 150.0f));
-
+		m_proj = std::make_unique<glm::mat4>(m_camera.m_proj_matrix);
 		m_view = std::make_unique<glm::mat4>(m_camera.m_view_matrix);
 		m_model = std::make_unique<glm::mat4>(
 				glm::translate(

@@ -1,5 +1,5 @@
 # Ruina
-A 3D game engine, for experimenting with 3D graphics. The engine runs on OpenGL, 
+Ruina is a 3D game engine, written in OpenGL, for experimenting with graphics.
 
 ## Creating and running tests
 

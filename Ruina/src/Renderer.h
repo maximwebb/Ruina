@@ -3,8 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
-#include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "game/renderer/VertexArray.h"
+#include "game/renderer/IndexBuffer.h"
 #include "Shader.h"
 
 class Renderer {

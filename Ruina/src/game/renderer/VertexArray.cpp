@@ -1,5 +1,5 @@
 #include "VertexArray.h"
-#include "Debugger.h"
+#include "../../Debugger.h"
 
 VertexArray::VertexArray() {
 	glGenVertexArrays(1, &m_rendererID);
@@ -7,6 +7,7 @@ VertexArray::VertexArray() {
 }
 
 VertexArray::~VertexArray() {
+	std::cout << "Destroyed Vertex Array" << std::endl;
 	glDeleteVertexArrays(1, &m_rendererID);
 }
 

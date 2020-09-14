@@ -3,19 +3,11 @@
 #include <iostream>
 #include <array>
 #include <TestColorQuad.h>
-#include <TestTexture2D.h>
 #include <TestSimpleBatchRender.h>
-#include <TestColorBatchRender.h>
-#include <TestTextureBatchRender.h>
 #include <TestColorCube.h>
 #include <TestChunkRender.h>
 #include <TestECS.h>
-#include "Renderer.h"
-#include "Texture.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "gui/Gui.h"
-#include "tests/Test.h"
+#include <TestECSRender.h>
 #include "tests/TestClearColor.h"
 
 
@@ -58,13 +50,11 @@ int main()
 	/* Add tests to the test menu */
 	test_menu->RegisterTest<test::TestClearColor>("Clear Color");
 	test_menu->RegisterTest<test::TestColorQuad>("Colored Square");
-	test_menu->RegisterTest<test::TestTexture2D>("2D Textured Square");
 	test_menu->RegisterTest<test::TestSimpleBatchRender>("Simple Batch Render");
-	test_menu->RegisterTest<test::TestColorBatchRender>("Color Batch Render");
-	test_menu->RegisterTest<test::TestTextureBatchRender>("Texture Batch Render");
 	test_menu->RegisterTest<test::TestColorCube>("3D Textured Cube");
 	test_menu->RegisterTest<test::TestChunkRender>("Chunk render");
 	test_menu->RegisterTest<test::TestECS>("ECS");
+	test_menu->RegisterTest<test::TestECSRender>("ECS Render");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {

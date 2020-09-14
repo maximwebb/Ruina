@@ -4,9 +4,7 @@ layout(location=0) out vec4 color;
 
 in vec4 wc_position;
 in vec4 wc_normal;
-in vec4 v_color;
 in vec2 v_tex_coord;
-flat in int v_texture_id;
 
 uniform sampler2D u_textures[2];
 
@@ -26,12 +24,12 @@ void main() {
     vec4 R = normalize(2 * dot(L, N) - L);
     vec4 V = normalize(camera_position - wc_position);
 
-    vec4 surface_color;
-    switch(v_texture_id) {
-        case 0: surface_color = v_color; break;
-        case 1: surface_color = texture(u_textures[0], v_tex_coord); break;
-        case 2: surface_color = texture(u_textures[1], v_tex_coord); break;
-    }
+    vec4 surface_color = texture(u_textures[0], v_tex_coord);
+//    switch(v_texture_id) {
+//        case 0: surface_color = v_color; break;
+//        case 1: surface_color = texture(u_textures[0], v_tex_coord); break;
+//        case 2: surface_color = texture(u_textures[1], v_tex_coord); break;
+//    }
 
     color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     color += k_a * (surface_color);

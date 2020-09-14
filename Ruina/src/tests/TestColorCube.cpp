@@ -11,9 +11,7 @@ namespace test {
 		VertexBufferLayout layout;
 		layout.Push<float>(3);
 		layout.Push<float>(3);
-		layout.Push<float>(4);
 		layout.Push<float>(2);
-		layout.Push<float>(1);
 		m_va->AddBuffer(*m_vb, layout);
 
 		/* Index buffer setup */

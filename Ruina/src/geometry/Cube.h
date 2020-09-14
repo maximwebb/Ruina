@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <ECSTypes.h>
-#include "Vertex.h"
+#include "VertexPNUV.h"
 
 class Cube {
 public:
@@ -11,11 +11,10 @@ public:
 	~Cube() = default;
 	void GenerateVertexData();
 	void GenerateIndexOffset(int offset);
-	static ComponentId CreateCubeMesh(glm::ivec3);
 public:
-	Vertex m_vertices[24];
-	float vertex_data[24 * 13];
-	static const int vertex_data_size = 24 * 13 * sizeof(float);
+	VertexPNUV m_vertices[24];
+	float vertex_data[24 * 8];
+	static const int vertex_data_size = 24 * 8 * sizeof(float);
 	unsigned int m_indices[36];
 
 	glm::ivec3 chunk_position;

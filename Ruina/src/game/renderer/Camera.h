@@ -1,5 +1,5 @@
 #pragma once
-
+#include "glm/gtc/matrix_transform.hpp"
 #include <glm/glm.hpp>
 
 class Camera {
@@ -15,12 +15,15 @@ public:
     void SetYaw(float);
     void IncrementYaw(float);
 
+	void SetProjectionMatrix(glm::mat4 proj);
+
 private:
     void UpdateViewMatrix();
     void IncrementAbsolutePosition(float x, float y, float z);
 
 public:
     glm::mat4 m_view_matrix;
+    glm::mat4 m_proj_matrix;
 
 private:
     glm::vec3 m_position;

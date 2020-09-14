@@ -2,7 +2,7 @@
 #include "Test.h"
 #include "../geometry/Cube.h"
 #include "../game/Chunk.h"
-#include "../game/Camera.h"
+#include "Camera.h"
 
 namespace test {
 	class TestChunkRender : public Test {

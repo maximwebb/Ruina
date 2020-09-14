@@ -8,10 +8,12 @@ Camera::Camera(float x, float y, float z, float pitch, float yaw)
     : m_pitch(pitch), m_yaw(yaw), m_initial_yaw(yaw), m_position(x, y, z), m_view_matrix(1.0f), m_camera_target(0.0f),
     m_yaw_rotation_matrix(glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f))) {
     UpdateViewMatrix();
+    /* Default projection */
+    m_proj_matrix = glm::perspective(1.0f, 4.0f/3.0f, 1.0f, 150.0f);
 }
 
 Camera::~Camera() {
-    std::cout << "Camera deleted" << std::endl;
+
 }
 
 void Camera::SetPosition(float x, float y, float z) {
@@ -70,4 +72,8 @@ void Camera::UpdateViewMatrix() {
     m_camera_target.z = cos(m_pitch) * sin(m_yaw) + m_position.z;
     m_view_matrix = glm::lookAt(m_position, m_camera_target, glm::vec3(0.0f, 1.0f, 0.0f));
     m_yaw_rotation_matrix = glm::rotate(glm::mat4(1.0f), m_initial_yaw - m_yaw, glm::vec3(0.0f, 1.0f, 0.0f));
+}
+
+void Camera::SetProjectionMatrix(glm::mat4 proj) {
+	m_proj_matrix = proj;
 }
