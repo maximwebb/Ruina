@@ -65,16 +65,16 @@ Cube::Cube(glm::ivec3 chunk_position) : m_indices{
 /* Recalculates all of the raw vertex data */
 void Cube::GenerateVertexData() {
 	for (int i = 0; i < 24; i++) {
-		vertex_data[i * 8 + 0] = m_vertices[i].position.x + chunk_position.x;
-		vertex_data[i * 8 + 1] = m_vertices[i].position.y + chunk_position.y;
-		vertex_data[i * 8 + 2] = m_vertices[i].position.z + chunk_position.z;
+		vertex_data[i * 8 + 0] = m_vertices[i].x + chunk_position.x;
+		vertex_data[i * 8 + 1] = m_vertices[i].y + chunk_position.y;
+		vertex_data[i * 8 + 2] = m_vertices[i].z + chunk_position.z;
 
-		vertex_data[i * 8 + 3] = m_vertices[i].normal.x;
-		vertex_data[i * 8 + 4] = m_vertices[i].normal.y;
-		vertex_data[i * 8 + 5] = m_vertices[i].normal.z;
+		vertex_data[i * 8 + 3] = m_vertices[i].n_x;
+		vertex_data[i * 8 + 4] = m_vertices[i].n_y;
+		vertex_data[i * 8 + 5] = m_vertices[i].n_z;
 
-		vertex_data[i * 8 + 6] = m_vertices[i].tex_coords[0];
-		vertex_data[i * 8 + 7] = m_vertices[i].tex_coords[1];
+		vertex_data[i * 8 + 6] = m_vertices[i].u;
+		vertex_data[i * 8 + 7] = m_vertices[i].v;
 	}
 }
 

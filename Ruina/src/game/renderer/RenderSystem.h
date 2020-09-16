@@ -21,6 +21,7 @@ public:
 
 public:
 	std::shared_ptr<Camera> m_camera;
+	void RemoveMeshComponent(ComponentId id);
 
 private:
 	void AddMeshComponent(MeshComponent *mesh_component);

@@ -16,7 +16,10 @@ Component* ComponentManager::GetComponent(ComponentId id) {
 
 void ComponentManager::DestroyComponent(ComponentId id) {
 	Component* c = m_components.find(id)->second;
+	std::unordered_set<Component*>& group1 = m_grouped_components.at(typeid(MeshComponent));
+	group1.erase(c);
 	m_components.erase(id);
+	auto group = GetComponentGroup<MeshComponent>();
 	m_free_ids.push(id);
 	delete c;
 }

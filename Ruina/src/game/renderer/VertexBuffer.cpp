@@ -8,7 +8,7 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int size) {
 }
 
 VertexBuffer::~VertexBuffer() {
-	std::cout << "Destroyed Vertex Buffer" << std::endl;
+//	std::cout << "Destroyed Vertex Buffer" << std::endl;
 	glDeleteBuffers(1, &m_rendererID);
 }
 

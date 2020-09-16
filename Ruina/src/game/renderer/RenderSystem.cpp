@@ -1,4 +1,5 @@
 #include "RenderSystem.h"
+#include <unordered_set>
 #include "../../Texture.h"
 
 RenderSystem::RenderSystem(SystemId id) : System(id) {
@@ -8,8 +9,8 @@ RenderSystem::RenderSystem(SystemId id) : System(id) {
 
 	SubscribeToEvent<OnRenderEvent>();
 
-	m_texture1 = std::make_unique<Texture>("Ruina/res/textures/texture_palette.png");
-	m_texture2 = std::make_unique<Texture>("Ruina/res/textures/texture_palette.png");
+	m_texture1 = std::make_unique<Texture>("Ruina/res/textures/rainbow.png");
+	m_texture2 = std::make_unique<Texture>("Ruina/res/textures/rainbow.png");
 	m_texture1->Bind(0);
 	m_texture2->Bind(1);
 	auto m_loc = m_shader->GetUniformLocation("u_textures");
@@ -28,7 +29,7 @@ RenderSystem::RenderSystem(SystemId id) : System(id) {
 void RenderSystem::Update(const Event& e) {
 	glm::mat4 vp_matrix = m_camera->m_proj_matrix * m_camera->m_view_matrix;
 
-	std::vector<Component*> components = ECSEngine::component_manager().GetComponentGroup<MeshComponent>();
+	std::unordered_set<Component*> components = ECSEngine::component_manager().GetComponentGroup<MeshComponent>();
 	for (Component* component : components) {
 		auto* mesh_component = (MeshComponent*)component;
 		ComponentId id = component->GetComponentId();
@@ -48,7 +49,6 @@ void RenderSystem::Update(const Event& e) {
 }
 
 void RenderSystem::AddMeshComponent(MeshComponent* mesh_component) {
-	std::cout << "Added mesh" << std::endl;
 	ComponentId id = mesh_component->GetComponentId();
 	auto* va = new VertexArray;
 	/* TODO: figure out why we need to multiply by 4 */
@@ -64,6 +64,12 @@ void RenderSystem::AddMeshComponent(MeshComponent* mesh_component) {
 
 	auto* ib = new IndexBuffer(mesh_component->m_indices.data(), mesh_component->m_indices.size());
 	m_index_buffers.emplace(id, *ib);
+}
+
+void RenderSystem::RemoveMeshComponent(ComponentId id) {
+	m_vertex_arrays.erase(id);
+	m_index_buffers.erase(id);
+	ECSEngine::component_manager().DestroyComponent(id);
 }
 
 void RenderSystem::BindMeshComponent(ComponentId component) {

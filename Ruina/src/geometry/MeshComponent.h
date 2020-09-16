@@ -19,16 +19,16 @@ public:
 		: Component(id, entityId), m_indices(indices), m_textures(textures), m_model(model) {
 		m_vertices.reserve(vertices.size() * 8);
 		for (int i = 0; i < vertices.size(); i++) {
-			m_vertices.push_back(vertices[i].position.x);
-			m_vertices.push_back(vertices[i].position.y);
-			m_vertices.push_back(vertices[i].position.z);
+			m_vertices.push_back(vertices[i].x);
+			m_vertices.push_back(vertices[i].y);
+			m_vertices.push_back(vertices[i].z);
 
-			m_vertices.push_back(vertices[i].normal.x);
-			m_vertices.push_back(vertices[i].normal.y);
-			m_vertices.push_back(vertices[i].normal.z);
+			m_vertices.push_back(vertices[i].n_x);
+			m_vertices.push_back(vertices[i].n_y);
+			m_vertices.push_back(vertices[i].n_z);
 
-			m_vertices.push_back(vertices[i].tex_coords[0]);
-			m_vertices.push_back(vertices[i].tex_coords[1]);
+			m_vertices.push_back(vertices[i].u);
+			m_vertices.push_back(vertices[i].v);
 		}
 	};
 };

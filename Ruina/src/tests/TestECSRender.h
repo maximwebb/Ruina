@@ -18,6 +18,11 @@ namespace test {
 
 	private:
 		SystemId m_id;
+		EntityId sphere;
+		ComponentId sphere_id;
+		int depth;
+		int count;
+		float angle = 1.570796f;
 	};
 }
 

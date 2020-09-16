@@ -2,38 +2,26 @@
 #include "TestECSRender.h"
 #include "../geometry/MeshComponentFactory.h"
 
+struct Pair {
+	int x, y;
+};
+
+struct PairOfPairs {
+	PairOfPairs(int a, int b, int c, int d)
+		: p1{a, b}, p2{c, d} {};
+	glm::vec2 p1;
+	glm::vec2 p2;
+};
+
 namespace test {
 	TestECSRender::TestECSRender() {
 		m_id = ECSEngine::system_manager().CreateSystem<RenderSystem>();
 		EntityId block1 = ECSEngine::entity_manager().CreateEntity<Block>();
-		EntityId block2 = ECSEngine::entity_manager().CreateEntity<Block>();
-		EntityId block3 = ECSEngine::entity_manager().CreateEntity<Block>();
-		EntityId block4 = ECSEngine::entity_manager().CreateEntity<Block>();
+		EntityId sphere = ECSEngine::entity_manager().CreateEntity<Block>();
+
+		depth = 15;
+
 		glm::mat4 model1 = glm::translate(
-				glm::scale(
-						glm::rotate(
-								glm::mat4(1.0f),
-								0.0f, glm::vec3(1.0f, 1.0f, -1.0f)),
-						glm::vec3(2.0f, 2.0f, 2.0f)),
-				glm::vec3(-0.5f, -0.5f, 0.0f));
-
-		glm::mat4 model2 = glm::translate(
-				glm::scale(
-						glm::rotate(
-								glm::mat4(1.0f),
-								0.0f, glm::vec3(1.0f, 1.0f, -1.0f)),
-						glm::vec3(2.0f, 2.0f, 2.0f)),
-				glm::vec3(-2.0f, -0.5f, 0.0f));
-
-		glm::mat4 model3 = glm::translate(
-				glm::scale(
-						glm::rotate(
-								glm::mat4(1.0f),
-								0.0f, glm::vec3(1.0f, 1.0f, -1.0f)),
-						glm::vec3(2.0f, 2.0f, 2.0f)),
-				glm::vec3(-3.5f, -0.5f, 0.0f));
-
-		glm::mat4 model4 = glm::translate(
 				glm::scale(
 						glm::rotate(
 								glm::mat4(1.0f),
@@ -41,10 +29,9 @@ namespace test {
 						glm::vec3(2.0f, 2.0f, 2.0f)),
 				glm::vec3(-5.0f, -0.5f, 0.0f));
 
+		glm::mat4 model = glm::rotate(glm::mat4(1), angle, glm::vec3(0, 1, 0));
+		sphere_id = MeshComponentFactory::CreateSphereMesh(sphere, model, depth);
 		MeshComponentFactory::CreateCubeMesh(block1, model1);
-		MeshComponentFactory::CreateCubeMesh(block2, model2);
-		MeshComponentFactory::CreateCubeMesh(block3, model3);
-		MeshComponentFactory::CreateCubeMesh(block4, model4);
 	}
 
 	TestECSRender::~TestECSRender() {
@@ -52,7 +39,13 @@ namespace test {
 	}
 
 	void TestECSRender::OnUpdate(float deltaTime) {
-		Test::OnUpdate(deltaTime);
+		dynamic_cast<RenderSystem*>(ECSEngine::system_manager().GetSystem(m_id))->RemoveMeshComponent(sphere_id);
+		sphere = ECSEngine::entity_manager().CreateEntity<Block>();
+		angle += 0.05f;
+		glm::mat4 model = glm::rotate(
+							glm::scale(glm::mat4(1), glm::vec3(3)),
+						angle, glm::vec3(0, 1, 0));
+		sphere_id = MeshComponentFactory::CreateSphereMesh(sphere, model, depth);
 	}
 
 	void TestECSRender::OnRender() {

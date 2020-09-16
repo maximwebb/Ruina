@@ -7,7 +7,7 @@ VertexArray::VertexArray() {
 }
 
 VertexArray::~VertexArray() {
-	std::cout << "Destroyed Vertex Array" << std::endl;
+//	std::cout << "Destroyed Vertex Array" << std::endl;
 	glDeleteVertexArrays(1, &m_rendererID);
 }
 

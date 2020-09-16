@@ -7,6 +7,7 @@
 #include <typeindex>
 #include <typeinfo>
 #include <type_traits>
+#include <unordered_set>
 
 class ComponentManager {
 public:
@@ -29,16 +30,16 @@ public:
 
 		if (c != nullptr) {
 			if (m_grouped_components.find(typeid(T)) == m_grouped_components.end()) {
-				m_grouped_components[typeid(T)] = std::vector<Component*>();
+				m_grouped_components[typeid(T)] = std::unordered_set<Component*>();
 			}
-			m_grouped_components[typeid(T)].push_back(c);
+			m_grouped_components[typeid(T)].insert(c);
 			m_components.insert({id, c});
 		}
 		return id;
 	};
 
 	template<typename T>
-	std::vector<Component*> GetComponentGroup() {
+	std::unordered_set<Component*> GetComponentGroup() {
 		auto result = m_grouped_components.find(typeid(T));
 		if (result == m_grouped_components.end()) {
 			throw std::exception("Error: Cannot find component type");
@@ -60,7 +61,7 @@ public:
 
 private:
 	std::unordered_map<ComponentId, Component*> m_components;
-	std::unordered_map<std::type_index, std::vector<Component*>> m_grouped_components;
+	std::unordered_map<std::type_index, std::unordered_set<Component*>> m_grouped_components;
 	ComponentId m_current_id;
 	std::stack<ComponentId> m_free_ids;
 

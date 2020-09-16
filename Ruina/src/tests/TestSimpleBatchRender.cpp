@@ -62,10 +62,6 @@ namespace test {
 		/* Index buffer setup */
 		m_ib = std::make_unique<IndexBuffer>(indices, n * n * 6);
 
-		/* Texture setup */
-//		m_texture = std::make_unique<Texture>("Ruina/res/textures/texture.png");
-//		m_texture->Bind();
-
 		/* Shader setup */
 		m_shader = std::make_unique<Shader>("Ruina/res/shaders/Vertex.shader", "Ruina/res/shaders/Fragment.shader");
 		m_shader->Bind();

@@ -9,7 +9,7 @@ IndexBuffer::IndexBuffer(const unsigned int *data, unsigned int count) : m_count
 }
 
 IndexBuffer::~IndexBuffer() {
-	std::cout << "Destroyed index buffer" << std::endl;
+//	std::cout << "Destroyed index buffer" << std::endl;
 	glDeleteBuffers(1, &m_rendererID);
 }
 

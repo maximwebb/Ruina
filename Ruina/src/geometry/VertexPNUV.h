@@ -1,15 +1,31 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <iostream>
 
 struct VertexPNUV {
 	VertexPNUV() = default;
-	VertexPNUV(float x, float y, float z, float n1, float n2, float n3, float u, float v) {
-		position = glm::vec3(x, y, z);
-		normal = glm::vec3(n1, n2, n3);
-		tex_coords = glm::vec2(u, v);
+	VertexPNUV(glm::vec3 pos, glm::vec3 norm, glm::vec2 uv) {
+		x = pos.x;
+		y = pos.y;
+		z = pos.z;
+
+		n_x = norm.x;
+		n_y = norm.y;
+		n_z = norm.z;
+
+		u = uv[0];
+		v = uv[1];
 	}
-	glm::vec3 position;
-	glm::vec3 normal;
-	glm::vec2 tex_coords;
+	VertexPNUV(float x, float y, float z, float n1, float n2, float n3, float u, float v)
+		: x(x), y(y), z(z), n_x(n1), n_y(n2), n_z(n3), u(u), v(v) {}
+	float x, y, z;
+	float n_x, n_y, n_z;
+
+	float u, v;
+
+	friend std::ostream& operator<<(std::ostream& stream, const VertexPNUV& vertex) {
+		stream << vertex.x << ", " << vertex.y << ", " << vertex.z;
+		return stream;
+	}
 };
