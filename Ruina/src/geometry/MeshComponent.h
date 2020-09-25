@@ -8,28 +8,28 @@
 
 struct MeshComponent : public Component {
 public:
-	std::vector<float> m_vertices;
-	std::vector<unsigned int> m_indices;
-	Texture& m_textures;
+	std::vector<float> vertices;
+	std::vector<unsigned int> indices;
+	Texture& texture;
 
-	glm::mat4 m_model;
+	glm::mat4 model;
 
-	MeshComponent(ComponentId id, EntityId entityId, std::vector<VertexPNUV>& vertices,
-				  std::vector<unsigned int>& indices, Texture& texture,
-				  glm::mat4 model)
-		: Component(id, entityId), m_indices(indices), m_textures(texture), m_model(model) {
-		m_vertices.reserve(vertices.size() * 8);
-		for (int i = 0; i < vertices.size(); i++) {
-			m_vertices.push_back(vertices[i].x);
-			m_vertices.push_back(vertices[i].y);
-			m_vertices.push_back(vertices[i].z);
+	MeshComponent(ComponentId id, EntityId entityId, std::vector<VertexPNUV>& _vertices,
+				  std::vector<unsigned int>& _indices, Texture& _texture,
+				  glm::mat4 _model)
+		: Component(id, entityId), indices(_indices), texture(_texture), model(_model) {
+		vertices.reserve(_vertices.size() * 8);
+		for (int i = 0; i < _vertices.size(); i++) {
+			vertices.push_back(_vertices[i].x);
+			vertices.push_back(_vertices[i].y);
+			vertices.push_back(_vertices[i].z);
 
-			m_vertices.push_back(vertices[i].n_x);
-			m_vertices.push_back(vertices[i].n_y);
-			m_vertices.push_back(vertices[i].n_z);
+			vertices.push_back(_vertices[i].n_x);
+			vertices.push_back(_vertices[i].n_y);
+			vertices.push_back(_vertices[i].n_z);
 
-			m_vertices.push_back(vertices[i].u);
-			m_vertices.push_back(vertices[i].v);
+			vertices.push_back(_vertices[i].u);
+			vertices.push_back(_vertices[i].v);
 		}
 	};
 };

@@ -11,7 +11,7 @@ public:
 	EntityManager();
 
 	template<typename T>
-	EntityId CreateEntity() {
+	T* CreateEntity() {
 		static_assert(std::is_base_of<Entity, T>::value, "Error: invalid entity type");
 
 		EntityId id;
@@ -23,9 +23,9 @@ public:
 			m_free_ids.pop();
 		}
 
-		T e(id);
-		m_entities.insert({id, e});
-		return id;
+		T* e = new T(id);
+		m_entities.insert({id, *e});
+		return e;
 	}
 	Entity& GetEntity(EntityId id);
 	void DestroyEntity(EntityId id);

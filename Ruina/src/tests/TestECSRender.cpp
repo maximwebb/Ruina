@@ -1,26 +1,37 @@
 #include <Windows.h>
 #include "TestECSRender.h"
 #include "../geometry/MeshComponentFactory.h"
+#include "../game/physics/MotionComponent.h"
+#include "../game/physics/PhysicsSystem.h"
+
 
 namespace test {
 	TestECSRender::TestECSRender() {
 		m_id = ECSEngine::system_manager().CreateSystem<RenderSystem>();
-		EntityId block1 = ECSEngine::entity_manager().CreateEntity<Block>();
-		sphere = ECSEngine::entity_manager().CreateEntity<Block>();
+		phys_id = ECSEngine::system_manager().CreateSystem<PhysicsSystem>();
+		sphere = ECSEngine::entity_manager().CreateEntity<MotionEntity>();
+		block1 = ECSEngine::entity_manager().CreateEntity<MotionEntity>();
 
 		depth = 15;
 
 		glm::mat4 model1 = glm::translate(
 				glm::scale(
 						glm::rotate(
-								glm::mat4(1.0f),
+								glm::mat4(3.0f),
 								0.0f, glm::vec3(1.0f, 1.0f, -1.0f)),
 						glm::vec3(2.0f, 2.0f, 2.0f)),
 				glm::vec3(-5.0f, -0.5f, 0.0f));
 
 		glm::mat4 model = glm::rotate(glm::mat4(1), angle, glm::vec3(0, 1, 0));
-		sphere_id = MeshComponentFactory::CreateSphereMesh(sphere, model, depth);
-		MeshComponentFactory::CreateCubeMesh(block1, model1);
+		sphere_id = MeshComponentFactory::CreateSphereMesh(sphere->m_id, model, depth);
+		MeshComponentFactory::CreateCubeMesh(block1->m_id, model1);
+		glm::vec3 center = glm::vec3(-5.0f, -0.5f, 0.0f);
+		glm::vec3 velocity(0);
+		ECSEngine::component_manager().CreateComponent<MotionComponent>(sphere->m_id, center, velocity);
+		ECSEngine::component_manager().CreateComponent<MotionComponent>(block1->m_id, center, velocity);
+		sphere->AddTorque(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		sphere->AddTorque(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+		block1->AddTorque(glm::vec3(0.0f, 0.0f, 0.01f), glm::vec3(-1.0f, 0.0f, 0.0f));
 	}
 
 	TestECSRender::~TestECSRender() {
@@ -28,13 +39,7 @@ namespace test {
 	}
 
 	void TestECSRender::OnUpdate(float deltaTime) {
-		dynamic_cast<RenderSystem*>(ECSEngine::system_manager().GetSystem(m_id))->RemoveMeshComponent(sphere_id);
-		sphere = ECSEngine::entity_manager().CreateEntity<Block>();
-		angle += 0.05f;
-		glm::mat4 model = glm::rotate(
-							glm::scale(glm::mat4(1), glm::vec3(3)),
-						angle, glm::vec3(0, 1, 0));
-		sphere_id = MeshComponentFactory::CreateSphereMesh(sphere, model, depth);
+		ECSEngine::event_manager().QueueEvent<OnGameTickEvent>();
 	}
 
 	void TestECSRender::OnRender() {

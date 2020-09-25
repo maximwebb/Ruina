@@ -4,7 +4,8 @@
 #include "Test.h"
 #include "ECSEngine.h"
 #include "RenderSystem.h"
-#include "../game/terrain/Block.h"
+#include "../geometry/Block.h"
+#include "../game/physics/MotionEntity.h"
 
 namespace test {
 	class TestECSRender : public Test {
@@ -20,7 +21,9 @@ namespace test {
 
 	private:
 		SystemId m_id;
-		EntityId sphere;
+		SystemId phys_id;
+		MotionEntity* sphere;
+		MotionEntity* block1;
 		ComponentId sphere_id;
 		int depth;
 		int count;

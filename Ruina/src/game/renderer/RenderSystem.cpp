@@ -34,11 +34,11 @@ void RenderSystem::Update(const Event& e) {
 		if (m_vertex_arrays.find(id) == m_vertex_arrays.end() && m_index_buffers.find(id) == m_index_buffers.end()) {
 			AddMeshComponent(mesh_component);
 		}
-		glm::mat4 model = mesh_component->m_model;
+		glm::mat4 model = mesh_component->model;
 		m_shader->SetUniformMat4("u_MVP", vp_matrix * model);
 		m_shader->SetUniformMat4("u_model", model);
 		m_shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(model)));
-		auto index = m_texture_slots->Bind(mesh_component->m_textures);
+		auto index = m_texture_slots->Bind(mesh_component->texture);
 		m_shader->SetUniform1f("u_texture_index", index);
 		m_shader->Bind();
 		BindMeshComponent(mesh_component->GetComponentId());
@@ -51,7 +51,7 @@ void RenderSystem::AddMeshComponent(MeshComponent* mesh_component) {
 	ComponentId id = mesh_component->GetComponentId();
 	auto* va = new VertexArray;
 	/* TODO: figure out why we need to multiply by 4 */
-	auto* vb = new VertexBuffer(mesh_component->m_vertices.data(), mesh_component->m_vertices.size() * 4);
+	auto* vb = new VertexBuffer(mesh_component->vertices.data(), mesh_component->vertices.size() * 4);
 
 	VertexBufferLayout layout;
 	layout.Push<float>(3);
@@ -61,7 +61,7 @@ void RenderSystem::AddMeshComponent(MeshComponent* mesh_component) {
 	va->AddBuffer(*vb, layout);
 	m_vertex_arrays.emplace(id, *va);
 
-	auto* ib = new IndexBuffer(mesh_component->m_indices.data(), mesh_component->m_indices.size());
+	auto* ib = new IndexBuffer(mesh_component->indices.data(), mesh_component->indices.size());
 	m_index_buffers.emplace(id, *ib);
 }
 

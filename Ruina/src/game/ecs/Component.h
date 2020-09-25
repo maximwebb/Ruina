@@ -15,10 +15,3 @@ struct Logging : public Component {
 	const char* m_message;
 	bool m_logging;
 };
-
-struct NotAComponent {
-	NotAComponent(ComponentId id, EntityId e_id)
-		: m_id(id), m_entity_id(e_id) {}
-	EntityId m_entity_id;
-	ComponentId m_id;
-};

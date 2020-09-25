@@ -71,9 +71,8 @@ add_executable(Ruina
         ${TEST_FILES}
         Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp Ruina/src/gui/GuiTripleSlider.cpp
         Ruina/src/geometry/Vertex.h Ruina/src/geometry/Cube.h
-        Ruina/src/geometry/Cube.cpp Ruina/src/game/Game.cpp Ruina/src/game/Game.h Ruina/src/game/Chunk.cpp Ruina/src/game/Chunk.h Ruina/src/game/renderer/Camera.cpp Ruina/src/game/renderer/Camera.h Ruina/src/game/terrain/Block.h
-        Ruina/src/game/terrain/ChunkPositionComponent.h Ruina/src/game/terrain/ChunkEntity.h Ruina/src/game/terrain/CubeComponent.h
-        Ruina/src/geometry/VertexPNUV.h Ruina/src/geometry/MeshComponent.h Ruina/src/geometry/TextureData.h Ruina/src/tests/TestECSRender.cpp Ruina/src/tests/TestECSRender.h Ruina/src/geometry/MeshComponentFactory.h Ruina/src/game/renderer/TextureCache.h Ruina/src/game/renderer/TextureManager.h Ruina/src/game/renderer/TextureManager.cpp)
+        Ruina/src/geometry/Cube.cpp Ruina/src/game/Game.cpp Ruina/src/game/Game.h Ruina/src/game/Chunk.cpp Ruina/src/game/Chunk.h Ruina/src/game/renderer/Camera.cpp Ruina/src/game/renderer/Camera.h Ruina/src/geometry/Block.h
+        Ruina/src/geometry/VertexPNUV.h Ruina/src/geometry/MeshComponent.h Ruina/src/geometry/TextureData.h Ruina/src/tests/TestECSRender.cpp Ruina/src/tests/TestECSRender.h Ruina/src/geometry/MeshComponentFactory.h Ruina/src/game/renderer/TextureCache.h Ruina/src/game/renderer/TextureManager.h Ruina/src/game/renderer/TextureManager.cpp Ruina/src/game/physics/MotionComponent.h Ruina/src/game/physics/Torque.h Ruina/src/game/physics/PhysicsSystem.cpp Ruina/src/game/physics/PhysicsSystem.h Ruina/src/game/physics/MotionEntity.h)
 
 target_link_libraries(Ruina ${GLFW_LIB} ${GLEW_LIB} ${OPENGL_LIB})
 

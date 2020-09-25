@@ -29,9 +29,6 @@ private:
 	void BindMeshComponent(ComponentId component);
 
 private:
-//	Texture m_texture1;
-//	Texture m_texture2;
-//	Texture m_texture3;
 	std::unique_ptr<Shader> m_shader;
 	std::unordered_map<ComponentId, VertexArray> m_vertex_arrays;
 	std::unordered_map<ComponentId, IndexBuffer> m_index_buffers;

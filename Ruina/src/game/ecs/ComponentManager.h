@@ -8,6 +8,7 @@
 #include <typeinfo>
 #include <type_traits>
 #include <unordered_set>
+#include "../physics/MotionComponent.h"
 
 class ComponentManager {
 public:
@@ -49,11 +50,12 @@ public:
 
 	template<typename T>
 	T* GetComponent(EntityId id) {
-		auto components = GetComponentGroup(type);
+		auto components = GetComponentGroup<T>();
 		auto result = std::find_if(components.begin(), components.end(), [id](Component* x){return x->m_entity_id == id;});
 		if (result == components.end()) {
 			throw std::exception("Error: Cannot find component type");
 		}
+		return (T*)*result;
 	}
 
 	ComponentId PeePeePooPoo(EntityId entityId, std::vector<VertexPNUV>& vertices,
@@ -79,6 +81,4 @@ private:
 	std::unordered_map<std::type_index, std::unordered_set<Component*>> m_grouped_components;
 	ComponentId m_current_id;
 	std::stack<ComponentId> m_free_ids;
-
-
 };
