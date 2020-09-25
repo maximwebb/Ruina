@@ -1,8 +1,9 @@
 #include "Texture.h"
 #include "stb_image/stb_image.h"
 
-Texture::Texture(const std::string &path)
-		: m_rendererID(0), m_filepath(path), m_local_buffer(nullptr), m_width(0), m_height(0), m_bpp(0) {
+
+Texture::Texture(const std::string& path)
+		: m_filepath(path), m_rendererID(0), m_local_buffer(nullptr), m_width(0), m_height(0), m_bpp(0) {
 
 	stbi_set_flip_vertically_on_load(1);
 	m_local_buffer = stbi_load(path.c_str(), &m_width, &m_height, &m_bpp, 4);
@@ -19,7 +20,6 @@ Texture::Texture(const std::string &path)
 };
 
 Texture::~Texture() {
-	std::cout << "Texture Destroyed" << std::endl;
 	glDeleteTextures(1, &m_rendererID);
 }
 

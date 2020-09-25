@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 #include <unordered_set>
-#include "../../Texture.h"
+#include "Texture.h"
+#include "TextureManager.h"
 
 RenderSystem::RenderSystem(SystemId id) : System(id) {
 	m_camera = std::make_shared<Camera>(-1.0f, -1.0f, -10.0f, 0.0f, 1.57f);
@@ -8,13 +9,10 @@ RenderSystem::RenderSystem(SystemId id) : System(id) {
 	m_shader->Bind();
 
 	SubscribeToEvent<OnRenderEvent>();
-
-	m_texture1 = std::make_unique<Texture>("Ruina/res/textures/rainbow.png");
-	m_texture2 = std::make_unique<Texture>("Ruina/res/textures/rainbow.png");
-	m_texture1->Bind(0);
-	m_texture2->Bind(1);
 	auto m_loc = m_shader->GetUniformLocation("u_textures");
-	glUniform1iv(m_loc, 2, new int[2]{0, 1});
+	glUniform1iv(m_loc, 4, new int[4]{0, 1, 2, 3});
+
+	m_texture_slots = std::make_unique<TextureCache>(3);
 
 	/* Back-face culling */
 	glFrontFace(GL_CW);
@@ -40,10 +38,11 @@ void RenderSystem::Update(const Event& e) {
 		m_shader->SetUniformMat4("u_MVP", vp_matrix * model);
 		m_shader->SetUniformMat4("u_model", model);
 		m_shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(model)));
+		auto index = m_texture_slots->Bind(mesh_component->m_textures);
+		m_shader->SetUniform1f("u_texture_index", index);
 		m_shader->Bind();
 		BindMeshComponent(mesh_component->GetComponentId());
 
-		unsigned int count = m_index_buffers.find(mesh_component->GetComponentId())->second.GetCount();
 		glDrawElements(GL_TRIANGLES, m_index_buffers.find(id)->second.GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }

@@ -7,7 +7,7 @@
 #include "../game/renderer/IndexBuffer.h"
 #include "../Shader.h"
 #include "../Renderer.h"
-#include "../Texture.h"
+#include "Texture.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <memory>

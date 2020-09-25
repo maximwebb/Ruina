@@ -2,22 +2,11 @@
 #include "TestECSRender.h"
 #include "../geometry/MeshComponentFactory.h"
 
-struct Pair {
-	int x, y;
-};
-
-struct PairOfPairs {
-	PairOfPairs(int a, int b, int c, int d)
-		: p1{a, b}, p2{c, d} {};
-	glm::vec2 p1;
-	glm::vec2 p2;
-};
-
 namespace test {
 	TestECSRender::TestECSRender() {
 		m_id = ECSEngine::system_manager().CreateSystem<RenderSystem>();
 		EntityId block1 = ECSEngine::entity_manager().CreateEntity<Block>();
-		EntityId sphere = ECSEngine::entity_manager().CreateEntity<Block>();
+		sphere = ECSEngine::entity_manager().CreateEntity<Block>();
 
 		depth = 15;
 

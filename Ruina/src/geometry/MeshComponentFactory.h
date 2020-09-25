@@ -5,13 +5,17 @@
 #include <ECSTypes.h>
 #include <glm/glm.hpp>
 #include <ECSEngine.h>
+#include <TextureManager.h>
+#include <glm/ext/matrix_transform.hpp>
 #include "VertexPNUV.h"
 #include "TextureData.h"
+#include <memory>
 
 class MeshComponentFactory {
 public:
 	static ComponentId CreateCubeMesh(EntityId id, glm::mat4 model) {
-		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, *cube_vertices, *cube_indices, *cube_textures, model);
+		Texture& cube_texture = TextureManager::Get("Ruina/res/textures/rainbow.png");
+		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, *cube_vertices, *cube_indices, cube_texture, model);
 	}
 	static ComponentId CreateCubeMesh(EntityId id, float x, float y, float z) {
 		glm::mat4 model = glm::translate(
@@ -28,8 +32,8 @@ public:
 		std::vector<VertexPNUV> vertices = OctahedronMesh();
 		std::vector<unsigned int> indices(24);
 		std::iota(std::begin(indices), std::end(indices), 0);
-		std::vector<TextureData> textures;
-		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, vertices, indices, textures, model);
+		Texture& texture = TextureManager::Get("Ruina/res/textures/rainbow.png");
+		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, vertices, indices, texture, model);
 	}
 
 	static ComponentId CreateSphereMesh(EntityId id, glm::mat4 model, int depth) {
@@ -66,9 +70,9 @@ public:
 			sphere_vertices.insert(sphere_vertices.end(), vertices.begin(), vertices.end());
 		}
 		std::vector<unsigned int> sphere_indices(sphere_vertices.size());
-		std::vector<TextureData> sphere_textures;
+		Texture& sphere_texture = TextureManager::Get("Ruina/res/textures/basketball1.png");
 		std::iota(std::begin(sphere_indices), std::end(sphere_indices), 0);
-		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, sphere_vertices, sphere_indices, sphere_textures, model);
+		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, sphere_vertices, sphere_indices, sphere_texture, model);
 	}
 
 	static std::vector<VertexPNUV> TessellateTriangle(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, int depth) {
@@ -155,15 +159,15 @@ public:
 		std::vector<VertexPNUV> vertices = TessellateTriangle(v1, v2, v3, depth);
 		std::vector<unsigned int> indices(vertices.size());
 		std::iota(std::begin(indices), std::end(indices), 0);
-		std::vector<TextureData> textures({TextureData(1u, std::string("test"))});
+		Texture& texture = TextureManager::Get("Ruina/res/textures/rainbow.png");
 
-		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, vertices, indices, textures, glm::mat4(1));
+		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, vertices, indices, texture, glm::mat4(1));
 	}
 
 private:
 	static std::vector<VertexPNUV>* cube_vertices;
 	static std::vector<unsigned int>* cube_indices;
-	static std::vector<TextureData>* cube_textures;
+//	static std::shared_ptr<Texture> cube_texture;
 };
 
 std::vector<VertexPNUV>* MeshComponentFactory::cube_vertices = new std::vector<VertexPNUV> {
@@ -218,6 +222,4 @@ std::vector<unsigned int>* MeshComponentFactory::cube_indices = new std::vector<
 		22, 21, 23
 };
 
-std::vector<TextureData>* MeshComponentFactory::cube_textures = new std::vector<TextureData> {
-		TextureData(1u, std::string("test"))
-};
+//std::shared_ptr<Texture> MeshComponentFactory::cube_texture = TextureManager::GetPtr("Ruina/res/textures/texture_palette.png");

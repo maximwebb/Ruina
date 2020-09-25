@@ -3,13 +3,14 @@
 #include <ECSEngine.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <TextureCache.h>
 #include "System.h"
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "Camera.h"
 #include "../../Shader.h"
-#include "../../Texture.h"
+#include "Texture.h"
 #include "../../geometry/Cube.h"
 #include "../Chunk.h"
 
@@ -28,9 +29,11 @@ private:
 	void BindMeshComponent(ComponentId component);
 
 private:
-	std::unique_ptr<Texture> m_texture1;
-	std::unique_ptr<Texture> m_texture2;
+//	Texture m_texture1;
+//	Texture m_texture2;
+//	Texture m_texture3;
 	std::unique_ptr<Shader> m_shader;
 	std::unordered_map<ComponentId, VertexArray> m_vertex_arrays;
 	std::unordered_map<ComponentId, IndexBuffer> m_index_buffers;
+	std::unique_ptr<TextureCache> m_texture_slots;
 };

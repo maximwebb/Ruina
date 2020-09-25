@@ -14,7 +14,7 @@ public:
 	ComponentManager();
 
 	template<typename T, typename... ARGS>
-	ComponentId CreateComponent(EntityId entity_id, ARGS... args) {
+	ComponentId CreateComponent(EntityId entity_id, ARGS&... args) {
 		ComponentId id;
 		Component* c = nullptr;
 
@@ -54,6 +54,21 @@ public:
 		if (result == components.end()) {
 			throw std::exception("Error: Cannot find component type");
 		}
+	}
+
+	ComponentId PeePeePooPoo(EntityId entityId, std::vector<VertexPNUV>& vertices,
+					  std::vector<unsigned int>& indices, Texture& texture,
+					  glm::mat4 model) {
+		ComponentId id;
+		if (m_free_ids.empty()) {
+			id = ++m_current_id;
+		}
+		else {
+			id = m_free_ids.top();
+			m_free_ids.pop();
+		}
+		Component* c = new MeshComponent(id, entityId, vertices, indices, texture, model);
+		return id;
 	}
 
 	Component* GetComponent(ComponentId);
