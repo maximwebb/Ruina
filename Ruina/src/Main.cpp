@@ -1,30 +1,24 @@
+#include <array>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <array>
-#include <TestColorQuad.h>
-#include <TestSimpleBatchRender.h>
-#include <TestECS.h>
-#include <TestECSRender.h>
-#include "tests/TestClearColor.h"
+#include "TestClearColor.h"
+#include "TestColorQuad.h"
+#include "TestECS.h"
+#include "TestECSRender.h"
+#include "TestSimpleBatchRender.h"
 
-
-int main()
-{
+int main() {
 	GLFWwindow* window;
-	/* Initialize the library */
-	if (!glfwInit())
-		return -1;
-
-	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(1280, 960, "Ruina", NULL, NULL);
-	if (!window)
-	{
-		glfwTerminate();
+	if (!glfwInit()) {
 		return -1;
 	}
 
-	/* Make the window's context current */
+	window = glfwCreateWindow(1280, 960, "Ruina", NULL, NULL);
+	if (!window) {
+		glfwTerminate();
+		return -1;
+	}
 	glfwMakeContextCurrent(window);
 
 	if (glewInit() != GLEW_OK) {
@@ -40,23 +34,18 @@ int main()
 	Renderer renderer;
 	GuiManager imgui(window);
 
-	/* Initialise starting test to the test menu */
 	test::Test* current_test;
 	auto* test_menu = new test::TestMenu(current_test, imgui);
 	current_test = test_menu;
 
-	/* Add tests to the test menu */
 	test_menu->RegisterTest<test::TestClearColor>("Clear Color");
 	test_menu->RegisterTest<test::TestColorQuad>("Colored Square");
 	test_menu->RegisterTest<test::TestSimpleBatchRender>("Simple Batch Render");
 	test_menu->RegisterTest<test::TestECS>("ECS");
 	test_menu->RegisterTest<test::TestECSRender>("ECS Render");
 
-	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {
-		/* Render here */
 		renderer.Clear();
-
 		if (current_test) {
 			current_test->OnUpdate(0.0f);
 			current_test->OnRender();
@@ -70,7 +59,6 @@ int main()
 
 			test_menu->gui_manager.Render();
 		}
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

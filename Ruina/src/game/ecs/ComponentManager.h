@@ -7,12 +7,12 @@
 #include <unordered_set>
 #include "Component.h"
 #include "ECS.h"
-#include "../geometry/MeshComponent.h"
+#include "MeshComponent.h"
 #include "MotionComponent.h"
 
 class ComponentManager {
 public:
-	ComponentManager();
+	ComponentManager() : m_components(), m_grouped_components(), m_current_id(0), m_free_ids() {}
 
 	template<typename T, typename... ARGS>
 	ComponentId CreateComponent(EntityId entity_id, ARGS&... args) {
@@ -37,7 +37,7 @@ public:
 			m_components.insert({id, c});
 		}
 		return id;
-	};
+	}
 
 	template<typename T>
 	std::unordered_set<Component*> GetComponentGroup() {
@@ -58,8 +58,23 @@ public:
 		return (T*)*result;
 	}
 
-	Component* GetComponent(ComponentId);
-	void DestroyComponent(ComponentId);
+	Component* GetComponent(ComponentId id) {
+		auto result = m_components.find(id);
+		if (result == m_components.end()) {
+			throw std::exception("Error: Cannot find component");
+		}
+		return result->second;
+	}
+
+	void DestroyComponent(ComponentId id) {
+		Component* c = m_components.find(id)->second;
+		std::unordered_set<Component*>& group1 = m_grouped_components.at(typeid(MeshComponent));
+		group1.erase(c);
+		m_components.erase(id);
+		auto group = GetComponentGroup<MeshComponent>();
+		m_free_ids.push(id);
+		delete c;
+	}
 
 private:
 	std::unordered_map<ComponentId, Component*> m_components;

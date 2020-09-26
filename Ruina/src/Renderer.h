@@ -1,10 +1,9 @@
 #pragma once
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
-#include "game/renderer/VertexArray.h"
-#include "game/renderer/IndexBuffer.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
 #include "Shader.h"
 
 class Renderer {

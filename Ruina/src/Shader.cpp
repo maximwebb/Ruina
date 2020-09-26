@@ -1,10 +1,4 @@
-#include <GL/glew.h>
-#include <sstream>
-#include <fstream>
-#include <iostream>
 #include "Shader.h"
-#include "Renderer.h"
-
 
 Shader::Shader(const std::string &vertex_filepath, const std::string &fragment_filepath)
 		: m_vertex_filepath(vertex_filepath), m_fragment_filepath(fragment_filepath), m_rendererID(0) {
@@ -105,5 +99,3 @@ int Shader::GetUniformLocation(const std::string &name) {
 	m_location_cache[name] = location;
 	return glGetUniformLocation(m_rendererID, name.c_str());
 }
-
-

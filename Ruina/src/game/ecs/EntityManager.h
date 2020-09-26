@@ -8,7 +8,7 @@
 
 class EntityManager {
 public:
-	EntityManager();
+	EntityManager() : m_current_id(0), m_entities(), m_free_ids() {}
 
 	template<typename T>
 	T* CreateEntity() {
@@ -23,15 +23,29 @@ public:
 			m_free_ids.pop();
 		}
 
-		T* e = new T(id);
-		m_entities.insert({id, *e});
-		return e;
+		auto pair = m_entities.insert({id, new T(id)});
+		return (T*)&(*(pair.first)->second);
 	}
-	Entity& GetEntity(EntityId id);
-	void DestroyEntity(EntityId id);
+
+	Entity& GetEntity(EntityId id) {
+		auto result = m_entities.find(id);
+		if (result == m_entities.end()) {
+			throw std::exception("Error: Cannot find entity.");
+		}
+		return *result->second;
+	}
+
+	void DestroyEntity(EntityId id) {
+		auto result = m_entities.find(id);
+		if (result == m_entities.end()) {
+			throw std::exception("Error: Cannot find entity.");
+		}
+		m_entities.erase(id);
+		m_free_ids.push(id);
+	}
 
 private:
 	EntityId m_current_id;
 	std::stack<EntityId> m_free_ids;
-	std::unordered_map<EntityId, Entity> m_entities;
+	std::unordered_map<EntityId, Entity*> m_entities;
 };
