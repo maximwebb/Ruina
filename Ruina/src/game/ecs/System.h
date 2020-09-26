@@ -1,7 +1,6 @@
 #pragma once
-
-#include "../events/Event.h"
-#include "ECSTypes.h"
+#include "ECS.h"
+#include "Event.h"
 
 class System {
 public:

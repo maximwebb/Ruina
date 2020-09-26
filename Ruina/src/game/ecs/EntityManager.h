@@ -1,10 +1,10 @@
 #pragma once
-#include "ECSTypes.h"
-#include "Entity.h"
-#include <unordered_map>
-#include <stack>
 #include <iostream>
+#include <stack>
 #include <type_traits>
+#include <unordered_map>
+#include "ECS.h"
+#include "Entity.h"
 
 class EntityManager {
 public:

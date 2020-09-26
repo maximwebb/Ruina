@@ -1,14 +1,11 @@
 #pragma once
 
-class System;
-class Event;
-class EventManager;
-//class ECSEngine;
+typedef int EntityId;
+typedef int ComponentId;
+typedef int SystemId;
 
-//#include "ECSEngine.h"
-
-#include "Entity.h"
 #include "Component.h"
-#include "System.h"
+#include "Entity.h"
 #include "Event.h"
+#include "System.h"
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <ECSTypes.h>
+#include "ECS.h"
 #include "VertexPNUV.h"
 
 class Cube {

@@ -1,8 +1,7 @@
 #pragma once
-
 #include <vector>
-#include "ECSTypes.h"
 #include "ComponentManager.h"
+#include "ECS.h"
 
 class Entity {
 	friend class ComponentManager;

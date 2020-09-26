@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <numeric>
-#include <ECSTypes.h>
+#include "ECS.h"
 #include <glm/glm.hpp>
 #include <ECSEngine.h>
 #include <TextureManager.h>

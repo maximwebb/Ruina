@@ -1,10 +1,6 @@
 #include "ComponentManager.h"
 
-ComponentManager::ComponentManager() : m_components(), m_grouped_components(), m_current_id(0), m_free_ids() {
-//	for (int i = 0; i != (int)ComponentType::END; i++) {
-//		m_grouped_components[(ComponentType)i] = std::vector<Component*>();
-//	}
-}
+ComponentManager::ComponentManager() : m_components(), m_grouped_components(), m_current_id(0), m_free_ids() {}
 
 Component* ComponentManager::GetComponent(ComponentId id) {
 	auto result = m_components.find(id);

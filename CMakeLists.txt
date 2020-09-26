@@ -17,6 +17,7 @@ include_directories(Ruina/src/tests)
 include_directories(Ruina/src/vendor)
 include_directories(Ruina/src/game/ecs)
 include_directories(Ruina/src/game/events)
+include_directories(Ruina/src/game/physics)
 include_directories(Ruina/src/game/renderer)
 #include_directories(Ruina/src/vendor/imgui)
 #include_directories(Ruina/src/vendor/stb_image)
@@ -44,6 +45,11 @@ file(GLOB ECS_FILES
 file(GLOB EVENT_FILES
         Ruina/src/game/events/*.h
         Ruina/src/game/events/*.cpp
+        )
+
+file(GLOB PHYSICS_FILES
+        Ruina/src/game/physics/*.h
+        Ruina/src/game/physics/*.cpp
         )
 
 file(GLOB RENDERER_FILES

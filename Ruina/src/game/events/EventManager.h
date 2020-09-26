@@ -1,12 +1,12 @@
 #pragma once
 #include <queue>
-#include <unordered_map>
-#include <unordered_set>
 #include <typeindex>
 #include <typeinfo>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
+#include "ECS.h"
 #include "Event.h"
-#include "../ecs/ECSTypes.h"
 
 class System;
 

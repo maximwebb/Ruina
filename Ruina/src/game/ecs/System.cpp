@@ -1,6 +1,5 @@
-#include "System.h"
 #include "ECSEngine.h"
-
+#include "System.h"
 
 LoggingSystem::LoggingSystem(SystemId id) : System(id) {
 	SubscribeToEvent<OnLogRequestEvent>();

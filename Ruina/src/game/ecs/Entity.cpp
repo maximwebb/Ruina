@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include <iostream>
 
 Entity::Entity(EntityId id) : m_id(id), m_components() {}
 

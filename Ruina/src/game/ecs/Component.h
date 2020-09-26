@@ -1,5 +1,5 @@
 #pragma once
-#include "ECSTypes.h"
+#include "ECS.h"
 
 struct Component {
 	Component(ComponentId id, EntityId entity_id)

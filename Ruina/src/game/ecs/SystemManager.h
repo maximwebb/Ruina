@@ -1,8 +1,8 @@
 #pragma once
-#include "ECSTypes.h"
 #include <unordered_map>
+#include "ECS.h"
+
 class System;
-//#include "System.h"
 
 class SystemManager {
 public:

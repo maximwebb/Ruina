@@ -1,14 +1,14 @@
 #pragma once
-#include "Component.h"
-#include "../geometry/MeshComponent.h"
-#include "ECSTypes.h"
-#include <unordered_map>
 #include <stack>
+#include <type_traits>
 #include <typeindex>
 #include <typeinfo>
-#include <type_traits>
+#include <unordered_map>
 #include <unordered_set>
-#include "../physics/MotionComponent.h"
+#include "Component.h"
+#include "ECS.h"
+#include "../geometry/MeshComponent.h"
+#include "MotionComponent.h"
 
 class ComponentManager {
 public:
