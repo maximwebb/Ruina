@@ -3,7 +3,6 @@
 EntityManager::EntityManager()
 	: m_current_id(0), m_entities(), m_free_ids() {}
 
-
 Entity& EntityManager::GetEntity(EntityId id) {
 	auto result = m_entities.find(id);
 	if (result == m_entities.end()) {
@@ -11,7 +10,6 @@ Entity& EntityManager::GetEntity(EntityId id) {
 	}
 	return result->second;
 }
-
 
 void EntityManager::DestroyEntity(EntityId id) {
 	auto result = m_entities.find(id);

@@ -1,15 +1,13 @@
 #pragma once
-
-#include <vector>
-#include <numeric>
-#include "ECS.h"
-#include <glm/glm.hpp>
-#include <ECSEngine.h>
-#include <TextureManager.h>
 #include <glm/ext/matrix_transform.hpp>
-#include "VertexPNUV.h"
-#include "TextureData.h"
+#include <glm/glm.hpp>
 #include <memory>
+#include <numeric>
+#include <vector>
+#include "ECS.h"
+#include "ECSEngine.h"
+#include "TextureManager.h"
+#include "VertexPNUV.h"
 
 class MeshComponentFactory {
 public:

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "ECSEngine.h"
 #include "Entity.h"
 

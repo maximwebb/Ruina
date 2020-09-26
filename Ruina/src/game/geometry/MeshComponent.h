@@ -1,17 +1,14 @@
 #pragma once
-
-#include "VertexPNUV.h"
-#include "TextureData.h"
-#include "Texture.h"
 #include <vector>
-#include <Component.h>
+#include "Component.h"
+#include "Texture.h"
+#include "VertexPNUV.h"
 
 struct MeshComponent : public Component {
 public:
 	std::vector<float> vertices;
 	std::vector<unsigned int> indices;
 	Texture& texture;
-
 	glm::mat4 model;
 
 	MeshComponent(ComponentId id, EntityId entityId, std::vector<VertexPNUV>& _vertices,

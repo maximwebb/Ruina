@@ -58,21 +58,6 @@ public:
 		return (T*)*result;
 	}
 
-	ComponentId PeePeePooPoo(EntityId entityId, std::vector<VertexPNUV>& vertices,
-					  std::vector<unsigned int>& indices, Texture& texture,
-					  glm::mat4 model) {
-		ComponentId id;
-		if (m_free_ids.empty()) {
-			id = ++m_current_id;
-		}
-		else {
-			id = m_free_ids.top();
-			m_free_ids.pop();
-		}
-		Component* c = new MeshComponent(id, entityId, vertices, indices, texture, model);
-		return id;
-	}
-
 	Component* GetComponent(ComponentId);
 	void DestroyComponent(ComponentId);
 

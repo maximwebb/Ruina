@@ -1,6 +1,6 @@
 #pragma once
-#include <glm/vec3.hpp>
 #include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 
 struct Torque {
 	Torque(glm::vec3 force, glm::vec3 distance) : force(force), distance(distance) {};

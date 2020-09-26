@@ -30,7 +30,6 @@ public:
 	Entity& GetEntity(EntityId id);
 	void DestroyEntity(EntityId id);
 
-
 private:
 	EntityId m_current_id;
 	std::stack<EntityId> m_free_ids;

@@ -1,7 +1,4 @@
 #include "RenderSystem.h"
-#include <unordered_set>
-#include "Texture.h"
-#include "TextureManager.h"
 
 RenderSystem::RenderSystem(SystemId id) : System(id) {
 	m_camera = std::make_shared<Camera>(-1.0f, -1.0f, -10.0f, 0.0f, 1.57f);

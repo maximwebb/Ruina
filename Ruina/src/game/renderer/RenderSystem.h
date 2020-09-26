@@ -1,28 +1,25 @@
 #pragma once
-
-#include <ECSEngine.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <TextureCache.h>
+#include <unordered_set>
+#include "Camera.h"
+#include "ECSEngine.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
 #include "System.h"
+#include "Texture.h"
+#include "TextureCache.h"
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
-#include "IndexBuffer.h"
-#include "Camera.h"
-#include "../../Shader.h"
-#include "Texture.h"
-#include "../../geometry/Cube.h"
-#include "../Chunk.h"
 
 class RenderSystem : public System {
 public:
 	RenderSystem(SystemId id);
-
 	void Update(const Event&) override;
+	void RemoveMeshComponent(ComponentId id);
 
 public:
 	std::shared_ptr<Camera> m_camera;
-	void RemoveMeshComponent(ComponentId id);
 
 private:
 	void AddMeshComponent(MeshComponent *mesh_component);

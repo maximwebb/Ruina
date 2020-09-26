@@ -4,8 +4,6 @@
 #include <array>
 #include <TestColorQuad.h>
 #include <TestSimpleBatchRender.h>
-#include <TestColorCube.h>
-#include <TestChunkRender.h>
 #include <TestECS.h>
 #include <TestECSRender.h>
 #include "tests/TestClearColor.h"
@@ -51,8 +49,6 @@ int main()
 	test_menu->RegisterTest<test::TestClearColor>("Clear Color");
 	test_menu->RegisterTest<test::TestColorQuad>("Colored Square");
 	test_menu->RegisterTest<test::TestSimpleBatchRender>("Simple Batch Render");
-	test_menu->RegisterTest<test::TestColorCube>("3D Textured Cube");
-	test_menu->RegisterTest<test::TestChunkRender>("Chunk render");
 	test_menu->RegisterTest<test::TestECS>("ECS");
 	test_menu->RegisterTest<test::TestECSRender>("ECS Render");
 

@@ -1,7 +1,6 @@
 #pragma once
-
-#include <vector>
 #include <glm/vec3.hpp>
+#include <vector>
 #include "Component.h"
 #include "Torque.h"
 

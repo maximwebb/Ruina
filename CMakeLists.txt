@@ -12,11 +12,13 @@ include_directories(Dependencies/GLFW)
 include_directories(Dependencies/GLFW/include)
 include_directories(Dependencies/GLFW/include/GLFW)
 include_directories(Ruina/res/shaders)
+include_directories(Ruina/src)
 include_directories(Ruina/src/gui)
 include_directories(Ruina/src/tests)
 include_directories(Ruina/src/vendor)
 include_directories(Ruina/src/game/ecs)
 include_directories(Ruina/src/game/events)
+include_directories(Ruina/src/game/geometry)
 include_directories(Ruina/src/game/physics)
 include_directories(Ruina/src/game/renderer)
 #include_directories(Ruina/src/vendor/imgui)
@@ -47,6 +49,11 @@ file(GLOB EVENT_FILES
         Ruina/src/game/events/*.cpp
         )
 
+file(GLOB GEOMETRY_FILES
+        Ruina/src/game/geometry/*.h
+        Ruina/src/game/geometry/*.cpp
+        )
+
 file(GLOB PHYSICS_FILES
         Ruina/src/game/physics/*.h
         Ruina/src/game/physics/*.cpp
@@ -73,12 +80,14 @@ add_executable(Ruina
         ${SOURCE_FILES}
         ${ECS_FILES}
         ${EVENT_FILES}
+        ${GEOMETRY_FILES}
+        ${PHYSICS_FILES}
         ${RENDERER_FILES}
         ${TEST_FILES}
-        Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp Ruina/src/gui/GuiTripleSlider.cpp
-        Ruina/src/geometry/Vertex.h Ruina/src/geometry/Cube.h
-        Ruina/src/geometry/Cube.cpp Ruina/src/game/Game.cpp Ruina/src/game/Game.h Ruina/src/game/Chunk.cpp Ruina/src/game/Chunk.h Ruina/src/game/renderer/Camera.cpp Ruina/src/game/renderer/Camera.h Ruina/src/geometry/Block.h
-        Ruina/src/geometry/VertexPNUV.h Ruina/src/geometry/MeshComponent.h Ruina/src/geometry/TextureData.h Ruina/src/tests/TestECSRender.cpp Ruina/src/tests/TestECSRender.h Ruina/src/geometry/MeshComponentFactory.h Ruina/src/game/renderer/TextureCache.h Ruina/src/game/renderer/TextureManager.h Ruina/src/game/renderer/TextureManager.cpp Ruina/src/game/physics/MotionComponent.h Ruina/src/game/physics/Torque.h Ruina/src/game/physics/PhysicsSystem.cpp Ruina/src/game/physics/PhysicsSystem.h Ruina/src/game/physics/MotionEntity.h)
+        Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp
+        Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp
+        Ruina/src/gui/GuiTripleSlider.cpp
+        )
 
 target_link_libraries(Ruina ${GLFW_LIB} ${GLEW_LIB} ${OPENGL_LIB})
 
