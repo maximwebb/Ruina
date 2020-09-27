@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "Debugger.h"
 #include "TestClearColor.h"
 #include "TestColorQuad.h"
 #include "TestECS.h"

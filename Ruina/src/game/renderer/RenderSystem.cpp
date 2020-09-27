@@ -46,20 +46,18 @@ void RenderSystem::Update(const Event& e) {
 
 void RenderSystem::AddMeshComponent(MeshComponent* mesh_component) {
 	ComponentId id = mesh_component->GetComponentId();
-	auto* va = new VertexArray;
-	/* TODO: figure out why we need to multiply by 4 */
-	auto* vb = new VertexBuffer(mesh_component->vertices.data(), mesh_component->vertices.size() * 4);
+	VertexArray va;
+	VertexBuffer vb(mesh_component->vertices.data(), mesh_component->vertices.size() * 4);
 
 	VertexBufferLayout layout;
 	layout.Push<float>(3);
 	layout.Push<float>(3);
 	layout.Push<float>(2);
 
-	va->AddBuffer(*vb, layout);
-	m_vertex_arrays.emplace(id, *va);
-
-	auto* ib = new IndexBuffer(mesh_component->indices.data(), mesh_component->indices.size());
-	m_index_buffers.emplace(id, *ib);
+	va.AddBuffer(vb, layout);
+	IndexBuffer ib(mesh_component->indices.data(), mesh_component->indices.size());
+	m_vertex_arrays.emplace(id, std::move(va));
+	m_index_buffers.emplace(id, std::move(ib));
 }
 
 void RenderSystem::RemoveMeshComponent(ComponentId id) {

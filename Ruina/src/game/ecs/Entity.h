@@ -25,9 +25,3 @@ class Speaker : public Entity {
 public:
 	Speaker(EntityId id);
 };
-
-class NotAnEntity {
-public:
-	NotAnEntity(EntityId id) : m_id(id) {};
-	EntityId m_id;
-};

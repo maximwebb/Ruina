@@ -1,17 +1,20 @@
 #include "VertexArray.h"
-#include "../../Debugger.h"
 
 VertexArray::VertexArray() {
 	glGenVertexArrays(1, &m_rendererID);
 	glBindVertexArray(m_rendererID);
 }
 
+VertexArray::VertexArray(VertexArray&& other) noexcept {
+	m_rendererID = other.m_rendererID;
+	other.m_rendererID = 0;
+}
+
 VertexArray::~VertexArray() {
-//	std::cout << "Destroyed Vertex Array" << std::endl;
 	glDeleteVertexArrays(1, &m_rendererID);
 }
 
-void VertexArray::AddBuffer(const VertexBuffer &vbo, const VertexBufferLayout &layout) {
+void VertexArray::AddBuffer(const VertexBuffer& vbo, const VertexBufferLayout& layout) {
 	Bind();
 	vbo.Bind();
 	unsigned int offset = 0;

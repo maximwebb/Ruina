@@ -1,14 +1,8 @@
 #pragma once
-
 #include <GL/glew.h>
 #include <vector>
-#include "../../Debugger.h"
 
 struct VertexBufferElement {
-	unsigned int count;
-	unsigned int type;
-	unsigned int normalized;
-
 	static unsigned int GetTypeSize(unsigned int type) {
 		switch (type) {
 			case GL_FLOAT:
@@ -17,22 +11,22 @@ struct VertexBufferElement {
 				return 4;
 			case GL_UNSIGNED_BYTE:
 				return 1;
+			default:
+				throw std::exception("Invalid VertexBuffer element type.");
 		}
-		ASSERT(false);
-		return 0;
 	}
+
+	unsigned int count;
+	unsigned int type;
+	unsigned int normalized;
 };
 
 
 class VertexBufferLayout {
-private:
-	std::vector<VertexBufferElement> m_elements;
-	unsigned int m_stride;
 public:
 	VertexBufferLayout()
 			: m_stride(0) {};
 
-	/* Adds a new attribute layout */
 	template<typename T>
 	void Push(int count) {
 		static_assert(false);
@@ -57,8 +51,9 @@ public:
 	}
 
 	inline const std::vector<VertexBufferElement> &GetElements() const { return m_elements; }
-
 	inline unsigned int GetStride() const { return m_stride; }
 
-
+private:
+	std::vector<VertexBufferElement> m_elements;
+	unsigned int m_stride;
 };

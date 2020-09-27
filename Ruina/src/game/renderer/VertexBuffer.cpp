@@ -1,5 +1,4 @@
 #include "VertexBuffer.h"
-#include "../../Renderer.h"
 
 VertexBuffer::VertexBuffer(const void* data, unsigned int size) {
 	glGenBuffers(1, &m_rendererID);
@@ -7,8 +6,13 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int size) {
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
+VertexBuffer::VertexBuffer(VertexBuffer&& other) noexcept {
+	m_rendererID = other.m_rendererID;
+
+	other.m_rendererID = 0;
+}
+
 VertexBuffer::~VertexBuffer() {
-//	std::cout << "Destroyed Vertex Buffer" << std::endl;
 	glDeleteBuffers(1, &m_rendererID);
 }
 
