@@ -13,6 +13,12 @@ test_menu->RegisterTest<test::TestMyNewTest>("My New Test");
 
 Building and running the project will create a window displaying a menu of all the currently loaded tests.
 
+## ECS Framework
+
+Ruina supports an Entity-Component-System implementation: to define a new entity, component or system, create a class that inherits from the corresponding Entity, Component or System classes found in Ruina/src/game/ecs. In order to instantiate one of these, access the required entity/component/system manager singletons via the ECSEngine class, and call the corresponding templated "create" function with the necessary parameters. There is a minimum working example in Ruina/src/tests/TestECS.cpp.
+
+The ECS framework also includes an event manager, found in Ruina/src/game/events. This can be accessed and used in a similar way to the entity/component/system classes. The event manager can register systems as listeners, which will in turn carry out updates on components when an event is broadcast. Events can be queued with `QueueEvent<EventType>()` in the event manager, and broadcast with `NotifyListeners()`.
+
 ## Wrapper classes
 
 There are several wrapper classes to simplify the OpenGL functionality. These can all be found in the /src directory, or in its various sub-directories.
