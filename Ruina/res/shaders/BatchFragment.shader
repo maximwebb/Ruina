@@ -1,4 +1,4 @@
-#version 330 core
+#version 460 core
 
 layout(location=0) out vec4 color;
 
@@ -10,13 +10,17 @@ uniform sampler2D u_textures[4];
 uniform float u_texture_index;
 
 void main() {
-    vec4 light_position = vec4(5.0f, 5.0f, 0.0f, 1.0f);
-    vec4 light_color = vec4(0.973f, 0.765f, 0.267f, 1.0f);
-    vec4 camera_position = vec4(0.0f, 0.0f, -10.0f, 1.0f);
-    float k_a = 0.3f;
-    float k_d = 5.0f;
-    float k_s = 1.0f;
-    int alpha = 5;
+    vec4 light_position = vec4(4.0f, 4.0f, -4.0f, 1.0f);
+//    vec4 light_color = vec4(0.973f, 0.765f, 0.267f, 1.0f);
+    vec4 light_color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    vec4 camera_position = vec4(5.0f, 5.0f, -5.0f, 1.0f);
+    float k_a = 0.1f;
+//    float k_a = 0.0f;
+    float k_d = 2.0f;
+//    float k_d = 0.0f;
+    float k_s = .1f;
+//    float k_s = 0.0f;
+    float alpha = 1.5f;
 
     float intensity = 1.0f/(pow(length(light_position - wc_position), 2));
 

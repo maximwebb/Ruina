@@ -1,27 +1,37 @@
 #pragma once
-#include "ECS.h"
-#include "Event.h"
+#include <cstdint>
+#include <functional>
+#include <iostream>
+#include <typeindex>
+#include <utility>
+
+#define HANDLER(func) [this](auto&& e) { func(std::forward<const Event&>(e)); }
+
+class Manager;
 
 class System {
 public:
-	System(SystemId id) : m_id(id) {};
-	~System() {
+    typedef std::function<void(const Event&)> EventHandler;
+    int32_t id;
+    Manager& m;
+
+    explicit System(Manager&);
+
+    template<typename T>
+	void Subscribe(EventHandler handler) {
+		std::type_index type_id = typeid(T);
+		SubscribeInner(type_id, std::move(handler));
 	}
 
-	template<typename T>
-	void SubscribeToEvent() {
-		static_assert(std::is_base_of<Event, T>::value, "Error: invalid event type");
-		ECSEngine::event_manager().RegisterListener<T>(m_id);
-	}
+	void SubscribeInner(std::type_index type_id, EventHandler f);
 
-	virtual void Update(const Event& e) = 0;
-public:
-	SystemId m_id;
-};
+    virtual void Update(Event e) {
+        std::cout << "Received event in base class" << std::endl;
+    }
 
-class LoggingSystem : public System {
-public:
-	LoggingSystem(SystemId);
-
-	void Update(const Event& e) override;
+private:
+    int getNextId() {
+        static int next_id = 0;
+        return next_id++;
+    }
 };

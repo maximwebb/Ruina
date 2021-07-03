@@ -1,7 +1,7 @@
 #pragma once
-#include "ECS.h"
+#include "Entity.h"
 
 class Block : public Entity {
 public:
-	Block(EntityId id) : Entity(id) {}
+	Block(Entity id) : Entity(id) {}
 };

@@ -8,7 +8,7 @@
 
 class Renderer {
 public:
-	void Draw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader) const;
-	void DrawCube(const glm::mat4& transform, const Shader &shader) const;
+	void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+	void DrawCube(const glm::mat4& transform, const Shader& shader) const;
 	void Clear();
 };

@@ -9,6 +9,12 @@
 #include "TestECSRender.h"
 #include "TestSimpleBatchRender.h"
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_E && action == GLFW_PRESS)
+        std::cout << "hi" << std::endl;
+}
+
 int main() {
 	GLFWwindow* window;
 	if (!glfwInit()) {
@@ -35,6 +41,7 @@ int main() {
 	Renderer renderer;
 	GuiManager imgui(window);
 
+
 	test::Test* current_test;
 	auto* test_menu = new test::TestMenu(current_test, imgui);
 	current_test = test_menu;
@@ -43,7 +50,10 @@ int main() {
 	test_menu->RegisterTest<test::TestColorQuad>("Colored Square");
 	test_menu->RegisterTest<test::TestSimpleBatchRender>("Simple Batch Render");
 	test_menu->RegisterTest<test::TestECS>("ECS");
-	test_menu->RegisterTest<test::TestECSRender>("ECS Render");
+	auto* ecs_render_test = new test::TestECSRender(window);
+	test_menu->RegisterTest(ecs_render_test, "ECS Render");
+
+    glfwSetKeyCallback(window, key_callback);
 
 	while (!glfwWindowShouldClose(window)) {
 		renderer.Clear();
@@ -67,3 +77,4 @@ int main() {
 
 	return 0;
 }
+

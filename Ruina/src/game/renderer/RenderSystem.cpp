@@ -1,15 +1,15 @@
 #include "RenderSystem.h"
 
-RenderSystem::RenderSystem(SystemId id) : System(id) {
-	m_camera = std::make_shared<Camera>(-1.0f, -1.0f, -10.0f, 0.0f, 1.57f);
-	m_shader = std::make_unique<Shader>("Ruina/res/shaders/BatchVertex.shader","Ruina/res/shaders/BatchFragment.shader");
-	m_shader->Bind();
+RenderSystem::RenderSystem(Manager& m) : System(m) {
+	camera = std::make_shared<Camera>(-1.0f, -1.0f, -10.0f, 0.0f, 1.57f);
+	shader = std::make_unique<Shader>("Ruina/res/shaders/BatchVertex.shader","Ruina/res/shaders/BatchFragment.shader");
+	shader->Bind();
 
-	SubscribeToEvent<OnRenderEvent>();
-	auto m_loc = m_shader->GetUniformLocation("u_textures");
-	glUniform1iv(m_loc, 4, new int[4]{0, 1, 2, 3});
+	Subscribe<RenderEvent>(HANDLER(Update));
+	auto loc = shader->GetUniformLocation("u_textures");
+	glUniform1iv(loc, 4, new int[4]{0, 1, 2, 3});
 
-	m_texture_slots = std::make_unique<TextureCache>(3);
+	texture_slots = std::make_unique<TextureCache>(3);
 
 	/* Back-face culling */
 	glFrontFace(GL_CW);
@@ -22,51 +22,49 @@ RenderSystem::RenderSystem(SystemId id) : System(id) {
 }
 
 void RenderSystem::Update(const Event& e) {
-	glm::mat4 vp_matrix = m_camera->m_proj_matrix * m_camera->m_view_matrix;
+	glm::mat4 vp_matrix = camera->proj_matrix * camera->view_matrix;
+	auto mesh_components = m.CreateGroup<MeshComponent>();
 
-	std::unordered_set<Component*> components = ECSEngine::component_manager().GetComponentGroup<MeshComponent>();
-	for (Component* component : components) {
-		auto* mesh_component = (MeshComponent*)component;
-		ComponentId id = component->GetComponentId();
-		if (m_vertex_arrays.find(id) == m_vertex_arrays.end() && m_index_buffers.find(id) == m_index_buffers.end()) {
-			AddMeshComponent(mesh_component);
+	for (auto id : mesh_components) {
+		auto [mesh_component] = mesh_components.Get(id);
+		if (vertex_arrays.find(id) == vertex_arrays.end() && index_buffers.find(id) == index_buffers.end()) {
+			AddMeshComponent(mesh_component, id); // Probably gonna throw an error
 		}
 		glm::mat4 model = mesh_component->model;
-		m_shader->SetUniformMat4("u_MVP", vp_matrix * model);
-		m_shader->SetUniformMat4("u_model", model);
-		m_shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(model)));
-		auto index = m_texture_slots->Bind(mesh_component->texture);
-		m_shader->SetUniform1f("u_texture_index", index);
-		m_shader->Bind();
-		BindMeshComponent(mesh_component->GetComponentId());
+		shader->SetUniformMat4("u_MVP", vp_matrix * model);
+		shader->SetUniformMat4("u_model", model);
+		shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(model)));
+		auto index = texture_slots->Bind(mesh_component->texture);
+		shader->SetUniform1f("u_texture_index", index);
+		shader->Bind();
+		BindMeshComponent(id);
 
-		glDrawElements(GL_TRIANGLES, m_index_buffers.find(id)->second.GetCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, index_buffers.find(id)->second.GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }
 
-void RenderSystem::AddMeshComponent(MeshComponent* mesh_component) {
-	ComponentId id = mesh_component->GetComponentId();
+void RenderSystem::AddMeshComponent(MeshComponent* mesh_component, Entity id) {
 	VertexArray va;
 	VertexBuffer vb(mesh_component->vertices.data(), mesh_component->vertices.size() * 4);
 
 	VertexBufferLayout layout;
-	layout.Push<float>(3);
-	layout.Push<float>(3);
-	layout.Push<float>(2);
+	layout.PushFloat(3);
+	layout.PushFloat(3);
+	layout.PushFloat(2);
 
 	va.AddBuffer(vb, layout);
 	IndexBuffer ib(mesh_component->indices.data(), mesh_component->indices.size());
-	m_vertex_arrays.emplace(id, std::move(va));
-	m_index_buffers.emplace(id, std::move(ib));
+	vertex_arrays.emplace(id, std::move(va));
+	index_buffers.emplace(id, std::move(ib));
 }
 
-void RenderSystem::RemoveMeshComponent(ComponentId id) {
-	m_vertex_arrays.erase(id);
-	m_index_buffers.erase(id);
-	ECSEngine::component_manager().DestroyComponent(id);
+void RenderSystem::RemoveMeshComponent(Entity id) {
+	vertex_arrays.erase(id);
+	index_buffers.erase(id);
+	// TODO: Remove components from manager here.
 }
 
-void RenderSystem::BindMeshComponent(ComponentId component) {
-	m_vertex_arrays.find(component)->second.Bind();
-	m_index_buffers.find(component)->second.Bind();
+void RenderSystem::BindMeshComponent(Entity id) {
+	vertex_arrays.find(id)->second.Bind();
+	index_buffers.find(id)->second.Bind();
 }

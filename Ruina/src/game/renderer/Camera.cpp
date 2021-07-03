@@ -5,11 +5,11 @@
 float PI = 3.14159265f;
 
 Camera::Camera(float x, float y, float z, float pitch, float yaw)
-    : m_pitch(pitch), m_yaw(yaw), m_initial_yaw(yaw), m_position(x, y, z), m_view_matrix(1.0f), m_camera_target(0.0f),
-    m_yaw_rotation_matrix(glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f))) {
+    : pitch(pitch), yaw(yaw), initial_yaw(yaw), position(x, y, z), view_matrix(1.0f), camera_target(0.0f),
+      yaw_rotation_matrix(glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f))) {
     UpdateViewMatrix();
     /* Default projection */
-    m_proj_matrix = glm::perspective(1.0f, 4.0f/3.0f, 1.0f, 150.0f);
+    proj_matrix = glm::perspective(1.0f, 4.0f / 3.0f, 1.0f, 150.0f);
 }
 
 Camera::~Camera() {
@@ -17,63 +17,63 @@ Camera::~Camera() {
 }
 
 void Camera::SetPosition(float x, float y, float z) {
-    m_position.x = x;
-    m_position.y = y;
-    m_position.z = z;
+    position.x = x;
+    position.y = y;
+    position.z = z;
     UpdateViewMatrix();
 }
 
 void Camera::IncrementPosition(float x, float y, float z) {
-    glm::vec3 rotated_pos = m_yaw_rotation_matrix * glm::vec4(x, y, z, 1);
-    m_position.x += rotated_pos.x;
-    m_position.y += rotated_pos.y;
-    m_position.z += rotated_pos.z;
+    glm::vec3 rotated_pos = yaw_rotation_matrix * glm::vec4(x, y, z, 1);
+    position.x += rotated_pos.x;
+    position.y += rotated_pos.y;
+    position.z += rotated_pos.z;
     UpdateViewMatrix();
 }
 
 void Camera::IncrementAbsolutePosition(float x, float y, float z) {
-    m_position.x += x;
-    m_position.y += y;
-    m_position.z += z;
+    position.x += x;
+    position.y += y;
+    position.z += z;
     UpdateViewMatrix();
 }
 
-void Camera::SetYaw(float yaw) {
-    m_yaw = yaw;
+void Camera::SetYaw(float _yaw) {
+    yaw = _yaw;
     UpdateViewMatrix();
 }
 
-void Camera::IncrementYaw(float yaw) {
-    m_yaw += yaw;
+void Camera::IncrementYaw(float _yaw) {
+    yaw += _yaw;
     UpdateViewMatrix();
 }
 
-void Camera::SetPitch(float pitch) {
-    m_pitch = pitch;
-    if (m_pitch > PI/2) {
-        m_pitch = PI/2;
+void Camera::SetPitch(float _pitch) {
+    pitch = _pitch;
+    if (pitch > PI / 2) {
+        pitch = PI / 2;
     }
-    else if (m_pitch < -PI/2) {
-        m_pitch = -PI/2;
+    else if (pitch < -PI / 2) {
+        pitch = -PI / 2;
     }
     UpdateViewMatrix();
 }
 
-void Camera::IncrementPitch(float pitch) {
-    if (m_pitch + pitch < PI/2 && m_pitch + pitch > -PI/2) {
-        m_pitch += pitch;
+void Camera::IncrementPitch(float _pitch) {
+    if (pitch + _pitch < PI / 2 && pitch + _pitch > -PI / 2) {
+        pitch += _pitch;
     }
     UpdateViewMatrix();
 }
 
 void Camera::UpdateViewMatrix() {
-    m_camera_target.x = cos(m_pitch) * cos(m_yaw) + m_position.x;
-    m_camera_target.y = sin(m_pitch) + m_position.y;
-    m_camera_target.z = cos(m_pitch) * sin(m_yaw) + m_position.z;
-    m_view_matrix = glm::lookAt(m_position, m_camera_target, glm::vec3(0.0f, 1.0f, 0.0f));
-    m_yaw_rotation_matrix = glm::rotate(glm::mat4(1.0f), m_initial_yaw - m_yaw, glm::vec3(0.0f, 1.0f, 0.0f));
+    camera_target.x = cos(pitch) * cos(yaw) + position.x;
+    camera_target.y = sin(pitch) + position.y;
+    camera_target.z = cos(pitch) * sin(yaw) + position.z;
+    view_matrix = glm::lookAt(position, camera_target, glm::vec3(0.0f, 1.0f, 0.0f));
+    yaw_rotation_matrix = glm::rotate(glm::mat4(1.0f), initial_yaw - yaw, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Camera::SetProjectionMatrix(glm::mat4 proj) {
-	m_proj_matrix = proj;
+    proj_matrix = proj;
 }

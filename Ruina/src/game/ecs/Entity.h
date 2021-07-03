@@ -1,27 +1,23 @@
 #pragma once
-#include <vector>
-#include "ComponentManager.h"
-#include "ECS.h"
 
-class Entity {
-	friend class ComponentManager;
-public:
-	Entity(EntityId id);
-	std::vector<ComponentId>& GetComponents();
+struct Entity {
+    inline Entity(int id) : id(id) {};
 
-	template<typename T, typename... ARGS>
-	void AddComponent(ComponentManager& component_manager, ARGS... args) {
-		component_manager.CreateComponent<T>(m_id, args...);
-	}
-public:
-	EntityId m_id;
-private:
-	std::vector<ComponentId> m_components;
-	void AddComponentById(ComponentId component_id);
+    int32_t id;
 
+    operator int32_t () const {
+        return id;
+    }
+
+    bool operator==(const Entity& other) const {
+        return other.id == id;
+    }
 };
 
-class Speaker : public Entity {
-public:
-	Speaker(EntityId id);
-};
+namespace std {
+    template<> struct hash<Entity> {
+        std::size_t operator()(Entity const& e) const noexcept {
+            return e.id;
+        }
+    };
+}

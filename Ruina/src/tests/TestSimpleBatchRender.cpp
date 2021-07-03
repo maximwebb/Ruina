@@ -4,9 +4,9 @@ namespace test {
 	TestSimpleBatchRender::TestSimpleBatchRender() {
 		int vertex_offsets[] = {
 			0, 0,
-			1, 0,
+			0, 1,
 			1, 1,
-			0, 1
+			1, 0
 		};
 
 		int index_offsets[] = {
@@ -26,8 +26,8 @@ namespace test {
 //			 0.0f,   30.0f // 7
 //		};
 
-		float data[8 * 8 * 8];
 
+		float data[8 * 8 * 8];
 		unsigned int indices[8 * 8 * 6];
 
 		int n = 8;
@@ -51,12 +51,11 @@ namespace test {
 			}
 		}
 
-
 		/* Vertex array setup */
 		m_va = std::make_unique<VertexArray>();
 		m_vb = std::make_unique<VertexBuffer>(data, n * n * 4 * 2 * sizeof(float));
 		VertexBufferLayout layout;
-		layout.Push<float>(2); //Add attribute layouts here.
+		layout.PushFloat(2); //Add attribute layouts here.
 		m_va->AddBuffer(*m_vb, layout);
 
 		/* Index buffer setup */
@@ -69,7 +68,6 @@ namespace test {
 		m_view = std::make_unique<glm::mat4>(1.0f);
 		m_shader->SetUniformMat4("u_MVP", (*m_proj) * (*m_view));
 		m_shader->SetUniform4f("u_color", 1.0f, 1.0f, 1.0f, 1.0f);
-		m_shader->SetUniform1i("u_is_color", 1);
 	}
 
 	TestSimpleBatchRender::~TestSimpleBatchRender() {

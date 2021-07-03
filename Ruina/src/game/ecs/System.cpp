@@ -1,12 +1,9 @@
-#include "ECSEngine.h"
+#include "Manager.h"
 #include "System.h"
 
-LoggingSystem::LoggingSystem(SystemId id) : System(id) {
-	SubscribeToEvent<OnLogRequestEvent>();
-}
 
-void LoggingSystem::Update(const Event& e) {
-	for (auto c : ECSEngine::component_manager().GetComponentGroup<Logging>()) {
-		std::cout << ((Logging*) c)->m_message << std::endl;
-	}
+System::System(Manager& m) : id(getNextId()), m(m) { }
+
+void System::SubscribeInner(std::type_index type_id, EventHandler f) {
+	m.RegisterEventListener(type_id, f);
 }

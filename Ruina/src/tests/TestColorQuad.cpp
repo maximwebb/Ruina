@@ -1,15 +1,15 @@
 #include "TestColorQuad.h"
 
-
 namespace test {
 
 	TestColorQuad::TestColorQuad()
-		: m_quad_color{1.0f, 0.0f, 0.0f, 1.0f} {
+		: m_quad_color{1.0f, 0.0f, 0.0f, 1.0f}
+		{
 		float data[] = {
-			-30.0f, -30.0f, 0.0f, 0.0f, // 0
-			 30.0f, -30.0f, 1.0f, 0.0f, // 1
-			 30.0f,  30.0f, 1.0f, 1.0f, // 2
-			-30.0f,  30.0f, 0.0f, 1.0f  // 3
+			-30.0f, -30.0f,
+			-30.0f, 30.0f,
+			30.0f, 30.0f,
+			30.0f, -30.0f,
 		};
 
 		unsigned int indices[] = {
@@ -20,10 +20,9 @@ namespace test {
 
 		/* Vertex array setup */
 		m_va = std::make_unique<VertexArray>();
-		m_vb = std::make_unique<VertexBuffer>(data, 4 * 4 * sizeof(float));
+		m_vb = std::make_unique<VertexBuffer>(data, 4 * 2 * sizeof(float));
 		VertexBufferLayout layout;
-		layout.Push<float>(2); //Add attribute layouts here.
-		layout.Push<float>(2);
+		layout.PushFloat(2);
 		m_va->AddBuffer(*m_vb, layout);
 
 		/* Index buffer setup */
@@ -37,7 +36,6 @@ namespace test {
 		m_view = std::make_unique<glm::mat4>(1.0f);
 		m_shader->SetUniformMat4("u_MVP", (*m_proj) * (*m_view));
 		m_shader->SetUniform4f("u_color", m_quad_color[0], m_quad_color[1], m_quad_color[2], m_quad_color[3]);
-		m_shader->SetUniform1i("u_is_color", 1);
 	};
 
 	TestColorQuad::~TestColorQuad() {
@@ -53,6 +51,7 @@ namespace test {
 		m_shader->Bind();
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), *m_translation);
 		glm::mat4 mvp = (*m_proj) * (*m_view) * model;
+
 		m_shader->SetUniform4f("u_color", m_quad_color[0], m_quad_color[1], m_quad_color[2], m_quad_color[3]);
 		m_shader->SetUniformMat4("u_MVP", mvp);
 		m_shader->Unbind();

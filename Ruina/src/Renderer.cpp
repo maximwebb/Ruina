@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
 
-void Renderer::Draw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader) const {
+void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
 	shader.Bind();
 	va.Bind();
 	ib.Bind();
@@ -9,7 +9,7 @@ void Renderer::Draw(const VertexArray &va, const IndexBuffer &ib, const Shader &
 	glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::DrawCube(const glm::mat4 &transform, const Shader &shader) const {
+void Renderer::DrawCube(const glm::mat4& transform, const Shader& shader) const {
 
 }
 

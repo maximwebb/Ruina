@@ -21,6 +21,7 @@ namespace test {
 		virtual void OnUpdate(float deltaTime) {}
 		virtual void OnRender() {
 			glClearColor(0.11f, 0.11f, 0.11f, 1.0f);
+//			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 		}
 		virtual void OnImGuiRender() {}
@@ -35,6 +36,10 @@ namespace test {
 		template <typename T>
 		void RegisterTest(const std::string& name) {
 			m_tests.push_back(std::make_pair(name, [](){return new T(); }));
+		}
+
+		void RegisterTest(Test* test, const std::string& name) {
+		    m_tests.emplace_back(name, [test](){return test;});
 		}
 	public:
 		GuiManager gui_manager;
