@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 project(Ruina)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_COMPILER "/usr/bin/g++-9")
+if (UNIX)
+    set(CMAKE_CXX_COMPILER "/usr/bin/g++-9")
+endif ()
 
 
 include_directories(Dependencies)
@@ -22,13 +24,19 @@ include_directories(Ruina/src/game/ecs)
 include_directories(Ruina/src/game/geometry)
 include_directories(Ruina/src/game/physics)
 include_directories(Ruina/src/game/renderer)
-include_directories(/usr/include/GL)
 
-find_package(OpenGL REQUIRED)
-find_package(GLUT REQUIRED)
-find_package(GLEW REQUIRED)
+if (UNIX)
+    include_directories(/usr/include/GL)
+    find_package(OpenGL REQUIRED)
+    find_package(GLUT REQUIRED)
+    find_package(GLEW REQUIRED)
+else ()
+    find_library(GLFW_LIB glfw3 Dependencies/GLFW/lib-vc2017)
+    find_library(GLEW_LIB glew32s Dependencies/GLEW/lib/Release/Win32)
+    find_library(OPENGL_LIB opengl32 CMAKE_C_COMPILER/lib)
+endif ()
 
-include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 
 find_library(GLFW_LIB glfw /usr/local/lib/libglfw.so.3.3)
 find_library(GLEW_LIB libGLEW Dependencies/GLEW/lib/libGLEW.so.2.1.0)
@@ -85,6 +93,10 @@ add_executable(Ruina
         Ruina/src/gui/GuiTripleSlider.cpp Ruina/src/game/ecs/System.cpp Ruina/src/game/ecs/System.h Ruina/src/game/ecs/Entity.h Ruina/src/game/ecs/Component.h
         Ruina/src/game/ecs/Manager.h Ruina/src/game/ecs/Manager.cpp Ruina/src/game/ecs/Group.h Ruina/src/game/ecs/Event.h)
 
-target_link_libraries(Ruina ${GLEW_LIBRARIES} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+if (UNIX)
+    target_link_libraries(Ruina ${GLEW_LIBRARIES} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+else ()
+    target_link_libraries(Ruina ${GLFW_LIB} ${GLEW_LIB} ${OPENGL_LIB})
+endif ()
 
 add_definitions(-DGLEW_STATIC)

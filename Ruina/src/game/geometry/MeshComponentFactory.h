@@ -15,7 +15,6 @@ public:
 
 	Component& CreateCubeMesh(Entity id, glm::mat4 model) {
 		Texture& cube_texture = TextureManager::Get("Ruina/res/textures/rainbow.png");
-//		return ECSEngine::component_manager().CreateComponent<MeshComponent>(id, *cube_vertices, *cube_indices, cube_texture, model);
         return m.Add<MeshComponent>(id, *cube_vertices, *cube_indices, cube_texture, model);
 	}
 	Component& CreateCubeMesh(Entity id, float x, float y, float z) {
@@ -64,8 +63,8 @@ public:
 				float PI = 3.14159265f;
 //				float theta = acos(normalized_pos.z)/PI;
 //				float phi = (atan(normalized_pos.y/normalized_pos.x) + PI/2)/PI;
-                float theta = (atan(normalized_pos.x/normalized_pos.z) + PI/2)/(1.5 * PI);;
-                float phi = (normalized_pos.y+1)/2;
+				float theta = (atan(normalized_pos.x / normalized_pos.z) + PI / 2) / (1.5 * PI);;
+				float phi = (normalized_pos.y + 1) / 2;
 
 				vertex.u = theta;
 //				vertex.v = 0.5;
@@ -74,7 +73,7 @@ public:
 			sphere_vertices.insert(sphere_vertices.end(), vertices.begin(), vertices.end());
 		}
 		std::vector<unsigned int> sphere_indices(sphere_vertices.size());
-		Texture& sphere_texture = TextureManager::Get("Ruina/res/textures/earth2.jpg");
+		Texture &sphere_texture = TextureManager::Get("Ruina/res/textures/basketball.png");
 		std::iota(std::begin(sphere_indices), std::end(sphere_indices), 0);
 		return m.Add<MeshComponent>(id, sphere_vertices, sphere_indices, sphere_texture, model);
 	}

@@ -32,7 +32,7 @@ void RenderSystem::Update(const Event& e) {
 		}
 		glm::mat4 model = mesh_component->model;
 		shader->SetUniformMat4("u_MVP", vp_matrix * model);
-		shader->SetUniformMat4("u_model", model);
+//		shader->SetUniformMat4("u_model", model);
 		shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(model)));
 		auto index = texture_slots->Bind(mesh_component->texture);
 		shader->SetUniform1f("u_texture_index", index);
