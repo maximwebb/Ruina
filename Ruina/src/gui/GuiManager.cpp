@@ -4,10 +4,11 @@
 GuiManager::GuiManager(GLFWwindow* window)
 	: m_window(window),  m_gui_elements(std::vector<IGuiElement*>()) {
 	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
+	ctx = ImGui::CreateContext();
+	ImGui::SetCurrentContext(ctx);
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 }
@@ -18,11 +19,19 @@ GuiManager::~GuiManager() {
 	ImGui::DestroyContext();
 }
 
+void GuiManager::Begin(const char* title, ImVec2 pos) {
+//	ImGui::SetCurrentContext(ctx);
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	ImGui::Begin(title);
+	ImGui::SetWindowPos(pos, ImGuiCond_Once);
+}
+
 void GuiManager::Begin(const char* title) {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-
 	ImGui::Begin(title);
 }
 

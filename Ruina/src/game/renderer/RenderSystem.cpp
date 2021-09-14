@@ -36,6 +36,7 @@ void RenderSystem::Update(const Event& e) {
 		shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(model)));
 		auto index = texture_slots->Bind(mesh_component->texture);
 		shader->SetUniform1f("u_texture_index", index);
+		shader->SetUniform4f("camera_position", camera->GetPosition());
 		shader->Bind();
 		BindMeshComponent(id);
 
@@ -45,7 +46,9 @@ void RenderSystem::Update(const Event& e) {
 
 void RenderSystem::AddMeshComponent(MeshComponent* mesh_component, Entity id) {
 	VertexArray va;
-	VertexBuffer vb(mesh_component->vertices.data(), mesh_component->vertices.size() * 4);
+	auto data = mesh_component->vertices.data();
+	int size = mesh_component->vertices.size();
+	VertexBuffer vb(data, size * 4);
 
 	VertexBufferLayout layout;
 	layout.PushFloat(3);

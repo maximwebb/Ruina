@@ -7,7 +7,8 @@ public:
     Camera(float, float, float, float, float);
     ~Camera();
 
-    void SetPosition(float, float, float);
+	glm::vec4 GetPosition();
+	void SetPosition(float, float, float);
     void IncrementPosition(float, float, float);
 
     void SetPitch(float);

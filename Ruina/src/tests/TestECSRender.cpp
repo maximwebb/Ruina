@@ -1,5 +1,5 @@
 #include "TestECSRender.h"
-#include "../geometry/MeshComponentFactory.h"
+//#include "../geometry/MeshComponentFactory.h"
 
 #ifdef WIN32
 #include <Windows.h>
@@ -7,18 +7,18 @@
 
 
 namespace test {
-	TestECSRender::TestECSRender(GLFWwindow* window) : window(window), m({}), physics_system(m), render_system(m),
-													   sphere1(m.Create()), sphere2(m.Create()) {
+	TestECSRender::TestECSRender(GLFWwindow* window) : window(window), m({}), mesh_factory(m), physics_system(m), render_system(m),
+													   sphere1(m.Create()), sphere2(m.Create()), cube(m.Create()) {
 
-		MeshComponentFactory mesh_factory(m);
+//		MeshComponentFactory mesh_factory(m);
 		depth = 15;
 		glm::mat4 model1 = glm::translate(
 				glm::scale(
 						glm::rotate(
 								glm::mat4(10.0f),
 								0.0f, glm::vec3(1.0f, 1.0f, -1.0f)),
-						glm::vec3(2.0f, 2.0f, 2.0f)),
-				glm::vec3(-5.0f, -0.5f, 0.0f));
+						glm::vec3(5.0f, 5.0f, 5.0f)),
+				glm::vec3(-0.5f, -1.5f, 0.0f));
 
 		glm::mat4 model = glm::translate(glm::mat4(1), glm::vec3(-3.0f, -0.5f, 0.0f));
 		glm::mat4 model2 = glm::translate(glm::mat4(1), glm::vec3(3.0f, -0.5f, 0.0f));
@@ -26,10 +26,11 @@ namespace test {
 		mesh_factory.CreateSphereMesh(sphere1, model1, depth);
 		mesh_factory.CreateSphereMesh(sphere2, model2, depth);
 
+//		mesh_factory.CreateCubeMesh(cube, model1);
 
 		glm::vec3 center1 = glm::vec3(-5.0f, -0.5f, 0.0f);
 		glm::vec3 center2 = glm::vec3(5.0f, -0.5f, 0.0f);
-		glm::vec3 velocity1(0);
+		glm::vec3 velocity1(10, 10, 10);
 		glm::vec3 velocity2(0);
 
 		float mass1 = 5000.0f;
@@ -38,7 +39,7 @@ namespace test {
 		m.Add<MotionComponent>(sphere1, center1, velocity1, mass1 * 10);
 		m.Add<MotionComponent>(sphere2, center2, velocity2, mass2 * 10);
 		m.Add<MassComponent>(sphere1, mass1);
-		m.Add<MassComponent>(sphere2, mass2);
+//		m.Add<MassComponent>(sphere2, mass2);
 	}
 
 	TestECSRender::~TestECSRender() {

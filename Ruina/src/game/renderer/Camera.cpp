@@ -16,6 +16,10 @@ Camera::~Camera() {
 
 }
 
+glm::vec4 Camera::GetPosition() {
+	return glm::vec4(position, 1.0f);
+}
+
 void Camera::SetPosition(float x, float y, float z) {
     position.x = x;
     position.y = y;

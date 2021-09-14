@@ -169,8 +169,6 @@ public:
 			for (const auto& handler : listeners.at(type_id)) {
 				handler(e);
 			}
-		} else {
-			std::cout << "No subscribers to this event." << std::endl;
 		}
 	}
 

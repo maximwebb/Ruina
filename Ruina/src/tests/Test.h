@@ -29,7 +29,7 @@ namespace test {
 
 	class TestMenu : public Test {
 	public:
-		TestMenu(Test*&, const GuiManager&);
+		TestMenu(Test*&, bool&, const GuiManager&);
 		~TestMenu() {}
 		void OnImGuiRender() override;
 
@@ -45,6 +45,7 @@ namespace test {
 		GuiManager gui_manager;
 	private:
 		Test*& m_current_test;
+		bool& editor_mode;
 
 		/* Stores a list of names and lambdas that return test pointers.
 		 * This allows us to instantiate and destroy tests while using the menu, instead of "activating" them.
