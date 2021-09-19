@@ -17,10 +17,9 @@ private:
 public:
 	GuiManager(GLFWwindow* window);
 	~GuiManager();
+	void NewFrame();
 	void Begin(const char* title);
 	void Begin(const char* title, ImVec2 pos);
+	void End();
 	void Render();
-	void AddGuiElement(IGuiElement*);
-	void AddGuiElement(IGuiElement*, bool);
-	void DrawGuiElements();
 };

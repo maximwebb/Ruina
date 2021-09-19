@@ -11,10 +11,9 @@
 #include "TestSimpleBatchRender.h"
 
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_E && action == GLFW_PRESS)
-        std::cout << "hi" << std::endl;
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_E && action == GLFW_PRESS)
+		std::cout << "hi" << std::endl;
 }
 
 int main() {
@@ -42,7 +41,6 @@ int main() {
 	Shader shader("Ruina/res/shaders/Vertex.shader", "Ruina/res/shaders/Fragment.shader");
 	Renderer renderer;
 	GuiManager imgui(window);
-//	GuiManager editor_imgui(window);
 
 	bool editor_mode = false;
 
@@ -56,37 +54,30 @@ int main() {
 	test_menu->RegisterTest<test::TestECS>("ECS");
 	auto* ecs_render_test = new test::TestECSRender(window);
 	test_menu->RegisterTest(ecs_render_test, "ECS Render");
-//	test_menu->RegisterTest<test::TestECSRender>("ECS Render");
 
-	Editor* editor = new Editor(editor_mode, imgui);
+	auto* editor = new Editor(editor_mode, imgui, window);
 
-    glfwSetKeyCallback(window, key_callback);
+	glfwSetKeyCallback(window, key_callback);
 
 	while (!glfwWindowShouldClose(window)) {
 		renderer.Clear();
+		imgui.NewFrame();
 		if (editor_mode) {
-			editor->gui_manager.Begin("Editor", {50, 50});
 			editor->OnUpdate(0.0f);
 			editor->OnRender();
 			editor->OnImGuiRender();
-			editor->gui_manager.Render();
-			editor->gui_manager.Begin("Second", {50, 250});
-			if (ImGui::Button("asdf")) {
-				std::cout << "asdf" << std::endl;
-			}
-			editor->gui_manager.Render();
 		} else if (current_test) {
 			current_test->OnUpdate(0.0f);
 			current_test->OnRender();
-			test_menu->gui_manager.Begin("Test");
+			imgui.Begin("Test");
 			if (current_test != test_menu && ImGui::Button("<-")) {
 				delete current_test;
 				current_test = test_menu;
 				shader.Bind();
 			}
 			current_test->OnImGuiRender();
-
-			test_menu->gui_manager.Render();
+			imgui.End();
+			imgui.Render();
 		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();

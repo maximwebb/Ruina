@@ -1,6 +1,8 @@
 #pragma once
 
 struct Entity {
+//	inline Entity() : id(-1) {};
+
     inline Entity(int id) : id(id) {};
 
     int32_t id;

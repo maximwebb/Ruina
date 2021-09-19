@@ -55,6 +55,7 @@ private:
 	std::unordered_map<std::type_index, std::vector<Component*>> components;
 	std::vector<Entity> entities;
 	// Store mapping between entity_tuples, and lists of components (and their corresponding type ids)
+public:
 	std::unordered_map<int32_t, std::vector<std::pair<int, Component*>>> component_bags;
 
 	uint64_t next_entity_id;
