@@ -2,7 +2,9 @@
 
 Scene::Scene(GLFWwindow* window) : m(), render_system(m), window(window), e(m.Create()) {
 	AddCube();
+//	AddTriangle();
 	movement_system = std::make_unique<MovementSystem>(m, render_system.camera, window, 0.15f, 0.02f);
+	object_selection_system = std::make_unique<ObjectSelectionSystem>(m, render_system.camera, window);
 }
 
 void Scene::OnUpdate(float deltaTime) {
@@ -22,8 +24,20 @@ void Scene::AddCube() {
 					glm::vec3(5.0f, 5.0f, 5.0f)),
 			glm::vec3(-0.5f, -1.5f, 0.0f));
 
-	glm::mat4 model = glm::mat4(0.1);
+
+	glm::mat4 model = glm::mat4(1.0f);
 	m.Add<MeshComponent>(e, MeshComponentFactory::CubeMesh(), MeshComponentFactory::CubeIndices(),
+						 TextureManager::Get("Ruina/res/textures/texture_palette.png"), model);
+	Entity e1 = m.Create();
+	m.Add<MeshComponent>(e1, MeshComponentFactory::CubeMesh(), MeshComponentFactory::CubeIndices(),
+						 TextureManager::Get("Ruina/res/textures/texture_palette.png"), glm::translate(model, {-3, 0, 0}));
+
+}
+
+void Scene::AddTriangle() {
+	Entity e2 = m.Create();
+	glm::mat4 model = glm::mat4(1.0f);
+	m.Add<MeshComponent>(e2, MeshComponentFactory::TriangleMesh(), MeshComponentFactory::TriangleIndices(),
 						 TextureManager::Get("Ruina/res/textures/texture_palette.png"), model);
 }
 

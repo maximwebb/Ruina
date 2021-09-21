@@ -171,6 +171,23 @@ public:
 		return cube_indices;
 	}
 
+	static std::vector<VertexPNUV> TriangleMesh() {
+		std::vector<VertexPNUV> vertices;
+		vertices.reserve(24);
+		vertices.emplace_back(VertexPNUV(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.333f, 0.0f));
+		vertices.emplace_back(VertexPNUV(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
+		vertices.emplace_back(VertexPNUV(0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.333f, 0.5f));
+
+		return vertices;
+	}
+
+	static std::vector<unsigned int> TriangleIndices() {
+		std::vector<unsigned int> triangle_indices = {
+			0, 1, 2,
+		};
+		return triangle_indices;
+	}
+
 	static std::vector<VertexPNUV> OctahedronMesh() {
 		std::vector<VertexPNUV> vertices;
 		vertices.reserve(24);
@@ -232,62 +249,5 @@ public:
 
 private:
 	Manager& m;
-//	static std::vector<VertexPNUV>* cube_vertices;
-//	static std::vector<unsigned int>* cube_indices;
 
 };
-
-
-//	std::vector<VertexPNUV>* MeshComponentFactory::cube_vertices = new std::vector<VertexPNUV>{
-//			VertexPNUV(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.333f, 0.0f),
-//			VertexPNUV(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f),
-//			VertexPNUV(0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.333f, 0.5f),
-//			VertexPNUV(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.5f),
-//
-//			VertexPNUV(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.667f, 0.0f),
-//			VertexPNUV(1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.333f, 0.0f),
-//			VertexPNUV(1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.667f, 0.5f),
-//			VertexPNUV(1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.333f, 0.5f),
-//
-//			VertexPNUV(1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f),
-//			VertexPNUV(0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.667f, 0.0f),
-//			VertexPNUV(1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.5f),
-//			VertexPNUV(0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.667f, 0.5f),
-//
-//			VertexPNUV(0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.333f, 0.5f),
-//			VertexPNUV(0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.5f),
-//			VertexPNUV(0.0f, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.333f, 1.0f),
-//			VertexPNUV(0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f),
-//
-//			VertexPNUV(0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.667f, 0.5f),
-//			VertexPNUV(1.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.333f, 0.5f),
-//			VertexPNUV(0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.667f, 1.0f),
-//			VertexPNUV(1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.333f, 1.0f),
-//
-//			VertexPNUV(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.5f),
-//			VertexPNUV(1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.667f, 0.5f),
-//			VertexPNUV(0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f),
-//			VertexPNUV(1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.667f, 1.0f)
-//	};
-
-//	std::vector<unsigned int>* MeshComponentFactory::cube_indices = new std::vector<unsigned int>{
-//			0, 1, 2,
-//			2, 1, 3,
-//
-//			4, 5, 6,
-//			6, 5, 7,
-//
-//			8, 9, 10,
-//			10, 9, 11,
-//
-//			12, 13, 14,
-//			14, 13, 15,
-//
-//			16, 17, 18,
-//			18, 17, 19,
-//
-//			20, 21, 22,
-//			22, 21, 23
-//	};
-
-//std::shared_ptr<Texture> MeshComponentFactory::cube_texture = TextureManager::GetPtr("Ruina/res/textures/texture_palette.png");

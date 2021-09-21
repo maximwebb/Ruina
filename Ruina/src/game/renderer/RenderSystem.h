@@ -20,6 +20,7 @@ class RenderSystem : public System {
 public:
     explicit RenderSystem(Manager&);
     void Update(const Event&);
+    void UpdateSelected(const Event&);
     void RemoveMeshComponent(Entity);
     std::shared_ptr<Camera> camera;
 
@@ -31,4 +32,6 @@ private:
     std::unordered_map<Entity, VertexArray> vertex_arrays;
     std::unordered_map<Entity, IndexBuffer> index_buffers;
     std::unique_ptr<TextureCache> texture_slots;
+
+	int selected;
 };

@@ -9,6 +9,7 @@ Camera::Camera(float x, float y, float z, float pitch, float yaw)
       yaw_rotation_matrix(glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f))) {
     UpdateViewMatrix();
     /* Default projection */
+//    proj_matrix = glm::perspective(1.0f, 1.0f, 1.0f, 150.0f);
     proj_matrix = glm::perspective(1.0f, 4.0f / 3.0f, 1.0f, 150.0f);
 }
 
