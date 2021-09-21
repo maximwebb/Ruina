@@ -1,33 +1,25 @@
 #include "ObjectSelectionSystem.h"
+#include <WindowEventSystem.h>
 
 ObjectSelectionSystem::ObjectSelectionSystem(Manager& m, std::shared_ptr<Camera> camera, GLFWwindow* window)
-: System(m), camera(std::move(camera)), window(window), prev_cursor({0.0, 0.0f}), prev_hovered(-1) {
-	Subscribe<GameTickEvent>(HANDLER(OnHover));
-	Subscribe<GameTickEvent>(HANDLER(OnClick));
-	Subscribe<HoverEvent>(HANDLER(TestIntersection));
+		: System(m), camera(std::move(camera)), window(window), prev_hovered(-1),
+		prev_selected(-1), active_selected(false) {
+	Subscribe<MouseClickEvent>(HANDLER(OnClick));
+	Subscribe<MouseMoveEvent>(HANDLER(TestIntersection));
+	glfwGetWindowSize(window, &window_width, &window_height);
 }
 
-void ObjectSelectionSystem::OnHover(const Event&) {
-	glm::vec<2, double> new_cursor(0.0f);
-	glfwGetCursorPos(window, &(new_cursor.x), &(new_cursor.y));
-	if (glm::distance(new_cursor, prev_cursor) > 0.0) {
-		prev_cursor = new_cursor;
-		int* width = new int;
-		int* height = new int;
-		glfwGetWindowSize(window, width, height);
-		double x = 2 * new_cursor.x/(double)(*width) - 1.0;
-		double y = 1.0- 2 * new_cursor.y/(double)(*height);
-		glm::vec2 pos(x, y);
-		m.QueueEvent<HoverEvent>(pos);
-	}
-}
 
 void ObjectSelectionSystem::TestIntersection(const Event& e) {
-	auto* hover_event = (HoverEvent*)&e;
-	glm::vec3 pos(hover_event->pos.x, hover_event->pos.y, 1.0f);
+	auto mouse_move_event = *(MouseMoveEvent*)&e;
+	double x = 2 * mouse_move_event.x/(double)window_width - 1.0;
+	double y = 1.0- 2 * mouse_move_event.y/(double)window_height;
+	glm::vec3 pos(x, y, 1.0f);
 	glm::vec3 origin(0.0f);
-	auto g = m.CreateGroup<MeshComponent>();
 	int selected = -1;
+	auto g = m.CreateGroup<MeshComponent>();
+
+	/* Test intersection of cursor position with each triangle */
 	for (auto id : g) {
 		auto [mesh] = g.Get(id);
 		auto model = mesh->model;
@@ -57,7 +49,9 @@ void ObjectSelectionSystem::TestIntersection(const Event& e) {
 	}
 	if (selected != prev_hovered) {
 		prev_hovered = selected;
-		m.QueueEvent<SelectElementEvent>(prev_hovered);
+		if (!active_selected) {
+			m.QueueEvent<SelectElementEvent>({prev_hovered, false});
+		}
 	}
 }
 
@@ -66,7 +60,16 @@ float ObjectSelectionSystem::Sign(glm::vec2 u, glm::vec2 v, glm::vec2 w) {
 	return (u.x - w.x) * (v.y - w.y) - (v.x - w.x) * (u.y - w.y);
 }
 
-// TODO: Event handler to fix GLFW_RELEASE being continually triggered.
-void ObjectSelectionSystem::OnClick(const Event&) {
 
+void ObjectSelectionSystem::OnClick(const Event& ev) {
+	MouseClickEvent e = *(MouseClickEvent*)(&ev);
+	if (e.button == GLFW_MOUSE_BUTTON_LEFT) {
+		if (prev_hovered == prev_selected) {
+			prev_selected = -1;
+		} else {
+			prev_selected = prev_hovered;
+		}
+		active_selected = (prev_selected != -1);
+		m.QueueEvent<SelectElementEvent>({prev_selected, true});
+	}
 }

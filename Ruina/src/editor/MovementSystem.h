@@ -6,6 +6,7 @@
 #include "Event.h"
 #include "Manager.h"
 #include "System.h"
+#include "WindowEventSystem.h"
 
 class MovementSystem : public System {
 public:

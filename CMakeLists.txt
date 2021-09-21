@@ -91,7 +91,7 @@ add_executable(Ruina
         Ruina/src/gui/GuiManager.cpp Ruina/src/gui/GuiManager.h Ruina/src/gui/IGuiElement.h Ruina/src/gui/GuiText.cpp
         Ruina/src/gui/Gui.h Ruina/src/gui/GuiButton.cpp Ruina/src/gui/GuiCheckbox.cpp Ruina/src/gui/GuiColorPicker.cpp
         Ruina/src/gui/GuiTripleSlider.cpp Ruina/src/game/ecs/System.cpp Ruina/src/game/ecs/System.h Ruina/src/game/ecs/Entity.h Ruina/src/game/ecs/Component.h
-        Ruina/src/game/ecs/Manager.h Ruina/src/game/ecs/Manager.cpp Ruina/src/game/ecs/Group.h Ruina/src/game/ecs/Event.h Ruina/src/editor/Editor.cpp Ruina/src/editor/Editor.h Ruina/src/editor/Scene.cpp Ruina/src/editor/Scene.h Ruina/src/editor/MovementSystem.cpp Ruina/src/editor/MovementSystem.h Ruina/src/editor/ObjectSelectionSystem.cpp Ruina/src/editor/ObjectSelectionSystem.h)
+        Ruina/src/game/ecs/Manager.h Ruina/src/game/ecs/Manager.cpp Ruina/src/game/ecs/Group.h Ruina/src/game/ecs/Event.h Ruina/src/editor/Editor.cpp Ruina/src/editor/Editor.h Ruina/src/editor/Scene.cpp Ruina/src/editor/Scene.h Ruina/src/editor/MovementSystem.cpp Ruina/src/editor/MovementSystem.h Ruina/src/editor/ObjectSelectionSystem.cpp Ruina/src/editor/ObjectSelectionSystem.h Ruina/src/game/ecs/WindowEventSystem.cpp Ruina/src/game/ecs/WindowEventSystem.h)
 
 if (UNIX)
     target_link_libraries(Ruina ${GLEW_LIBRARIES} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})

@@ -1,7 +1,7 @@
 #include "RenderSystem.h"
 #include <editor/ObjectSelectionSystem.h>
 
-RenderSystem::RenderSystem(Manager& m) : System(m), selected(-1) {
+RenderSystem::RenderSystem(Manager& m) : System(m), selected(-1), clicked(false) {
 	camera = std::make_shared<Camera>(-1.0f, -1.0f, -10.0f, 0.0f, 1.57f);
 	shader = std::make_unique<Shader>("Ruina/res/shaders/BatchVertex.shader","Ruina/res/shaders/BatchFragment.shader");
 	shader->Bind();
@@ -39,9 +39,9 @@ void RenderSystem::Update(const Event& e) {
 		shader->SetUniform1f("u_texture_index", index);
 		shader->SetUniform4f("camera_position", camera->GetPosition());
 		if (id == selected) {
-			shader->SetUniform1i("selected", true);
+			shader->SetUniform1i("highlight", clicked ? 2 : 1);
 		} else {
-			shader->SetUniform1i("selected", false);
+			shader->SetUniform1i("highlight", 0);
 		}
 		shader->Bind();
 		BindMeshComponent(id);
@@ -50,8 +50,10 @@ void RenderSystem::Update(const Event& e) {
 	}
 }
 
-void RenderSystem::UpdateSelected(const Event& e) {
-	selected = ((SelectElementEvent*)(&e))->id;
+void RenderSystem::UpdateSelected(const Event& ev) {
+	SelectElementEvent e = *(SelectElementEvent*)(&ev);
+	selected = e.id;
+	clicked = e.clicked;
 }
 
 void RenderSystem::AddMeshComponent(MeshComponent* mesh_component, Entity id) {

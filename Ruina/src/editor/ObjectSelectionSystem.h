@@ -8,29 +8,26 @@
 #include "System.h"
 #include "MeshComponent.h"
 
-class HoverEvent : public Event {
-public:
-	HoverEvent(glm::vec2 pos) : pos(pos) {	}
-	glm::vec2 pos;
-};
-
 class SelectElementEvent : public Event {
 public:
-	SelectElementEvent(int id) : id(id) { }
-	int id;
+	SelectElementEvent(int id, bool clicked) : id(id), clicked(clicked) { }
+	const int id;
+	const bool clicked;
 };
 
 class ObjectSelectionSystem : public System {
 public:
     ObjectSelectionSystem(Manager&, std::shared_ptr<Camera>, GLFWwindow*);
-    void OnHover(const Event&);
 	void OnClick(const Event&);
 	void TestIntersection(const Event&);
     std::shared_ptr<Camera> camera;
 
 private:
 	GLFWwindow* window{};
-	glm::vec<2, double> prev_cursor;
+	int window_width;
+	int window_height;
 	int prev_hovered;
+	int prev_selected;
+	bool active_selected;
 	float Sign(glm::vec2 u, glm::vec2 v, glm::vec2 w);
 };

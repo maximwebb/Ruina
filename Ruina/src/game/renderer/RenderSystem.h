@@ -34,4 +34,5 @@ private:
     std::unique_ptr<TextureCache> texture_slots;
 
 	int selected;
+	bool clicked;
 };

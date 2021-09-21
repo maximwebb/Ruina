@@ -9,7 +9,7 @@ in vec2 v_tex_coord;
 uniform sampler2D u_textures[4];
 uniform float u_texture_index;
 uniform vec4 camera_position;
-uniform bool selected;
+uniform int highlight;
 
 void main() {
     vec4 light_position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -40,7 +40,6 @@ void main() {
         color += pow(-dot(R, V), alpha) * k_s * light_color;
     }
 
-    if (selected) {
-        color += vec4(0.5f);
-    }
+    color += vec4(0.3f * highlight);
+
 }

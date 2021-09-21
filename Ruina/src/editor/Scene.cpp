@@ -5,6 +5,7 @@ Scene::Scene(GLFWwindow* window) : m(), render_system(m), window(window), e(m.Cr
 //	AddTriangle();
 	movement_system = std::make_unique<MovementSystem>(m, render_system.camera, window, 0.15f, 0.02f);
 	object_selection_system = std::make_unique<ObjectSelectionSystem>(m, render_system.camera, window);
+	window_event_system = std::make_unique<WindowEventSystem>(m, window);
 }
 
 void Scene::OnUpdate(float deltaTime) {
