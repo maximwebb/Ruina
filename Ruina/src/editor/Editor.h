@@ -23,4 +23,5 @@ private:
 	bool& editor_mode;
 	Manager m;
 	Scene scene;
+	glm::vec3 translation;
 };

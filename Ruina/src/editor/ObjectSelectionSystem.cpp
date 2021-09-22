@@ -66,7 +66,7 @@ void ObjectSelectionSystem::OnClick(const Event& ev) {
 	if (e.button == GLFW_MOUSE_BUTTON_LEFT) {
 		if (prev_hovered == prev_selected) {
 			prev_selected = -1;
-		} else {
+		} else if (prev_hovered != -1){
 			prev_selected = prev_hovered;
 		}
 		active_selected = (prev_selected != -1);

@@ -11,11 +11,6 @@
 #include "TestSimpleBatchRender.h"
 
 
-//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-//	if (key == GLFW_KEY_E && action == GLFW_PRESS)
-//		std::cout << "hi" << std::endl;
-//}
-
 int main() {
 	GLFWwindow* window;
 	if (!glfwInit()) {
@@ -57,13 +52,13 @@ int main() {
 
 	auto* editor = new Editor(editor_mode, imgui, window);
 
-//	glfwSetKeyCallback(window, key_callback);
 	while (!glfwWindowShouldClose(window)) {
 		renderer.Clear();
 		imgui.NewFrame();
 		if (editor_mode) {
 			editor->OnUpdate(0.0f);
 			editor->OnRender();
+//			ImGui::ShowDemoWindow();
 			editor->OnImGuiRender();
 		} else if (current_test) {
 			current_test->OnUpdate(0.0f);
