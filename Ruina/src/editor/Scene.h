@@ -39,4 +39,6 @@ private:
 	std::unordered_map<int32_t, SceneObject> scene_objects;
 	glm::mat4 base_model;
 	glm::vec3 translation;
+	std::unordered_map<std::string, std::string> textures;
+	std::string current_texture;
 };

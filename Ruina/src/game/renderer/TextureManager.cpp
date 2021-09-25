@@ -1,6 +1,6 @@
 #include "TextureManager.h"
 
-std::unordered_map<std::string, std::unique_ptr<Texture>> TextureManager::textures;
+std::map<std::string, std::unique_ptr<Texture>> TextureManager::textures;
 
 Texture& TextureManager::Get(const std::string& key) {
 	auto it = textures.find(key);

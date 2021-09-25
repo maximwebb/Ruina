@@ -3,7 +3,7 @@
 
 RenderSystem::RenderSystem(Manager& m) : System(m), selected(-1), clicked(false) {
 	camera = std::make_shared<Camera>(-1.0f, -1.0f, -10.0f, 0.0f, 1.57f);
-	shader = std::make_unique<Shader>("Ruina/res/shaders/BatchVertex.shader","Ruina/res/shaders/BatchFragment.shader");
+	shader = std::make_unique<Shader>("Ruina/res/shaders/BatchVertex.shader", "Ruina/res/shaders/BatchFragment.shader");
 	shader->Bind();
 
 	Subscribe<RenderEvent>(HANDLER(Update));
@@ -27,7 +27,7 @@ RenderSystem::RenderSystem(Manager& m) : System(m), selected(-1), clicked(false)
 void RenderSystem::Update(const Event& e) {
 	glm::mat4 vp_matrix = camera->proj_matrix * camera->view_matrix;
 	auto mesh_components = m.CreateGroup<MeshComponent>();
-	for (auto id : mesh_components) {
+	for (auto id: mesh_components) {
 		auto [mesh_component] = mesh_components.Get(id);
 		if (vertex_arrays.find(id) == vertex_arrays.end() && index_buffers.find(id) == index_buffers.end()) {
 			AddMeshComponent(mesh_component, id);
@@ -37,7 +37,7 @@ void RenderSystem::Update(const Event& e) {
 //		shader->SetUniformMat4("u_model", model);
 		shader->SetUniformMat4("u_normal_model", glm::inverse(glm::transpose(model)));
 		auto index = texture_slots->Bind(mesh_component->texture);
-		shader->SetUniform1f("u_texture_index", index);
+		shader->SetUniform1i("u_texture_index", index);
 		shader->SetUniform4f("camera_position", camera->GetPosition());
 		if (id == selected) {
 			shader->SetUniform1i("highlight", clicked ? 2 : 1);
@@ -52,13 +52,13 @@ void RenderSystem::Update(const Event& e) {
 }
 
 void RenderSystem::UpdateSelected(const Event& ev) {
-	SelectElementEvent e = *(SelectElementEvent*)(&ev);
+	SelectElementEvent e = *(SelectElementEvent*) (&ev);
 	selected = e.select ? e.id : -1;
 	clicked = e.select;
 }
 
 void RenderSystem::UpdateHovered(const Event& ev) {
-	HoverElementEvent e = *(HoverElementEvent*)(&ev);
+	HoverElementEvent e = *(HoverElementEvent*) (&ev);
 	selected = e.id;
 }
 

@@ -4,7 +4,7 @@
 
 class Texture {
 public:
-	explicit Texture(const std::string& key);
+	explicit Texture(const std::string&);
 	~Texture();
 	void Bind(unsigned int slot = 0) const;
 	void Unbind() const;

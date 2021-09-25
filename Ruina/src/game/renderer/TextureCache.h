@@ -12,6 +12,7 @@ public:
 		std::string key = texture.m_filepath;
 		auto res = m_map.find(key);
 		if (res == m_map.end()) {
+			// If there's space, insert directly into map, and insert into list (cache) at the next slot position
 			if (m_size < m_capacity) {
 				std::pair<int, std::string>* ptr = &*m_list.insert(m_list.end(), {m_size, key});
 				m_map.insert({key, ptr});
@@ -19,6 +20,7 @@ public:
 				texture.Bind(m_size);
 				return m_size++;
 			}
+			// Otherwise, remove the element at the front of the list (noting its texture slot), and insert at the end.
 			else {
 				std::pair<int, std::string> pair = m_list.front();
 				m_list.pop_front();
@@ -32,13 +34,14 @@ public:
 				return slot++;
 			}
 		}
+		// If cache hit, move element to back of list.
 		else {
 			auto* pair = new std::pair<int, std::string>(*res->second);
 			m_list.remove(*pair);
 			m_map.erase(pair->second);
 			m_list.push_back(*pair);
 			m_map.insert({std::string(pair->second), pair});
-
+			texture.Bind(pair->first);
 			return pair->first;
 		}
 	}

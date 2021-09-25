@@ -7,7 +7,7 @@ in vec4 wc_normal;
 in vec2 v_tex_coord;
 
 uniform sampler2D u_textures[4];
-uniform float u_texture_index;
+uniform int u_texture_index;
 uniform vec4 camera_position;
 uniform int highlight;
 
