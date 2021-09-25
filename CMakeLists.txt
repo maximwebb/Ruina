@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(Ruina)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 if (UNIX)
-    set(CMAKE_CXX_COMPILER "/usr/bin/g++-9")
+    set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
 endif ()
 
 

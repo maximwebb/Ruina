@@ -1,5 +1,5 @@
 #include "RenderSystem.h"
-#include <editor/ObjectSelectionSystem.h>
+#include "editor/ObjectSelectionSystem.h"
 
 RenderSystem::RenderSystem(Manager& m) : System(m), selected(-1), clicked(false) {
 	camera = std::make_shared<Camera>(-1.0f, -1.0f, -10.0f, 0.0f, 1.57f);
@@ -8,6 +8,7 @@ RenderSystem::RenderSystem(Manager& m) : System(m), selected(-1), clicked(false)
 
 	Subscribe<RenderEvent>(HANDLER(Update));
 	Subscribe<SelectElementEvent>(HANDLER(UpdateSelected));
+	Subscribe<HoverElementEvent>(HANDLER(UpdateHovered));
 	auto loc = shader->GetUniformLocation("u_textures");
 	glUniform1iv(loc, 4, new int[4]{0, 1, 2, 3});
 
@@ -29,7 +30,7 @@ void RenderSystem::Update(const Event& e) {
 	for (auto id : mesh_components) {
 		auto [mesh_component] = mesh_components.Get(id);
 		if (vertex_arrays.find(id) == vertex_arrays.end() && index_buffers.find(id) == index_buffers.end()) {
-			AddMeshComponent(mesh_component, id); // Probably gonna throw an error
+			AddMeshComponent(mesh_component, id);
 		}
 		glm::mat4 model = mesh_component->model;
 		shader->SetUniformMat4("u_MVP", vp_matrix * model);
@@ -52,8 +53,13 @@ void RenderSystem::Update(const Event& e) {
 
 void RenderSystem::UpdateSelected(const Event& ev) {
 	SelectElementEvent e = *(SelectElementEvent*)(&ev);
+	selected = e.select ? e.id : -1;
+	clicked = e.select;
+}
+
+void RenderSystem::UpdateHovered(const Event& ev) {
+	HoverElementEvent e = *(HoverElementEvent*)(&ev);
 	selected = e.id;
-	clicked = e.clicked;
 }
 
 void RenderSystem::AddMeshComponent(MeshComponent* mesh_component, Entity id) {

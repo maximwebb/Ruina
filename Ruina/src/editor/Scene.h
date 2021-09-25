@@ -1,15 +1,24 @@
 #pragma once
 
-#include "RenderSystem.h"
-#include "MeshComponentFactory.h"
+#include <utility>
+#include "GuiManager.h"
 #include "Manager.h"
+#include "MeshComponentFactory.h"
 #include "MovementSystem.h"
 #include "ObjectSelectionSystem.h"
+#include "RenderSystem.h"
 #include "WindowEventSystem.h"
+
+class SceneObject {
+public:
+	SceneObject(int id, const char* name) : id(id), name(name) {};
+	int32_t id;
+	const char* name;
+};
 
 class Scene {
 public:
-	Scene(GLFWwindow*);
+	Scene(GLFWwindow*, const GuiManager&);
 
 	void OnUpdate(float deltaTime);
 	void OnRender();
@@ -26,7 +35,8 @@ private:
 	std::unique_ptr<ObjectSelectionSystem> object_selection_system;
 	std::unique_ptr<WindowEventSystem> window_event_system;
 	GLFWwindow* window;
-	int selected;
+	GuiManager gui_manager;
+	std::unordered_map<int32_t, SceneObject> scene_objects;
 	glm::mat4 base_model;
 	glm::vec3 translation;
 };

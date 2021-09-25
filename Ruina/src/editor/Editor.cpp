@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 
 Editor::Editor(bool& editor_mode, const GuiManager& gui_manager, GLFWwindow* window) :
-	editor_mode(editor_mode), m({}), gui_manager(gui_manager), scene(window) {
+	editor_mode(editor_mode), m({}), gui_manager(gui_manager), scene(window, gui_manager) {
 
 }
 
@@ -21,9 +21,6 @@ void Editor::OnImGuiRender() {
 	if (ImGui::Button("<-")) {
 		editor_mode = false;
 	}
-	gui_manager.End();
-
-	gui_manager.Begin("Controls", {50, 250});
 	scene.OnImGuiRender();
 	gui_manager.End();
 	gui_manager.Render();

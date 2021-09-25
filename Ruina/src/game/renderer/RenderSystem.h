@@ -21,6 +21,7 @@ public:
     explicit RenderSystem(Manager&);
     void Update(const Event&);
     void UpdateSelected(const Event&);
+    void UpdateHovered(const Event&);
     void RemoveMeshComponent(Entity);
     std::shared_ptr<Camera> camera;
 

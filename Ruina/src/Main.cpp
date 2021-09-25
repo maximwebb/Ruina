@@ -2,8 +2,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <editor/Editor.h>
 #include "Debugger.h"
+#include "editor/Editor.h"
 #include "TestClearColor.h"
 #include "TestColorQuad.h"
 #include "TestECS.h"
@@ -58,7 +58,7 @@ int main() {
 		if (editor_mode) {
 			editor->OnUpdate(0.0f);
 			editor->OnRender();
-//			ImGui::ShowDemoWindow();
+			ImGui::ShowDemoWindow();
 			editor->OnImGuiRender();
 		} else if (current_test) {
 			current_test->OnUpdate(0.0f);

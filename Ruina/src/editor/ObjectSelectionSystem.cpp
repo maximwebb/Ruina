@@ -1,11 +1,12 @@
 #include "ObjectSelectionSystem.h"
-#include <WindowEventSystem.h>
+#include "WindowEventSystem.h"
 
 ObjectSelectionSystem::ObjectSelectionSystem(Manager& m, std::shared_ptr<Camera> camera, GLFWwindow* window)
-		: System(m), camera(std::move(camera)), window(window), prev_hovered(-1),
-		prev_selected(-1), active_selected(false) {
+		: System(m), camera(std::move(camera)), prev_hovered(-1),
+		  selected(-1), active_selected(false) {
 	Subscribe<MouseClickEvent>(HANDLER(OnClick));
 	Subscribe<MouseMoveEvent>(HANDLER(TestIntersection));
+	Subscribe<SelectElementEvent>(HANDLER(Update));
 	glfwGetWindowSize(window, &window_width, &window_height);
 }
 
@@ -16,7 +17,7 @@ void ObjectSelectionSystem::TestIntersection(const Event& e) {
 	double y = 1.0- 2 * mouse_move_event.y/(double)window_height;
 	glm::vec3 pos(x, y, 1.0f);
 	glm::vec3 origin(0.0f);
-	int selected = -1;
+	int next_selected = -1;
 	auto g = m.CreateGroup<MeshComponent>();
 
 	/* Test intersection of cursor position with each triangle */
@@ -43,14 +44,14 @@ void ObjectSelectionSystem::TestIntersection(const Event& e) {
 			float d3 = Sign(pos, c, a);
 			if (!(((d1 < 0) || (d2 < 0) || (d3 < 0))
 			&& ((d1 > 0) || (d2 > 0) || (d3 > 0)))) {
-				selected = id;
+				next_selected = id;
 			}
 		}
 	}
-	if (selected != prev_hovered) {
-		prev_hovered = selected;
+	if (next_selected != prev_hovered) {
+		prev_hovered = next_selected;
 		if (!active_selected) {
-			m.QueueEvent<SelectElementEvent>({prev_hovered, false});
+			m.QueueEvent<HoverElementEvent>({prev_hovered});
 		}
 	}
 }
@@ -64,12 +65,27 @@ float ObjectSelectionSystem::Sign(glm::vec2 u, glm::vec2 v, glm::vec2 w) {
 void ObjectSelectionSystem::OnClick(const Event& ev) {
 	MouseClickEvent e = *(MouseClickEvent*)(&ev);
 	if (e.button == GLFW_MOUSE_BUTTON_LEFT) {
-		if (prev_hovered == prev_selected) {
-			prev_selected = -1;
-		} else if (prev_hovered != -1){
-			prev_selected = prev_hovered;
+		// Only clicking on a selected element will cause deselection.
+		if (prev_hovered == selected && prev_hovered != -1) {
+			m.QueueEvent<SelectElementEvent>({selected, false});
+			selected = -1;
+		} else if (prev_hovered != -1) {
+			selected = prev_hovered;
+			m.QueueEvent<SelectElementEvent>({selected, true});
 		}
-		active_selected = (prev_selected != -1);
-		m.QueueEvent<SelectElementEvent>({prev_selected, true});
+		active_selected = (selected != -1);
+	}
+}
+
+// For updating state when a selection event happens elsewhere (such as in ImGui)
+void ObjectSelectionSystem::Update(const Event& ev) {
+	SelectElementEvent e = *(SelectElementEvent*)(&ev);
+	if (e.select) {
+		assert(e.id != -1);
+		active_selected = true;
+		selected = e.id;
+	} else {
+		active_selected = false;
+		selected = -1;
 	}
 }
