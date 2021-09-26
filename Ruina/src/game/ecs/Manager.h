@@ -85,6 +85,22 @@ public:
 		return e;
 	}
 
+	void Delete(Entity e) {
+		auto bag = component_bags.at(e);
+		for (auto& [type, component] : bag) {
+			int t = type;
+			auto result = std::find_if(
+			  type_ids.begin(),
+			  type_ids.end(),
+			  [t](const auto& el) {return el.second == t; });
+			std::type_index key = result->first;
+			auto list = components.at(key);
+			list.erase(std::remove(list.begin(), list.end(), component), list.end());
+			delete component;
+		}
+		entities.erase(std::remove(entities.begin(), entities.end(), e), entities.end());
+	}
+
 	template<class T, typename... ARGS>
 	Component& Add(Entity e, const ARGS& ... args) {
 		T* c = new T(args...);
@@ -143,7 +159,7 @@ public:
 				std::vector<Component*> cs;
 				for (std::type_index type : types) {
 					int type_id = type_ids.at(type);
-					for (auto[id, component] : component_bag) {
+					for (auto [id, component] : component_bag) {
 						if (id == type_id) {
 							cs.push_back(component);
 							break;

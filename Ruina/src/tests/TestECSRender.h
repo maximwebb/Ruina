@@ -5,7 +5,6 @@
 #include <MeshComponentFactory.h>
 #include "Test.h"
 #include "RenderSystem.h"
-#include "../geometry/Block.h"
 #include "../game/physics/MotionEntity.h"
 
 namespace test {

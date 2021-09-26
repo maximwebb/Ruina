@@ -22,8 +22,6 @@ Scene::Scene(GLFWwindow* window, const GuiManager& gui_manager)
 		mesh_files.emplace_back(file.path().filename(), file.path());
 	}
 
-//	AddTriangle();
-//	AddMesh();
 }
 
 void Scene::OnUpdate(float deltaTime) {
@@ -115,6 +113,15 @@ void Scene::OnImGuiRender() {
 		}
 
 		ImGui::EndPopup();
+	}
+
+
+	ImGui::SameLine();
+	if (ImGui::Button("Delete")) {
+		int id = object_selection_system->selected;
+		m.Delete(id);
+		m.QueueEvent<SelectElementEvent>({id, false});
+		scene_objects.erase(scene_objects.find(id));
 	}
 	gui_manager.End();
 }
