@@ -41,7 +41,8 @@ void Scene::OnImGuiRender() {
 		ImGui::TreePop();
 	}
 	if (ImGui::Button("+")) {
-		AddCube();
+		int id = AddCube();
+		m.QueueEvent<SelectElementEvent>({id, true});
 	}
 	if (object_selection_system->selected != -1) {
 		ImGui::SliderFloat("x-axis", &translation.x, -5.0f, 5.0f);
@@ -58,6 +59,11 @@ void Scene::OnImGuiRender() {
 		for (auto& [name, path]: textures) {
 			if (ImGui::Selectable(name.c_str())) {
 				current_texture = path;
+				if (object_selection_system->selected != -1) {
+					auto g = m.CreateGroup<MeshComponent>();
+					auto [mesh_new] = g.Get(object_selection_system->selected);
+					mesh_new->texture = TextureManager::Get(current_texture);
+				}
 			}
 		}
 
@@ -71,7 +77,7 @@ void Scene::UpdateSelected(const Event& ev) {
 	SelectElementEvent e = *(SelectElementEvent*) (&ev);
 	if (e.select) {
 		auto g = m.CreateGroup<MeshComponent>();
-		auto[mesh_new] = g.Get(object_selection_system->selected);
+		auto [mesh_new] = g.Get(object_selection_system->selected);
 		base_model = mesh_new->model;
 	} else {
 		base_model = glm::mat4(1.0f);
@@ -79,7 +85,7 @@ void Scene::UpdateSelected(const Event& ev) {
 	translation = glm::vec3(0.0f);
 }
 
-void Scene::AddCube() {
+int Scene::AddCube() {
 	glm::mat4 model1 = glm::translate(
 			glm::scale(
 					glm::rotate(
@@ -97,6 +103,7 @@ void Scene::AddCube() {
 	char* buf = new char[20];
 	sprintf(buf, "Object %d", e.id);
 	scene_objects.emplace(e.id, SceneObject{e.id, buf});
+	return e.id;
 }
 
 void Scene::AddTriangle() {

@@ -5,49 +5,48 @@
 
 class TextureCache {
 public:
-	TextureCache(int N)
-		: m_list(0), m_map(N), m_size(0), m_capacity(N) {};
+	TextureCache(int size)
+		: cache(0), map(size), cache_size(0), capacity(size) {};
 
 	int Bind(const Texture& texture) {
-		std::string key = texture.m_filepath;
-		auto res = m_map.find(key);
-		if (res == m_map.end()) {
+		std::string key = texture.path;
+		auto res = map.find(key);
+		if (res == map.end()) {
 			// If there's space, insert directly into map, and insert into list (cache) at the next slot position
-			if (m_size < m_capacity) {
-				std::pair<int, std::string>* ptr = &*m_list.insert(m_list.end(), {m_size, key});
-				m_map.insert({key, ptr});
-
-				texture.Bind(m_size);
-				return m_size++;
+			if (cache_size < capacity) {
+				std::pair<int, std::string> pair = *cache.insert(cache.end(), {cache_size, key});
+				map.insert({key, pair});
+				texture.Bind(cache_size);
+				return cache_size++;
 			}
 			// Otherwise, remove the element at the front of the list (noting its texture slot), and insert at the end.
 			else {
-				std::pair<int, std::string> pair = m_list.front();
-				m_list.pop_front();
-				int slot = pair.first;
-				std::string old_key = pair.second;
-				std::pair<int, std::string>* ptr = &*m_list.insert(m_list.end(), {slot, key});
-				m_map.erase(old_key);
-				m_map.insert({key, ptr});
-
+				std::pair<int, std::string> old_pair = cache.front();
+				cache.pop_front();
+				int slot = old_pair.first;
+				std::string old_key = old_pair.second;
+				std::pair<int, std::string> pair = *cache.insert(cache.end(), {slot, key});
+				map.erase(old_key);
+				map.insert({key, pair});
 				texture.Bind(slot);
-				return slot++;
+				return slot;
 			}
 		}
 		// If cache hit, move element to back of list.
 		else {
-			auto* pair = new std::pair<int, std::string>(*res->second);
-			m_list.remove(*pair);
-			m_map.erase(pair->second);
-			m_list.push_back(*pair);
-			m_map.insert({std::string(pair->second), pair});
-			texture.Bind(pair->first);
-			return pair->first;
+			auto pair = std::pair<int, std::string>(res->second);
+			cache.remove(pair);
+			map.erase(pair.second);
+			cache.push_back(pair);
+			map.insert({std::string(pair.second), pair});
+			texture.Bind(pair.first);
+			return pair.first;
 		}
 	}
+
 private:
-	std::list<std::pair<int, std::string>> m_list;
-	std::unordered_map<std::string, std::pair<int, std::string>*> m_map;
-	int m_size;
-	int m_capacity;
+	std::list<std::pair<int, std::string>> cache;
+	std::unordered_map<std::string, std::pair<int, std::string>> map;
+	int cache_size;
+	int capacity;
 };

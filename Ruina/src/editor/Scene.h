@@ -24,7 +24,7 @@ public:
 	void OnRender();
 	void OnImGuiRender();
 	void UpdateSelected(const Event& ev);
-	void AddCube();
+	int AddCube();
 	void AddTriangle();
 	void ChangePosition(float x, float y, float z);
 
