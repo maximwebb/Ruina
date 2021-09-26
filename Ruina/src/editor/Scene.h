@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <utility>
 #include "GuiManager.h"
 #include "Manager.h"
@@ -25,7 +26,8 @@ public:
 	void OnImGuiRender();
 	void UpdateSelected(const Event& ev);
 	int AddCube();
-	void AddTriangle();
+	int AddTriangle();
+	int AddMesh(const std::filesystem::path& path);
 	void ChangePosition(float x, float y, float z);
 
 private:
@@ -41,4 +43,6 @@ private:
 	glm::vec3 translation;
 	std::unordered_map<std::string, std::string> textures;
 	std::string current_texture;
+	std::vector<std::pair<std::string, std::string>> mesh_files;
+
 };

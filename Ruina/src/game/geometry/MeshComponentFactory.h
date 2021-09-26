@@ -82,6 +82,7 @@ public:
 		return m.Add<MeshComponent>(id, sphere_vertices, sphere_indices, sphere_texture, model);
 	}
 
+
 	static std::vector<VertexPNUV> TessellateTriangle(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, int depth) {
 		std::vector<VertexPNUV> vertices;
 		int width = 2 * depth - 1;
@@ -173,10 +174,10 @@ public:
 
 	static std::vector<VertexPNUV> TriangleMesh() {
 		std::vector<VertexPNUV> vertices;
-		vertices.reserve(24);
+		vertices.reserve(3);
 		vertices.emplace_back(VertexPNUV(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.333f, 0.0f));
 		vertices.emplace_back(VertexPNUV(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
-		vertices.emplace_back(VertexPNUV(0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.333f, 0.5f));
+		vertices.emplace_back(VertexPNUV(0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.1667f, 0.5f));
 
 		return vertices;
 	}
